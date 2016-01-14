@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<node 
+	name="/org/allseen/LSF/LeaderElectionAndStateSync" 
+	xmlns="https://allseenalliance.org/schemas/extended_introspect" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="https://allseenalliance.org/schemas/extended_introspect https://allseenalliance.org/schemas/extended_introspect.xsd">
+	<interface name="org.allseen.LeaderElectionAndStateSync">
+		<description language="en">This is the LeaderElectionAndStateSync interface</description>
+		<property name="Property1" type="u" access="read"/>
+		<property name="Property2" type="s" access="read"/>
+		<method name="GetChecksumAndModificationTimestamp">
+			<arg name="checksumAndTimestamp" type="a(uut)" direction="out"/>
+		</method>
+		<method name="GetBlob">
+			<arg name="blobType" type="u" direction="in"/>
+			<arg name="blobType" type="u" direction="out"/>
+			<arg name="blob" type="s" direction="out"/>
+			<arg name="checksum" type="u" direction="out"/>
+			<arg name="timestamp" type="t" direction="out"/>
+		</method>
+		<method name="Overthrow">
+			<arg name="success" type="b" direction="out"/>
+		</method>
+		<signal name="BlobChanged">
+			<arg name="blobType" type="u" direction="out"/>
+			<arg name="blob" type="s" direction="out"/>
+			<arg name="checksum" type="u" direction="out"/>
+			<arg name="timestamp" type="t" direction="out"/>
+		</signal>
+	</interface>
+</node>

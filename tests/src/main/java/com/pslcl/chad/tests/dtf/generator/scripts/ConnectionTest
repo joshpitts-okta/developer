@@ -1,0 +1,2 @@
+#!/bin/bash
+java org.opendof.test.generator.oal.ConnectionTestGenerator $@
