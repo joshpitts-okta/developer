@@ -1,18 +1,18 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<parent>
-		<groupId>com.pslcl.chad</groupId>
+		<groupId>com.pslcl.chad.developer</groupId>
 		<artifactId>builder</artifactId>
-		<version>1.0.0</version>
+		<version>1.0</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>simple-node-framework</artifactId>
-	<packaging>bundle</packaging>
+	<packaging>jar</packaging>
 	<dependencies>
 		<dependency>
-			<groupId>com.pslcl.chad</groupId>
+			<groupId>com.pslcl.chad.developer</groupId>
 			<artifactId>helpers</artifactId>
-			<version>1.0.0</version>
+			<version>1.0</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-cli</groupId>
@@ -21,17 +21,17 @@
 		<dependency>
 			<groupId>org.opendof.core-java</groupId>
 			<artifactId>dof-slf4j-log-listener</artifactId>
-			<version>2.0-SNAPSHOT</version>
+			<version>2.0.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.opendof.core-java</groupId>
 			<artifactId>dof-oal</artifactId>
-			<version>7.0-SNAPSHOT</version>
+			<version>7.0.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.opendof.core-java</groupId>
 			<artifactId>dof-inet</artifactId>
-			<version>7.0-SNAPSHOT</version>
+			<version>7.0.1</version>
 		</dependency>
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
@@ -42,19 +42,9 @@
 			<artifactId>logback-core</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.pslcl.dsp</groupId>
-			<artifactId>enc-dsp</artifactId>
-			<version>2.0.0</version>
-		</dependency>
-		<dependency>
-			<groupId>org.pslcl.service-utils</groupId>
-			<artifactId>pslcl-utility</artifactId>
-			<version>2.0.0-SNAPSHOT</version>
-		</dependency>
-		<dependency>
 			<groupId>org.opendof.core-java</groupId>
 			<artifactId>dof-connection-reconnecting-listener</artifactId>
-			<version>2.0-SNAPSHOT</version>
+			<version>2.0.1</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
