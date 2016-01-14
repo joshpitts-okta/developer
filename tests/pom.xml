@@ -10,13 +10,13 @@
 	<packaging>jar</packaging>
 	<dependencies>
 		<dependency>
-			<groupId>com.pslcl.dtf.platform</groupId>
-			<artifactId>dtf-aws-resource</artifactId>
+			<groupId>com.pslcl.chad.developer</groupId>
+			<artifactId>helpers</artifactId>
 			<version>1.0</version>
 		</dependency>
 		<dependency>
-			<groupId>com.pslcl.chad.developer</groupId>
-			<artifactId>helpers</artifactId>
+			<groupId>com.pslcl.dtf.platform</groupId>
+			<artifactId>dtf-aws-resource</artifactId>
 			<version>1.0</version>
 		</dependency>
 		<dependency>

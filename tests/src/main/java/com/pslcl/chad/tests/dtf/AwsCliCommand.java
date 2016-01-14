@@ -24,6 +24,10 @@ public class AwsCliCommand extends CliCommand
     public static final String PersonDefaultLongCl = "default";
     public static final String CleanupShortCl = "e";
     public static final String CleanupLongCl = "earlyout";
+    public static final String DeployShortCl = "g";
+    public static final String DeployLongCl = "deploy";
+    public static final String MachineShortCl = "m";
+    public static final String MachineLongCl = "machine";
 
     public final Properties properties;
 
@@ -59,15 +63,27 @@ public class AwsCliCommand extends CliCommand
                 .build());
         
         options.addOption(
-                        Option.builder(CleanupShortCl)
-                            .desc("Cleanup race condition test.")
-                            .longOpt(CleanupLongCl)
-                            .build());
+            Option.builder(CleanupShortCl)
+                .desc("Cleanup race condition test.")
+                .longOpt(CleanupLongCl)
+                .build());
         options.addOption(
-                        Option.builder(PersonDefaultShortCl)
-                            .desc("Do PersonProvider reserve/bind instead of Machine/Network, use site defaults.")
-                            .longOpt(PersonDefaultLongCl)
-                            .build());
+            Option.builder(PersonDefaultShortCl)
+                .desc("Do PersonProvider reserve/bind instead of Machine/Network, use site defaults.")
+                .longOpt(PersonDefaultLongCl)
+                .build());
+        
+        options.addOption(
+            Option.builder(DeployShortCl)
+                .desc("Deploy to ec2 instances")
+                .longOpt(DeployLongCl)
+                .build());
+        
+        options.addOption(
+            Option.builder(MachineShortCl)
+                .desc("Reserve and Bind ec2 instances")
+                .longOpt(MachineLongCl)
+                .build());
         //@formatter:on
     }
 

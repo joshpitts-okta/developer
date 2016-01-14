@@ -29,6 +29,7 @@ import com.pslcl.dtf.core.runner.resource.instance.MachineInstance;
 import com.pslcl.dtf.core.runner.resource.instance.NetworkInstance;
 import com.pslcl.dtf.core.runner.resource.instance.PersonInstance;
 import com.pslcl.dtf.core.runner.resource.provider.ResourceProvider;
+import com.pslcl.dtf.core.runner.resource.staf.DeployFuture;
 import com.pslcl.dtf.core.util.PropertiesFile;
 import com.pslcl.dtf.resource.aws.AwsResourcesManager;
 import com.pslcl.dtf.resource.aws.attr.InstanceNames;
@@ -183,20 +184,20 @@ public class BindAwsTest implements PreStartExecuteInterface
         Map<String, String> attrs = new HashMap<String, String>();
         addAttribute(ProviderNames.SesMaxDelayKey, appProperties, attrs);
         addAttribute(ProviderNames.SesMaxRetriesKey, appProperties, attrs);
-        
-        if(!useSiteDefault)
+
+        if (!useSiteDefault)
         {
             List<Entry<String, String>> ilist = PropertiesFile.getPropertiesForBaseKey(ProviderNames.SesInspectorKey, appProperties);
             for (Entry<String, String> entry : ilist)
                 attrs.put(entry.getKey(), entry.getValue());
         }
-        
+
         ResourceCoordinates coord = new ResourceCoordinates(getTemplateId(), resourceId, runId);
         ResourceDescImpl resource = new ResourceDescImpl(name, coord, attrs);
         list.add(resource);
         return list;
     }
-    
+
     public String getTemplateId()
     {
         byte[] raw = new byte[32];
@@ -260,9 +261,9 @@ public class BindAwsTest implements PreStartExecuteInterface
                 resources.add(disposition.getReservedResource());
             List<Future<MachineInstance>> futures = machineProvider.bind(resources);
             int index = 0;
-            if(earlyout)
+            if (earlyout)
                 return;
-            for(Future<MachineInstance> future : futures)
+            for (Future<MachineInstance> future : futures)
                 machineInstances[index++] = future.get();
         } catch (Exception e)
         {
@@ -279,7 +280,7 @@ public class BindAwsTest implements PreStartExecuteInterface
                 resources.add(disposition.getReservedResource());
             List<Future<NetworkInstance>> futures = networkProvider.bind(resources);
             int index = 0;
-            for(Future<NetworkInstance> future : futures)
+            for (Future<NetworkInstance> future : futures)
                 networkInstances[index++] = future.get();
         } catch (Exception e)
         {
@@ -296,27 +297,55 @@ public class BindAwsTest implements PreStartExecuteInterface
                 resources.add(disposition.getReservedResource());
             List<Future<PersonInstance>> futures = personProvider.bind(resources);
             int index = 0;
-            for(Future<PersonInstance> future : futures)
+            for (Future<PersonInstance> future : futures)
                 personInstances[index++] = future.get();
         } catch (Exception e)
         {
             log.error("bind network failed", e);
         }
     }
-    
+
     private void connect(int machineIndex) throws Exception
     {
         cableInstances[machineIndex] = machineInstances[machineIndex].connect(networkInstances[machineIndex < 2 ? 0 : 1]).get();
     }
-    
+
     private void connect()
     {
         try
         {
             List<Future<Void>> list = new ArrayList<Future<Void>>();
-            for(int i=0; i < machineInstances.length; i++)
+            for (int i = 0; i < machineInstances.length; i++)
                 list.add(config.blockingExecutor.submit(new ConnectWorker(this, i)));
-            for(int i=0; i < list.size(); i++)
+            for (int i = 0; i < list.size(); i++)
+                list.get(i).get();
+        } catch (Exception e)
+        {
+            log.error("connect failed", e);
+        }
+    }
+
+    private void deploy(int machineIndex) throws Exception
+    {
+        String partialDestPath = "toplevel";
+        String url = "http://mirrors.koehn.com/apache//commons/cli/binaries/commons-cli-1.3.1-bin.zip";
+        machineInstances[machineIndex].deploy(partialDestPath, url).get();
+        partialDestPath = "bin/doit.bat";
+        url = "http://mirrors.koehn.com/apache//commons/cli/binaries/commons-cli-1.3.1-bin.zip";
+        machineInstances[machineIndex].deploy(partialDestPath, url).get();
+        partialDestPath = "lib/someApp.jar";
+        url = "http://mirrors.koehn.com/apache//commons/cli/source/commons-cli-1.3.1-src.zip";
+        machineInstances[machineIndex].deploy(partialDestPath, url).get();
+    }
+
+    private void deploy()
+    {
+        try
+        {
+            List<Future<Void>> list = new ArrayList<Future<Void>>();
+            for (int i = 0; i < machineInstances.length; i++)
+                list.add(config.blockingExecutor.submit(new DeployWorker(this, i)));
+            for (int i = 0; i < list.size(); i++)
                 list.get(i).get();
         } catch (Exception e)
         {
@@ -329,38 +358,38 @@ public class BindAwsTest implements PreStartExecuteInterface
         String includeContent = "the quick brown fox jumped over the lazy dog. THE QUICK BROWN FOX JUMPED OVER THE LAZY DOG. 01234567890";
         ByteArrayInputStream rawStream = new ByteArrayInputStream(includeContent.getBytes());
         String instructions = "see the attached file";
-        
+
         File tarball = new File(InspectGzPath);
         FileInputStream fis = new FileInputStream(tarball);
-        
+
         InputStream is = rawStream;
         String includeName = "attachments.tar.gz";
-        if(actualTar)
+        if (actualTar)
         {
             is = fis;
             includeName = tarball.getName();
         }
         personInstances[personIndex].inspect(instructions, is, includeName).get();
     }
-    
+
     private void inspect()
     {
         try
         {
             List<Future<Void>> list = new ArrayList<Future<Void>>();
-            for(int i=0; i < personInstances.length; i++)
+            for (int i = 0; i < personInstances.length; i++)
                 list.add(config.blockingExecutor.submit(new InspectWorker(this, i)));
-            for(int i=0; i < list.size(); i++)
+            for (int i = 0; i < list.size(); i++)
                 list.get(i).get();
         } catch (Exception e)
         {
             log.error("inspect failed", e);
         }
     }
-    
+
     private void releaseTemplate(boolean machine)
     {
-        if(machine)
+        if (machine)
             manager.release(templateId, false);
         else
             manager.release(templateId, false);
@@ -376,24 +405,50 @@ public class BindAwsTest implements PreStartExecuteInterface
         networkProvider = manager.getNetworkProvider();
         personProvider = manager.getPersonProvider();
 
-        if(!activeCommand.hasOption(AwsCliCommand.PersonShortCl) && !activeCommand.hasOption(AwsCliCommand.CleanupShortCl))
+        boolean machine = activeCommand.hasOption(AwsCliCommand.MachineShortCl);
+        boolean person = activeCommand.hasOption(AwsCliCommand.PersonShortCl);
+        boolean deploy = activeCommand.hasOption(AwsCliCommand.DeployShortCl);
+        boolean cleanup = activeCommand.hasOption(AwsCliCommand.CleanupShortCl);
+
+        //        if(deploy)
+        //        {
+        //            String partialDestPath = "toplevel";
+        //            String url = "http://mirrors.koehn.com/apache//commons/cli/binaries/commons-cli-1.3.1-bin.zip";
+        //            DeployFuture df = new DeployFuture("52.91.84.25", "/opt/dtf/sandbox", partialDestPath, url, false);
+        //            df.call();
+        //            partialDestPath = "bin/doit.bat";
+        //            url = "http://mirrors.koehn.com/apache//commons/cli/binaries/commons-cli-1.3.1-bin.zip";
+        //            df = new DeployFuture("52.91.84.25", "/opt/dtf/sandbox", partialDestPath, url, false);
+        //            df.call();
+        //            partialDestPath = "lib/someApp.jar";
+        //            url = "http://mirrors.koehn.com/apache//commons/cli/source/commons-cli-1.3.1-src.zip";
+        //            df = new DeployFuture("52.91.84.25", "/opt/dtf/sandbox", partialDestPath, url, false);
+        //            df.call();
+        //            return;
+        //        }
+
+        if (machine)
         {
             reserveMachine(appMachineProperties);
-            bindMachine(false);
-            reserveNetwork(appMachineProperties);
-            bindNetwork();
-            connect();
-            releaseTemplate(true);
+            bindMachine(cleanup);
+            if (cleanup)
+            {
+                log.info("look at aws console for all pendings here, you have 5 seconds");
+                Thread.sleep(5000); // 
+            }
+            if (!cleanup)
+            {
+                reserveNetwork(appMachineProperties);
+                bindNetwork();
+                connect();
+                deploy();
+            }
+//            releaseTemplate(true);
+            if (cleanup)
+                log.info("look at aws console for all shutting down here, it will be several minutes before termination");
+            return;
         }
-        if(activeCommand.hasOption(AwsCliCommand.CleanupShortCl))
-        {
-            reserveMachine(appMachineProperties);
-            bindMachine(true);
-            log.info("look at aws console for all pendings here, you have 5 seconds");
-            Thread.sleep(5000);  // 
-            releaseTemplate(true);
-            log.info("look at aws console for all shutting down here, it will be several minutes before termination");
-        }else
+        if (person)
         {
             boolean useSiteDefaults = activeCommand.hasOption(AwsCliCommand.PersonDefaultShortCl);
             reservePerson(appMachineProperties, useSiteDefaults);
@@ -414,18 +469,18 @@ public class BindAwsTest implements PreStartExecuteInterface
             timeout = Integer.parseInt(value);
         }
     }
-    
+
     private class ConnectWorker implements Callable<Void>
     {
         private final BindAwsTest test;
         private final int machineIndex;
-        
+
         private ConnectWorker(BindAwsTest test, int machineIndex)
         {
             this.test = test;
             this.machineIndex = machineIndex;
         }
-        
+
         @Override
         public Void call() throws Exception
         {
@@ -433,27 +488,52 @@ public class BindAwsTest implements PreStartExecuteInterface
             return null;
         }
     }
-    
+
     private class InspectWorker implements Callable<Void>
     {
         private final BindAwsTest test;
         private final int personIndex;
-        
+
         private InspectWorker(BindAwsTest test, int personIndex)
         {
             this.test = test;
             this.personIndex = personIndex;
         }
-        
+
         @Override
         public Void call() throws Exception
         {
             try
             {
                 test.inspect(personIndex);
-            }catch(Exception e)
+            } catch (Exception e)
             {
                 log.error("inspect failed", e);
+            }
+            return null;
+        }
+    }
+
+    private class DeployWorker implements Callable<Void>
+    {
+        private final BindAwsTest test;
+        private final int personIndex;
+
+        private DeployWorker(BindAwsTest test, int personIndex)
+        {
+            this.test = test;
+            this.personIndex = personIndex;
+        }
+
+        @Override
+        public Void call() throws Exception
+        {
+            try
+            {
+                test.deploy(personIndex);
+            } catch (Exception e)
+            {
+                log.error("deploy failed", e);
             }
             return null;
         }
