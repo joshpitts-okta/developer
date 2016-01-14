@@ -1,0 +1,62 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<groupId>org.emit-networking.parent</groupId>
+		<artifactId>internal-release-parent</artifactId>
+		<version>1</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.emit-networking.app.service.datadistribution</groupId>
+	<artifactId>enc-service-datadistribution-aws</artifactId>
+	<version>2.2.0</version>
+	<packaging>bundle</packaging>
+	<name>EMITDO Data Distribution on AWS</name>
+	<properties>
+        <svnVersion>13638</svnVersion>
+        <qbNumber>49</qbNumber>
+        <qbDate>25 Aug 2014</qbDate>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>com.panasonic.pesdca.utility</groupId>
+			<artifactId>pesdca-utility</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.emit-networking.datatransfer</groupId>
+			<artifactId>emit-data-transfer-sink</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.emit-networking.datatransfer</groupId>
+			<artifactId>emit-data-transfer-manager</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.emit-networking.datatransfer</groupId>
+			<artifactId>emit-data-transfer-source</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.emit-networking.tools</groupId>
+			<artifactId>emit-connection-reconnecting-listener-java</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.emit-networking.tools</groupId>
+			<artifactId>emit-slf4j-log-listener</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>commons-daemon</groupId>
+			<artifactId>commons-daemon</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-java-sdk</artifactId>
+		</dependency>
+	</dependencies>
+	<scm>
+		<connection>scm:svn:https://source.emit-networking.org/emit_app/datatransfer/trunk/src/rpm-data-distribution-service-on-aws/enc-service-datadistribution-aws</connection>
+		<developerConnection>scm:svn:https://source.emit-networking.org/emit_app/datatransfer/trunk/src/rpm-data-distribution-service-on-aws/enc-service-datadistribution-aws</developerConnection>
+		<url>http://svn.https://source.emit-networking.org/emit_app/datatransfer/trunk/src/rpm-data-distribution-service-on-aws</url>
+	</scm>
+</project>

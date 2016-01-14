@@ -1,0 +1,25 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<groupId>org.emit-networking.parent</groupId>
+		<artifactId>release-parent</artifactId>
+		<version>3</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.emit-networking.cipher-plugin</groupId>
+	<artifactId>emit-sms4-cipher-plugin-java</artifactId>
+	<version>1.0.0</version>
+	<packaging>bundle</packaging>
+	<name>OpenDOF SMS4 Cipher Plugin</name>
+	<dependencies>
+		<dependency>
+			<groupId>org.opendof.core</groupId>
+			<artifactId>dof-inet</artifactId>
+		</dependency>
+	</dependencies>
+	<scm>
+		<connection>scm:svn:https://source.emit-networking.org/emit/trunk/src/emit-sms4-cipher-plugin-java/emit-sms4-cipher-plugin-java</connection>
+		<developerConnection>scm:svn:https://source.emit-networking.org/emittrunk/src/emit-sms4-cipher-plugin-java/emit-sms4-cipher-plugin-java</developerConnection>
+		<url>http://svn.https://source.emit-networking.org/emit/trunk/src/sdk-connection-reconnecting-listener-java</url>
+	</scm>
+</project>

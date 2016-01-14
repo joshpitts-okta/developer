@@ -1,0 +1,42 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<groupId>org.emit-networking.parent</groupId>
+		<artifactId>internal-release-parent</artifactId>
+		<version>1</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.emit-networking.domain.oracle</groupId>
+	<artifactId>domain-storage-oracle</artifactId>
+	<version>3.0.0</version>
+	<packaging>bundle</packaging>
+	<name>EMITDO AS Storage Oracle</name>
+	<properties>
+        <svnVersion>9273</svnVersion>
+        <qbNumber>1190</qbNumber>
+        <qbDate>31 Jul 2013</qbDate>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>org.emit-networking.domain</groupId>
+			<artifactId>emit-domain-management-java</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>oracle.ucp</groupId>
+			<artifactId>jdbc6</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>oracle.ucp</groupId>
+			<artifactId>ucp</artifactId>
+		</dependency>
+	</dependencies>
+	<scm>
+		<connection>scm:svn:https://source.emit-networking.org/emit_app/as/trunk/src/eng-domain-storage-oracle/domain-storage-oracle</connection>
+		<developerConnection>scm:svn:https://source.emit-networking.org/emit_app/as/trunk/src/eng-domain-storage-oracle/domain-storage-oracle</developerConnection>
+		<url>http://svn.https://source.emit-networking.org/emit_app/as/trunk/src/eng-domain-storage-oracle</url>
+	</scm>
+</project>

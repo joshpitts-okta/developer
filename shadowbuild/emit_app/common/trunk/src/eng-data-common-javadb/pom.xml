@@ -1,0 +1,33 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<groupId>org.emit-networking.parent</groupId>
+		<artifactId>release-parent</artifactId>
+		<version>1</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.emit-networking.app.common</groupId>
+	<artifactId>eng-data-common-javadb</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<packaging>bundle</packaging>
+	<name>EMITDO Data Common JavaDb Utilities</name>
+	<dependencies>
+		<dependency>
+			<groupId>org.emit-networking.app.common</groupId>
+			<artifactId>eng-data-common</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.derby</groupId>
+			<artifactId>derby</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.derby</groupId>
+			<artifactId>derbynet</artifactId>
+		</dependency>
+	</dependencies>
+	<scm>
+		<connection>scm:svn:https://source.emit-networking.org/emit_app/common/trunk/src/eng-data-common-javadb/eng-data-common-javadb</connection>
+		<developerConnection>scm:svn:https://source.emit-networking.org/emit_app/common/trunk/src/eng-data-common-javadb/eng-data-common-javadb</developerConnection>
+		<url>http://svn.https://source.emit-networking.org/emit_app/common/trunk/src/eng-data-common-javadb</url>
+	</scm>
+</project>

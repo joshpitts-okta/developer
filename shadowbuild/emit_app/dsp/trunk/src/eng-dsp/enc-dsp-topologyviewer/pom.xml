@@ -1,0 +1,34 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<groupId>org.emit-networking.dsp</groupId>
+		<artifactId>eng-dsp</artifactId>
+		<version>1.1.0</version>
+		<relativePath>..</relativePath>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>enc-dsp-topologyviewer</artifactId>
+    <packaging>bundle</packaging>
+	<name>EMITDO DSP Topology Viewer</name>
+	<properties>
+        <svnVersion>15615</svnVersion>
+        <qbNumber>51</qbNumber>
+        <qbDate>29 Jan 2015</qbDate>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>org.apache.wink</groupId>
+			<artifactId>wink-client-apache-httpclient</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+		</dependency>
+
+	</dependencies>
+	<scm>
+		<connection>scm:svn:https://source.emit-networking.org/emit_app/dsp/trunk/src/eng-dsp/enc-dsp-topologyviewer</connection>
+		<developerConnection>scm:svn:https://source.emit-networking.org/emit_app/dsp/trunk/src/eng-dsp/enc-dsp-topologyviewer</developerConnection>
+		<url>http://svn.https://source.emit-networking.org/emit_app/dsp/trunk/src/eng-dsp</url>
+	</scm>
+</project>

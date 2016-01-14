@@ -1,0 +1,30 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<groupId>org.emit-networking.parent</groupId>
+		<artifactId>release-parent</artifactId>
+		<version>1</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.emit-networking.domain</groupId>
+	<artifactId>emit-domain-management-java</artifactId>
+	<version>2.1.0</version>
+	<packaging>bundle</packaging>
+	<name>OpenDOF Domain Management</name>
+	<properties>
+		<svnVersion>39952</svnVersion>
+		<qbNumber>48</qbNumber>
+		<qbDate>31 Jul 2013</qbDate>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>org.emit-networking</groupId>
+			<artifactId>emit-oal</artifactId>
+		</dependency>
+	</dependencies>
+	<scm>
+		<connection>scm:svn:https://source.emit-networking.org/emit/trunk/src/trunk/src/emit-domain-management-java/emit-domain-management-java</connection>
+		<developerConnection>scm:svn:https://source.emit-networking.org/emit/trunk/src/trunk/src/emit-domain-management-java/emit-domain-management-java</developerConnection>
+		<url>http://svn.https://source.emit-networking.org/emit/trunk/src/trunk/src/emit-domain-management-java</url>
+	</scm>
+</project>

@@ -1,0 +1,29 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<groupId>org.emit-networking.datatransfer</groupId>
+		<artifactId>emit-data-transfer-java</artifactId>
+		<version>1.0.7</version>
+		<relativePath>..</relativePath>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>emit-data-transfer-source</artifactId>
+    <packaging>bundle</packaging>
+	<name>OpenDOF Data Transfer Source</name>
+	<properties>
+        <svnVersion>3226</svnVersion>
+        <qbNumber>91</qbNumber>
+        <qbDate>09 Dec 2014</qbDate>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>org.emit-networking.datatransfer</groupId>
+			<artifactId>emit-data-transfer-common</artifactId>
+		</dependency>
+	</dependencies>
+	<scm>
+		<connection>scm:svn:https://source.emit-networking.org/emit_mw/distributed_service_platform/trunk/src/emit-data-transfer-java/emit-data-transfer-source</connection>
+		<developerConnection>scm:svn:https://source.emit-networking.org/emit_mw/distributed_service_platform/trunk/src/emit-data-transfer-java/emit-data-transfer-source</developerConnection>
+		<url>scm:svn:https://source.emit-networking.org/emit_mw/distributed_service_platform/trunk/src/emit-data-transfer-java/emit-data-transfer-source</url>
+	</scm>
+</project>

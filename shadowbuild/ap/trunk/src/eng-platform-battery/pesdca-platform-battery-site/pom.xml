@@ -1,0 +1,53 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<groupId>com.panasonic.pesdca.battery</groupId>
+		<artifactId>eng-platform-battery</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+		<relativePath>..</relativePath>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>pesdca-platform-battery-site</artifactId>
+	<packaging>bundle</packaging>
+	<name>PESDCA Battery Platform Site</name>
+	<dependencies>
+		<dependency>
+			<groupId>com.panasonic.pesdca.battery</groupId>
+			<artifactId>pesdca-platform-battery-common</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.emit-networking.sdk.datatransfer</groupId>
+			<artifactId>sdk-data-transfer-sink</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.emit-networking.sdk.datatransfer</groupId>
+			<artifactId>sdk-data-transfer-source</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.emit-networking.sdk.datatransfer</groupId>
+			<artifactId>sdk-data-transfer-manager</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.panasonic.pesdca.utility</groupId>
+			<artifactId>pesdca-utility</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-collections</groupId>
+			<artifactId>commons-collections</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.activemq</groupId>
+			<artifactId>activemq-core</artifactId>
+		</dependency>
+	</dependencies>
+	<scm>
+		<connection>scm:svn:https://source.ancillary.pewla.com/ap/trunk/src/eng-platform-battery/pesdca-platform-battery-site</connection>
+		<developerConnection>scm:svn:https://source.ancillary.pewla.com/ap/trunk/src/eng-platform-battery/pesdca-platform-battery-site</developerConnection>
+		<url>http://svn.https://source.ancillary.pewla.com/ap/trunk/src/eng-platform-battery</url>
+	</scm>
+</project>

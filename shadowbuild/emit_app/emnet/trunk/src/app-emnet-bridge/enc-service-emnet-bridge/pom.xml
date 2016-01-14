@@ -1,0 +1,46 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<groupId>org.emit-networking.parent</groupId>
+		<artifactId>release-parent</artifactId>
+		<version>1</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.emit-networking.app.service.bridge</groupId>
+	<artifactId>enc-service-emnet-bridge</artifactId>
+	<version>1.0.0</version>
+	<packaging>bundle</packaging>
+	<name>EMITDO EMNET Bridge</name>
+	<properties>
+        <svnVersion>10757</svnVersion>
+        <qbNumber>25</qbNumber>
+        <qbDate>28 Jan 2014</qbDate>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>com.panasonic.pesdca.utility</groupId>
+			<artifactId>pesdca-utility</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.emit-networking.tools</groupId>
+			<artifactId>emit-connection-reconnecting-listener-java</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.emit-networking.tools</groupId>
+			<artifactId>emit-slf4j-log-listener</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>commons-daemon</groupId>
+			<artifactId>commons-daemon</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.rxtx</groupId>
+			<artifactId>rxtx</artifactId>
+		</dependency>
+	</dependencies>
+	<scm>
+		<connection>scm:svn:https://source.emit-networking.org/emit_app/emnet/trunk/src/app-emnet-bridge/enc-service-emnet-bridge</connection>
+		<developerConnection>scm:svn:https://source.emit-networking.org/emit_app/emnet/trunk/src/app-emnet-bridge/enc-service-emnet-bridge</developerConnection>
+		<url>http://svn.https://source.emit-networking.org/emit_app/emnet/trunk/src/app-emnet-bridge</url>
+	</scm>
+</project>

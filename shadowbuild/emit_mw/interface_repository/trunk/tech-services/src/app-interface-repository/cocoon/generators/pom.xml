@@ -1,0 +1,50 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<groupId>org.emit-networking.interface-repository</groupId>
+		<artifactId>app-interface-repository-cocoon</artifactId>
+		<version>1.0.9-SNAPSHOT</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>cocoon.generators</artifactId>
+	<packaging>bundle</packaging>
+	<name>EMITDO Interface Repository Coccoon Generators</name>
+	<!-- dependencies>
+		<dependency>
+			<groupId>org.apache.cocoon</groupId>
+			<artifactId>cocoon-core</artifactId>
+			<version>2.2.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.cocoon</groupId>
+			<artifactId>cocoon-servlet-service-components</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.cocoon</groupId>
+			<artifactId>cocoon-template-impl</artifactId>
+			<version>1.1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.cocoon</groupId>
+			<artifactId>cocoon-flowscript-impl</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.4</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.emit-networking.interface-repository</groupId>
+			<artifactId>merger</artifactId>
+			<version>1.0.6-SNAPSHOT</version>
+		</dependency>
+	</dependencies -->
+	<scm>
+		<connection>scm:svn:https://source.emit-networking.org/emit_mw/interface_repository/trunk/tech-services/src/app-interface-repository/cocoon/generators</connection>
+		<developerConnection>scm:svn:https://source.emit-networking.org/emit_mw/interface_repository/trunk/tech-services/src/app-interface-repository/cocoon/generators</developerConnection>
+		<url>http://svn.https://source.emit-networking.org/emit_mw/interface_repository/trunk/tech-services/src/app-interface-repository</url>
+	</scm>
+</project>

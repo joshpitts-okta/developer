@@ -1,0 +1,42 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<groupId>org.emit-networking.domain.cassandra</groupId>
+		<artifactId>eng-domain-storage-cassandra</artifactId>
+		<version>2.1.2</version>
+		<relativePath>..</relativePath>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>domain-storage-cassandra</artifactId>
+	<packaging>bundle</packaging>
+	<name>EMITDO AS Domain Storage Cassandra</name>
+	<properties>
+		<svnVersion>14954</svnVersion>
+		<qbNumber>53</qbNumber>
+		<qbDate>10 Nov 2014</qbDate>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>org.emit-networking.domain</groupId>
+			<artifactId>domain-management-cli-support</artifactId>
+			<version>2.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.tomcat</groupId>
+			<artifactId>tomcat-jdbc</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.datastax.cassandra</groupId>
+			<artifactId>cassandra-driver-core</artifactId>
+		</dependency>
+	</dependencies>
+	<scm>
+		<connection>scm:svn:https://source.emit-networking.org/emit_app/as/trunk/src/eng-domain-storage-cassandra/domain-storage-cassandra</connection>
+		<developerConnection>scm:svn:https://source.emit-networking.org/emit_app/as/trunk/src/eng-domain-storage-cassandra/domain-storage-cassandra</developerConnection>
+		<url>http://svn.https://source.emit-networking.org/emit_app/as/trunk/src/eng-domain-storage-cassandra</url>
+	</scm>
+</project>

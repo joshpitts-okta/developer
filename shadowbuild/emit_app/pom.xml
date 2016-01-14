@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.emit-networking.builder</groupId>
+	<artifactId>emit-app-repository-builder</artifactId>
+	<version>1</version>
+	<packaging>pom</packaging>
+	<name>EMITDO EMIT-APP Respository builder</name>
+	<modules>
+		<module>as/trunk/src/</module>
+		<!--
+			throwing a null pointer exception if mixing trunk and branches
+			you will need to run the following line manually 
+		<module>as/branches/patch-eng-domain-storage-cassandra-2.1/src/eng-domain-storage-cassandra</module>
+			when this branch comes out, fix as/trunk/src/pom.xml to re-enable the trunk build for
+			the cassandra component
+		-->
+		<module>backup/trunk/src/eng-backup-service/enc-service-backup</module>
+		<module>common</module>
+		<module>datatransfer/trunk/src</module>
+		<module>dsp/trunk/src</module>
+		<module>emnet/trunk/src/app-emnet-bridge/enc-service-emnet-bridge</module>
+		<module>jmx/trunk/src/eng-jmx/jmx-proxy</module>
+		<module>logging/trunk/src/eng-logging-service/enc-service-logging</module>
+		<module>nagios/trunk/src/eng-nagios/emit-nagios</module>
+		<module>naming/trunk/src/eng-naming-service/enc-service-naming</module>
+		<module>platform-hostel/trunk/src/emit-platform-hostel-ac-java/emit-platform-hostel-ac</module>
+		<module>res</module>
+		<module>rg</module>
+		<module>schedule/trunk/src/emit-schedule-service/enc-service-schedule</module>
+		<module>securityconfig/trunk/src/eng-securityconfig-service/enc-service-securityconfig</module>
+		<module>solar/trunk/src/app-solar-data-source-service</module>
+		<module>status/trunk/src/eng-status-service/enc-service-status</module>
+		<!-- module>suitcase-demo/trunk/src/app-suitcase</module put back in when externals are solved -->
+		<module>tunnel-transport/trunk/src/app-tunnel-transport/tunnel-transport</module>
+		<module>update/trunk/src/eng-update-service/enc-service-update</module>
+		<module>version/trunk/src/eng-version-service/enc-service-version</module>
+	</modules>
+</project>

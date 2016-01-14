@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.emit-networking.builder</groupId>
+	<artifactId>emit-repository-builder</artifactId>
+	<version>1</version>
+	<packaging>pom</packaging>
+	<name>EMITDO EMIT Repository builder</name>
+	<modules>
+		<!-- module>trunk/src/domain-storage-memory-java/domain-storage-memory</module -->
+		<module>trunk/src/emit-domain-management-java/emit-domain-management-java</module>
+		<module>trunk/src/emit-oal-java/emit-inet</module>
+		<module>trunk/src/emit-oal-java/emit-oal</module>
+		<module>trunk/src/emit-sms4-cipher-plugin-java/emit-sms4-cipher-plugin-java</module>
+		<module>trunk/src/emit-twofish-cipher-plugin-java/emit-twofish-cipher-plugin-java</module>
+		<!-- module>trunk/src/eng-sharpen/sharpen.core</module -->
+		<module>trunk/src/frameworks-java</module>
+		<!-- module>trunk/src/topology-java/topology</module -->
+	</modules>
+</project>

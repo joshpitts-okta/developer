@@ -1,0 +1,65 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<groupId>org.openDOF.demo.suitcase</groupId>
+		<artifactId>suitcase-group</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+		<relativePath>..</relativePath>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>suitcase-backend</artifactId>
+	<packaging>bundle</packaging>
+	<name>EMITDO DSP Auth Server</name>
+	<properties>
+		<svnVersion>15615</svnVersion>
+		<qbNumber>51</qbNumber>
+		<qbDate>29 Jan 2015</qbDate>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.emit-networking.transport</groupId>
+			<artifactId>emit-inet</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.openDOF.demo.suitcase</groupId>
+			<artifactId>suitcase-common</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.emit-networking.tools</groupId>
+			<artifactId>emit-connection-reconnecting-listener-java</artifactId>
+		</dependency>
+				<!--  added by jiml 2/11 -->
+		<dependency>
+			<groupId>org.emit-networking.tools</groupId>
+			<artifactId>emit-slf4j-log-listener</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.mongodb</groupId>
+			<artifactId>mongo-java-driver</artifactId>
+			<version>2.13.0</version>
+			</dependency>
+			<!--  added by jiml 2/27 -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+		</dependency>
+	</dependencies>
+	<scm>
+		<connection>scm:svn:https://source.emit-networking.org/emit_app/suitcase-demo/trunk/src/app-suitcase/suitcase-backend</connection>
+		<developerConnection>scm:svn:https://source.emit-networking.org/emit_app/suitcase-demo/trunk/src/app-suitcase/suitcase-backend</developerConnection>
+		<url>http://svn.https://source.emit-networking.org/emit_app/suitcase-demo/trunk/src/app-suitcase</url>
+	</scm>
+</project>

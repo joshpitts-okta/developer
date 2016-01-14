@@ -1,0 +1,25 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<groupId>org.emit-networking.dsp</groupId>
+		<artifactId>eng-cloud-web-platform</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+		<relativePath>..</relativePath>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>cloud-web-platform-content-management</artifactId>
+    <packaging>bundle</packaging>
+	<name>EMITDO Cloud Web Platform Content Management</name>
+	<properties>
+        <svnVersion></svnVersion>
+        <qbNumber></qbNumber>
+        <qbDate></qbDate>
+	</properties>
+	<dependencies>
+	</dependencies>
+	<scm>
+		<connection>scm:svn:https://source.emit-networking.org/emit_app/dsp/trunk/src/eng-cloud-web-platform/cloud-web-platform-content-management</connection>
+		<developerConnection>scm:svn:https://source.emit-networking.org/emit_app/dsp/trunk/src/eng-cloud-web-platform/cloud-web-platform-content-management</developerConnection>
+		<url>http://svn.https://source.emit-networking.org/emit_app/dsp/trunk/src/eng-cloud-web-platform</url>
+	</scm>
+</project>

@@ -1,0 +1,29 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<groupId>org.emit-networking.parent</groupId>
+		<artifactId>release-parent</artifactId>
+		<version>1</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.emit-networking.solar</groupId>
+	<artifactId>app-solar-data-source-service</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<name>EMITDO Solar Data Source Service Group</name>
+	<dependencies>
+		<!-- dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+		</dependency -->
+	</dependencies>
+	<modules>
+		<module>alsoenergy-api</module>
+		<module>solar-data-source-service</module>
+		<module>solar-data-source-collectorbridge-alsoenergy</module>
+		<module>solar-data-source-collectorbridge-auroravision</module>
+		<module>solar-data-source-collectorbridge-deck</module>
+		<module>solar-data-source-collectorbridge-egauge</module>
+		<module>solar-data-source-collectorbridge-locusenergy</module>
+	</modules>
+</project>

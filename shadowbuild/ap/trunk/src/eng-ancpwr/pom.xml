@@ -1,0 +1,48 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<groupId>org.emit-networking.parent</groupId>
+		<artifactId>internal-release-parent</artifactId>
+		<version>1</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.pewla.ancpwr</groupId>
+	<artifactId>eng-ancpwr</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<packaging>bundle</packaging>
+	<name>PEWLA Ancillary Power</name>
+	<dependencies>
+		<dependency>
+			<groupId>org.emit-networking.framework</groupId>
+			<artifactId>emit-service</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.emit-networking.sdk</groupId>
+			<artifactId>sdk-connection-reconnecting-listener-java</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpcore</artifactId>
+			<version>4.3</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+			<version>1.3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.geronimo.specs</groupId>
+			<artifactId>geronimo-servlet_2.5_spec</artifactId>
+			<version>1.2</version>
+		</dependency>
+	</dependencies>
+	<scm>
+		<connection>scm:svn:https://source.ancillary.pewla.com/ap/trunk/src/eng-ancpwr</connection>
+		<developerConnection>scm:svn:https://source.ancillary.pewla.com/ap/trunk/src/eng-ancpwr</developerConnection>
+		<url>http://svn.https://source.ancillary.pewla.com/ap/trunk/src/eng-ancpwr</url>
+	</scm>
+</project>

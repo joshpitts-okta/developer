@@ -1,0 +1,45 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<groupId>org.emit-networking.parent</groupId>
+		<artifactId>internal-release-parent</artifactId>
+		<version>1</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.emit-networking.app.common</groupId>
+	<artifactId>emit-common</artifactId>
+	<version>1.0.1-SNAPSHOT</version>
+	<packaging>bundle</packaging>
+	<name>EMITDO Common Utilities</name>
+	<dependencies>
+		<dependency>
+			<groupId>org.emit-networking.transport</groupId>
+			<artifactId>emit-inet</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.emit-networking.framework</groupId>
+			<artifactId>emit-auth</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.emit-networking.domain</groupId>
+			<artifactId>emit-domain-management-java</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>apache-log4j-extras</artifactId>
+		</dependency>
+	</dependencies>
+	<scm>
+		<connection>scm:svn:https://source.emit-networking.org/emit_app/common/trunk/src/eng-app-common/emit-common</connection>
+		<developerConnection>scm:svn:https://source.emit-networking.org/emit_app/common/trunk/src/eng-app-common/emit-common</developerConnection>
+		<url>http://svn.https://source.emit-networking.org/emit_app/common/trunk/src/eng-app-common</url>
+	</scm>
+</project>

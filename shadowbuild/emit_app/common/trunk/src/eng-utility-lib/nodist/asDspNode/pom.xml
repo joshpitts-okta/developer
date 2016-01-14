@@ -1,0 +1,47 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<groupId>org.emit-networking.parent</groupId>
+		<artifactId>release-parent</artifactId>
+		<version>1</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.panasonic.pesdca.utility</groupId>
+	<artifactId>asDspNode</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<dependencies>
+		<dependency>
+			<groupId>com.panasonic.pesdca.utility</groupId>
+			<artifactId>eng-utility-lib-nodist</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-cli</groupId>
+			<artifactId>commons-cli</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>janino</groupId>
+			<artifactId>janino</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.tomcat</groupId>
+			<artifactId>juli</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.emit-networking.dsp</groupId>
+			<artifactId>enc-dsp-authserver</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.emit-networking.dsp</groupId>
+			<artifactId>enc-dsp-domainfactory-javadb</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.emit-networking.dsp</groupId>
+			<artifactId>enc-dsp-domainloader</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.derby</groupId>
+			<artifactId>derbyclient</artifactId>
+		</dependency>
+	</dependencies>
+</project>

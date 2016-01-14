@@ -1,0 +1,30 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<groupId>org.emit-networking.parent</groupId>
+		<artifactId>release-parent</artifactId>
+		<version>1</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.emit-networking.app.service.reference</groupId>
+	<artifactId>enc-service-naming</artifactId>
+	<version>2.0.0-SNAPSHOT</version>
+	<packaging>bundle</packaging>
+	<name>EMITDO Naming Service</name>
+	<properties>
+        <svnVersion></svnVersion>
+        <qbNumber></qbNumber>
+        <qbDate></qbDate>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>org.emit-networking.app.service.reference</groupId>
+			<artifactId>enc-service-status</artifactId>
+		</dependency>
+	</dependencies>
+	<scm>
+		<connection>scm:svn:https://source.emit-networking.org/emit_app/naming/trunk/src/eng-naming-service/enc-service-naming</connection>
+		<developerConnection>scm:svn:https://source.emit-networking.org/emit_app/naming/trunk/src/eng-naming-service/enc-service-naming</developerConnection>
+		<url>http://svn.https://source.emit-networking.org/emit_app/naming/trunk/src/eng-naming-service</url>
+	</scm>
+</project>

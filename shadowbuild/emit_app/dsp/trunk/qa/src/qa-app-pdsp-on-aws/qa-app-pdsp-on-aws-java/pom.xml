@@ -1,0 +1,53 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<groupId>org.emit-networking.parent</groupId>
+		<artifactId>internal-release-parent</artifactId>
+		<version>1</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.emit-networking.aws.qa</groupId>
+	<artifactId>qa-app-pdsp-on-aws-java</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<packaging>bundle</packaging>
+	<name>EMITDO DSP HubManager</name>
+	<dependencies>
+		<dependency>
+			<groupId>org.emit-networking.tools</groupId>
+			<artifactId>emit-connection-reconnecting-listener-java</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.emit-networking.dsp</groupId>
+			<artifactId>enc-dsp</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.emit-networking.tools</groupId>
+			<artifactId>emit-domain-authenticator-restarting-listener-java</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.emit-networking.tools</groupId>
+			<artifactId>emit-server-restarting-listener-java</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.emit-networking.domain.javadb</groupId>
+			<artifactId>domain-storage-javadb</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-cli</groupId>
+			<artifactId>commons-cli</artifactId>
+		</dependency>
+	</dependencies>
+</project>

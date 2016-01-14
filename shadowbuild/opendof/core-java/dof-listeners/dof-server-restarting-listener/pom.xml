@@ -1,0 +1,19 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+	    <groupId>org.opendof.core-java</groupId>
+	    <artifactId>dof-listeners-builder</artifactId>
+	    <version>2.0-SNAPSHOT</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>dof-server-restarting-listener</artifactId>
+	<packaging>bundle</packaging>
+	<name>OpenDOF Server Restarting Listener</name>
+	<dependencies>
+		<dependency>
+			<groupId>org.opendof.core-java</groupId>
+			<artifactId>dof-inet</artifactId>
+	        <version>7.0-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
+</project>

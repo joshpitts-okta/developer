@@ -1,0 +1,47 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<groupId>org.emit-networking.parent</groupId>
+		<artifactId>release-parent</artifactId>
+		<version>3-SNAPSHOT</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.pslcl.service-utils</groupId>
+	<artifactId>pslcl-lib-service</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<packaging>bundle</packaging>
+	<name>EMITDO Logging Service</name>
+	<properties>
+		<svnVersion></svnVersion>
+		<qbNumber></qbNumber>
+		<qbDate></qbDate>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>org.pslcl.service-utils</groupId>
+			<artifactId>pslcl-utility</artifactId>
+			<version>2.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.opendof.sdk</groupId>
+			<artifactId>dof-connection-reconnecting-listener</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>commons-daemon</groupId>
+			<artifactId>commons-daemon</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-core</artifactId>
+		</dependency>
+	</dependencies>
+	<scm>
+		<connection>scm:svn:https://source.emit-networking.org/emit_app/logging/trunk/src/emit-logging-service/enc-service-logging</connection>
+		<developerConnection>scm:svn:https://source.emit-networking.org/emit_app/logging/trunk/src/emit-logging-service/enc-service-logging</developerConnection>
+		<url>http://svn.https://source.emit-networking.org/emit_app/logging/trunk/src/emit-logging-service</url>
+	</scm>
+</project>

@@ -1,0 +1,90 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<groupId>com.pslcl.chad</groupId>
+		<artifactId>builder</artifactId>
+		<version>1.0.0</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>simple-node-framework</artifactId>
+	<packaging>bundle</packaging>
+	<dependencies>
+		<dependency>
+			<groupId>com.pslcl.chad</groupId>
+			<artifactId>helpers</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-cli</groupId>
+			<artifactId>commons-cli</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opendof.core-java</groupId>
+			<artifactId>dof-slf4j-log-listener</artifactId>
+			<version>2.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.opendof.core-java</groupId>
+			<artifactId>dof-oal</artifactId>
+			<version>7.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.opendof.core-java</groupId>
+			<artifactId>dof-inet</artifactId>
+			<version>7.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.pslcl.dsp</groupId>
+			<artifactId>enc-dsp</artifactId>
+			<version>2.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.pslcl.service-utils</groupId>
+			<artifactId>pslcl-utility</artifactId>
+			<version>2.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.opendof.core-java</groupId>
+			<artifactId>dof-connection-reconnecting-listener</artifactId>
+			<version>2.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>commons-cli</groupId>
+			<artifactId>commons-cli</artifactId>
+		</dependency>
+
+		<!-- <dependency> <groupId>org.emit-networking.dsp</groupId> <artifactId>enc-dsp</artifactId> 
+			</dependency> <dependency> <groupId>org.emit-networking.service-utils</groupId> 
+			<artifactId>emit-service-utils-common</artifactId> <version>1.0.0-SNAPSHOT</version> 
+			</dependency> <dependency> <groupId>org.emit-networking.service-utils</groupId> 
+			<artifactId>emit-service-utils-common</artifactId> <type>test-jar</type> 
+			<version>1.0.0-SNAPSHOT</version> <scope>test</scope> </dependency> <dependency> 
+			<groupId>org.emit-networking.dsp</groupId> <artifactId>enc-dsp-hubmanager</artifactId> 
+			</dependency> <dependency> <groupId>org.emit-networking.domain.javadb</groupId> 
+			<artifactId>domain-storage-javadb</artifactId> </dependency> <dependency> 
+			<groupId>org.emit-networking.tools</groupId> <artifactId>emit-domain-authenticator-restarting-listener-java</artifactId> 
+			</dependency> <dependency> <groupId>org.apache.tomcat</groupId> <artifactId>tomcat-juli</artifactId> 
+			</dependency> <dependency> <groupId>org.apache.tomcat</groupId> <artifactId>tomcat-jdbc</artifactId> 
+			</dependency> <dependency> <groupId>commons-cli</groupId> <artifactId>commons-cli</artifactId> 
+			</dependency> <dependency> <groupId>janino</groupId> <artifactId>janino</artifactId> 
+			</dependency> <dependency> <groupId>org.apache.derby</groupId> <artifactId>derbyclient</artifactId> 
+			</dependency> <dependency> <groupId>org.apache.derby</groupId> <artifactId>derby</artifactId> 
+			</dependency> <dependency> <groupId>org.apache.derby</groupId> <artifactId>derbynet</artifactId> 
+			</dependency> <dependency> <groupId>com.google.code.gson</groupId> <artifactId>gson</artifactId> 
+			</dependency> <dependency> <groupId>ch.qos.logback</groupId> <artifactId>logback-classic</artifactId> 
+			</dependency> <dependency> <groupId>ch.qos.logback</groupId> <artifactId>logback-core</artifactId> 
+			</dependency> -->
+	</dependencies>
+</project>

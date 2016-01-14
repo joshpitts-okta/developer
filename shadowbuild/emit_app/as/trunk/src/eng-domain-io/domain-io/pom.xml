@@ -1,0 +1,34 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<groupId>org.emit-networking.parent</groupId>
+		<artifactId>internal-release-parent</artifactId>
+		<version>1</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.emit-networking.domain</groupId>
+	<artifactId>domain-io</artifactId>
+	<version>2.0.0</version>
+	<packaging>bundle</packaging>
+	<name>EMITDO AS Domain IO</name>
+	<properties>
+        <svnVersion>9272</svnVersion>
+        <qbNumber>142</qbNumber>
+        <qbDate>31 Jul 2013</qbDate>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>org.emit-networking.domain</groupId>
+			<artifactId>emit-domain-management-java</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+		</dependency>
+	</dependencies>
+	<scm>
+		<connection>scm:svn:https://source.emit-networking.org/emit_app/as/trunk/src/eng-domain-io/domain-io</connection>
+		<developerConnection>scm:svn:https://source.emit-networking.org/emit_app/as/trunk/src/eng-domain-io/domain-io</developerConnection>
+		<url>http://svn.https://source.emit-networking.org/emit_app/as/trunk/src/eng-domain-io</url>
+	</scm>
+</project>

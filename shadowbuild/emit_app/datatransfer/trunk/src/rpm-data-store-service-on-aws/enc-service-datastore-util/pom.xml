@@ -1,0 +1,37 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<groupId>org.emit-networking.app.service.datastore</groupId>
+		<artifactId>rpm-data-store-service-on-aws</artifactId>
+		<version>2.2.0</version>
+		<relativePath>..</relativePath>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>enc-service-datastore-util</artifactId>
+	<packaging>bundle</packaging>
+	<name>EMITDO Data Store Utility</name>
+	<properties>
+		<svnVersion>13638</svnVersion>
+		<qbNumber>138</qbNumber>
+		<qbDate>25 Aug 2014</qbDate>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>org.emit-networking.datatransfer</groupId>
+			<artifactId>emit-data-transfer-common</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+		</dependency>
+	</dependencies>
+	<scm>
+		<connection>scm:svn:https://source.emit-networking.org/emit_app/datatransfer/trunk/src/rpm-data-store-service-on-aws/enc-service-datastore-util</connection>
+		<developerConnection>scm:svn:https://source.emit-networking.org/emit_app/datatransfer/trunk/src/rpm-data-store-service-on-aws/enc-service-datastore-util</developerConnection>
+		<url>http://svn.https://source.emit-networking.org/emit_app/datatransfer/trunk/src/rpm-data-store-service-on-aws</url>
+	</scm>
+</project>

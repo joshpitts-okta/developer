@@ -1,0 +1,21 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<groupId>org.emit-networking.parent</groupId>
+		<artifactId>release-parent</artifactId>
+		<version>1</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.emit-networking.datatransfer</groupId>
+	<artifactId>emit-data-transfer-java</artifactId>
+	<version>1.0.7</version>
+	<packaging>pom</packaging>
+	<name>EMITDO Data Transfer Group</name>
+	<modules>
+		<module>emit-data-transfer-common</module>
+		<module>emit-data-transfer-manager</module>
+		<module>emit-data-transfer-sink</module>
+		<module>emit-data-transfer-snapshot</module>
+		<module>emit-data-transfer-source</module>
+	</modules>
+</project>

@@ -1,0 +1,33 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<groupId>org.emit-networking.parent</groupId>
+		<artifactId>internal-release-parent</artifactId>
+		<version>2</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.emit-networking.dsp</groupId>
+	<artifactId>eng-dsp</artifactId>
+	<version>1.1.0</version>
+	<packaging>pom</packaging>
+	<name>EMITDO DSP Group</name>
+	<dependencies>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+		</dependency>
+	</dependencies>
+	<modules>
+		<module>enc-dsp</module>
+		<module>enc-dsp-authserver</module>
+		<module>enc-dsp-connectioncontrol</module>
+		<module>enc-dsp-connectionmanager</module>
+		<module>enc-dsp-domainfactory-cassandra</module>
+		<module>enc-dsp-domainfactory-javadb</module>
+		<module>enc-dsp-domainfactory-oracle</module>
+		<module>enc-dsp-domainloader</module>
+		<module>enc-dsp-hubmanager</module>
+		<module>enc-dsp-wanserver</module>
+		<module>enc-dsp-topologyviewer</module>
+	</modules>
+</project>

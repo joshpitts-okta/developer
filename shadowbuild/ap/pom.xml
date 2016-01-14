@@ -1,0 +1,21 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<groupId>org.emit-networking.parent</groupId>
+		<artifactId>internal-release-parent</artifactId>
+		<version>1</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.emit-networking.builder</groupId>
+	<artifactId>ap-repository-builder</artifactId>
+	<version>1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<name>EMITDO AP Repositories Builder</name>
+	<modules>
+		<module>trunk/src/app-ancillary-power/pesdca-site-controller</module>
+		<module>trunk/src/eng-ancpwr</module>
+		<module>trunk/src/eng-local-controller</module>
+		<module>trunk/src/eng-platform-battery</module>
+		<module>trunk/src/eng-platform-energy/pesdca-platform-energy</module>
+	</modules>
+</project>

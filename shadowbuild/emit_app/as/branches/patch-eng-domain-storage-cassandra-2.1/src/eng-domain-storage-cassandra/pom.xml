@@ -1,0 +1,18 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<groupId>org.emit-networking.parent</groupId>
+		<artifactId>internal-release-parent</artifactId>
+		<version>1</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.emit-networking.domain.cassandra</groupId>
+	<artifactId>eng-domain-storage-cassandra</artifactId>
+	<version>2.1.2</version>
+	<packaging>pom</packaging>
+	<name>EMITDO AS Domain Storage Cassandra Group</name>
+	<modules>
+		<module>domain-storage-cassandra</module>
+		<module>domain-storage-cassandra-installer</module>
+	</modules>
+</project>

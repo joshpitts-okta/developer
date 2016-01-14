@@ -1,0 +1,17 @@
+/.gitignore
+**/antbuild.bat
+**/pom.xml
+**/target/
+**/.settings
+**/bin
+**/lib
+**/.build
+**/*.jar
+**/*.gz
+**/.classpath
+**/.project
+
+pom.xml
+/antbuild.bat
+/antbuild.bat
+/pom.xml

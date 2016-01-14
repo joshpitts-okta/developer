@@ -1,0 +1,20 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<groupId>org.emit-networking.interface-repository</groupId>
+		<artifactId>app-interface-repository-cocoon</artifactId>
+		<version>1.0.9-SNAPSHOT</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>cocoon.interface</artifactId>
+	<version>1.0.10-SNAPSHOT</version>
+	<packaging>war</packaging>
+	<name>EMITDO Interface Repository Coccoon Interface (WAR)</name>
+	<dependencies>
+	</dependencies>
+	<scm>
+		<connection>scm:svn:https://source.emit-networking.org/emit_mw/interface_repository/trunk/tech-services/src/app-interface-repository/cocoon/interface</connection>
+		<developerConnection>scm:svn:https://source.emit-networking.org/emit_mw/interface_repository/trunk/tech-services/src/app-interface-repository/cocoon/interface</developerConnection>
+		<url>http://svn.https://source.emit-networking.org/emit_mw/interface_repository/trunk/tech-services/src/app-interface-repository</url>
+	</scm>
+</project>

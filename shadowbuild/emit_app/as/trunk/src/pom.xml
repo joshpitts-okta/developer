@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.emit-networking.builder</groupId>
+	<artifactId>emit-app-as-src-builder</artifactId>
+	<version>1</version>
+	<packaging>pom</packaging>
+	<name>EMITDO EMIT-APP AS builder</name>
+	<modules>
+		<module>eng-domain-io/domain-io</module>
+		<module>eng-domain-management-cli-support/domain-management-cli-support</module>
+		<module>eng-domain-management-command-line</module>
+		<!--
+			see the note in the emit_app main builder about the branches issue
+			a branch is currently supplying this line 
+		<module>eng-domain-storage-cassandra</module>
+		 -->
+		<module>eng-domain-storage-javadb</module>
+		<module>eng-domain-storage-oracle/domain-storage-oracle</module>
+		<module>eng-domain-storage-postgres/domain-storage-postgres</module>
+	</modules>
+</project>

@@ -1,0 +1,48 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<groupId>org.emit-networking.parent</groupId>
+		<artifactId>release-parent</artifactId>
+		<version>2</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.emit-networking</groupId>
+	<artifactId>emit-oal</artifactId>
+	<version>6.1.3</version>
+	<packaging>bundle</packaging>
+	<name>OpenDOF OAL</name>
+	<properties>
+        <svnVersion>45206</svnVersion>
+        <qbNumber>1072</qbNumber>
+        <qbDate>29 Jan 2015</qbDate>
+	</properties>
+	<scm>
+		<connection>scm:svn:https://source.emit-networking.org/emit/trunk/src/emit-oal-java/emit-oal</connection>
+		<developerConnection>scm:svn:https://source.emit-networking.org/emit/trunk/src/emit-oal-java/emit-oal</developerConnection>
+		<url>http://svn.https://source.emit-networking.org/emit/trunk/src/emit-oal-java</url>
+	</scm>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<extensions>true</extensions>
+				<configuration>
+					<instructions>
+						<Export-Package>
+							org.emitdo.oal,
+							org.emitdo.oal.security,
+							org.emitdo.oal.value,
+							org.emitdo.oal.transport,
+							org.emitdo.oal.transport.group,
+							org.emitdo.internal.protocol,
+							org.emitdo.internal.util
+						</Export-Package>
+						<!-- Private-Package>org.emitdo.internal</Private-Package -->
+						<_sources>false</_sources>
+					</instructions>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

@@ -1,0 +1,21 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<groupId>org.emit-networking.parent</groupId>
+		<artifactId>internal-release-parent</artifactId>
+		<version>1</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.emit-networking.domain.postgres</groupId>
+	<artifactId>domain-storage-postgres</artifactId>
+	<version>1.0.0</version>
+	<packaging>bundle</packaging>
+	<name>EMITDO AS Storage Postgres</name>
+	<dependencies>
+	</dependencies>
+	<scm>
+		<connection>scm:svn:https://source.emit-networking.org/emit_app/as/trunk/src/eng-domain-storage-postgres/domain-storage-postgres</connection>
+		<developerConnection>scm:svn:https://source.emit-networking.org/emit_app/as/trunk/src/eng-domain-storage-oracle/domain-storage-postgres</developerConnection>
+		<url>http://svn.https://source.emit-networking.org/emit_app/as/trunk/src/eng-domain-storage-postgres</url>
+	</scm>
+</project>

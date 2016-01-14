@@ -1,0 +1,33 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+	    <groupId>org.opendof.tools-interface-repository</groupId>
+	    <artifactId>builder</artifactId>
+	    <version>1.0</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>interface-repository-servlet</artifactId>
+	<packaging>bundle</packaging>
+	<name>OpenDOF Interface Repository Servlet</name>
+	<dependencies>
+        <dependency>
+            <groupId>org.opendof.tools-interface-repository</groupId>
+            <artifactId>interface-repository-core</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.opendof.tools-interface-repository</groupId>
+            <artifactId>interface-repository-opendof</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.opendof.tools-interface-repository</groupId>
+            <artifactId>interface-repository-allseen</artifactId>
+            <version>1.0</version>
+        </dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+		</dependency>
+	</dependencies>
+</project>

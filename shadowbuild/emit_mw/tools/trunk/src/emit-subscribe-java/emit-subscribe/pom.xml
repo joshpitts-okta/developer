@@ -1,0 +1,30 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<groupId>org.emit-networking.parent</groupId>
+		<artifactId>release-parent</artifactId>
+		<version>1</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.emit-networking.tools</groupId>
+	<artifactId>emit-subscribe</artifactId>
+	<version>1.0.1</version>
+	<packaging>bundle</packaging>
+	<name>OpenDOF Subscription Maintainer</name>
+	<properties>
+        <svnVersion>2929</svnVersion>
+        <qbNumber>37</qbNumber>
+        <qbDate>21 May 2014</qbDate>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>org.emit-networking.transport</groupId>
+			<artifactId>emit-inet</artifactId>
+		</dependency>
+	</dependencies>
+	<scm>
+		<connection>scm:svn:https://source.emit-networking.org/emit_mw/tools/trunk/src/emit-subscribe-java/emit-subscribe</connection>
+		<developerConnection>scm:svn:https://source.emit-networking.org/emit_mw/tools/trunk/src/emit-subscribe-java/emit-subscribe</developerConnection>
+		<url>http://svn.https://source.emit-networking.org/emit_mw/tools/trunk/src/emit-subscribe-java</url>
+	</scm>
+</project>

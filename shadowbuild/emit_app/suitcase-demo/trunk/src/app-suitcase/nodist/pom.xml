@@ -1,0 +1,37 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<groupId>org.openDOF.demo.suitcase</groupId>
+		<artifactId>suitcase-group</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>suitcase-nodist</artifactId>
+	<packaging>bundle</packaging>
+	<name>openDOF Suitcase nodist testing</name>
+	<properties>
+		<svnVersion></svnVersion>
+		<qbNumber></qbNumber>
+		<qbDate></qbDate>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>org.openDOF.demo.suitcase</groupId>
+			<artifactId>suitcase-backend</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-core</artifactId>
+		</dependency>
+	</dependencies>
+	<scm>
+		<connection>scm:svn:https://source.emit-networking.org/emit_app/suitcase-demo/trunk/src/app-suitcase/suitcase-demo</connection>
+		<developerConnection>scm:svn:https://source.emit-networking.org/emit_app/suitcase-demo/trunk/src/app-suitcase/suitcase-demo</developerConnection>
+		<url>http://svn.https://source.emit-networking.org/emit_app/suitcase-demo/trunk/src/app-suitcase</url>
+	</scm>
+</project>

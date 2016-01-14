@@ -1,0 +1,30 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<groupId>org.emit-networking.parent</groupId>
+		<artifactId>release-parent</artifactId>
+		<version>1</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.emit-networking.interface-repository</groupId>
+	<artifactId>merger</artifactId>
+	<version>1.0.6-SNAPSHOT</version>
+	<packaging>bundle</packaging>
+	<name>EMITDO Interface Repository Merger</name>
+	<dependencies>
+    <dependency>
+      <groupId>org.emit-networking</groupId>
+      <artifactId>emit-oal</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.cocoon</groupId>
+      <artifactId>cocoon-core</artifactId>
+      <version>2.2.0</version>
+    </dependency>
+	</dependencies>
+	<scm>
+		<connection>scm:svn:https://source.emit-networking.org/emit_mw/interface_repository/trunk/tech-services/src/app-interface-repository/merger</connection>
+		<developerConnection>scm:svn:https://source.emit-networking.org/emit_mw/interface_repository/trunk/tech-services/src/app-interface-repository/merger</developerConnection>
+		<url>http://svn.https://source.emit-networking.org/emit_mw/interface_repository/trunk/tech-services/src/app-interface-repository</url>
+	</scm>
+</project>

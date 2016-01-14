@@ -1,0 +1,29 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<groupId>org.emit-networking.parent</groupId>
+		<artifactId>release-parent</artifactId>
+		<version>3-SNAPSHOT</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.emit-networking.cipher-plugin</groupId>
+	<artifactId>emit-twofish-cipher-plugin-java</artifactId>
+	<version>1.0.0</version>
+	<packaging>bundle</packaging>
+	<name>OpenDOF Two Fish Cipher Plugin</name>
+	<dependencies>
+		<dependency>
+			<groupId>org.gnu</groupId>
+			<artifactId>gnu-crypto</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.opendof.core</groupId>
+			<artifactId>dof-oal</artifactId>
+		</dependency>
+	</dependencies>
+	<scm>
+		<connection>scm:svn:https://source.emit-networking.org/emit/trunk/src/emit-twofish-cipher-plugin-java/emit-twofish-cipher-plugin-java</connection>
+		<developerConnection>scm:svn:https://source.emit-networking.org/trunk/src/emit-twofish-cipher-plugin-java/emit-twofish-cipher-plugin-java</developerConnection>
+		<url>http://svn.https://source.emit-networking.org/emit/trunk/src/sdk-connection-reconnecting-listener-java</url>
+	</scm>
+</project>

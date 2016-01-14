@@ -1,0 +1,19 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<groupId>org.emit-networking.parent</groupId>
+		<artifactId>internal-release-parent</artifactId>
+		<version>1</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.emit-networking.domain.javadb</groupId>
+	<artifactId>eng-domain-storage-javadb</artifactId>
+	<version>2.0.0</version>
+	<packaging>pom</packaging>
+	<name>EMITDO AS Domain Storage Javadb Group</name>
+	<modules>
+		<module>domain-storage-javadb</module>
+		<module>domain-storage-javadb-installer</module>
+		<module>domain-storage-javadb-routines</module>
+	</modules>
+</project>

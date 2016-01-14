@@ -1,0 +1,27 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<groupId>org.emit-networking.dsp.aws</groupId>
+		<artifactId>eng-dsp-on-aws</artifactId>
+		<version>1.2.0</version>
+		<relativePath>..</relativePath>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>enc-dsp-aws-common</artifactId>
+	<name>EMITDO DSP AWS common</name>
+	<properties>
+        <svnVersion>15615</svnVersion>
+        <qbNumber>119</qbNumber>
+        <qbDate>29 Jan 2015</qbDate>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-java-sdk</artifactId>
+		</dependency>
+	</dependencies>
+	<scm>
+		<connection>scm:svn:https://source.emit-networking.org/emit_app/dsp/trunk/src/eng-dsp-on-aws/enc-dsp-aws-common</connection>
+		<developerConnection>scm:svn:https://source.emit-networking.org/emit_app/dsp/trunk/src/eng-dsp-on-aws/enc-dsp-aws-common</developerConnection>
+		<url>http://svn.https://source.emit-networking.org/emit_app/dsp/trunk/src/eng-dsp-on-aws</url>
+	</scm></project>

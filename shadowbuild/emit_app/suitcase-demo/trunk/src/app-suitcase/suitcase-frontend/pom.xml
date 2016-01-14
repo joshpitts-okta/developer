@@ -1,0 +1,40 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<groupId>org.openDOF.demo.suitcase</groupId>
+		<artifactId>suitcase-group</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>suitcase-frontend</artifactId>
+	<packaging>bundle</packaging>
+	<name>openDOF Suitcase Frontend Demo</name>
+	<properties>
+		<svnVersion></svnVersion>
+		<qbNumber></qbNumber>
+		<qbDate></qbDate>
+	</properties>
+	<dependencies>
+		<dependency>
+			<groupId>org.openDOF.demo.suitcase</groupId>
+			<artifactId>suitcase-common</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.emit-networking.tools</groupId>
+			<artifactId>emit-connection-reconnecting-listener-java</artifactId>
+		</dependency>
+			<dependency>
+				<groupId>org.emit-networking.tools</groupId>
+				<artifactId>emit-server-restarting-listener-java</artifactId>
+				<version>1.1.0</version>
+				<type>jar</type>
+				<scope>compile</scope>
+			</dependency>
+	</dependencies>
+	<scm>
+		<connection>scm:svn:https://source.emit-networking.org/emit_app/suitcase-demo/trunk/src/app-suitcase/suitcase-demo</connection>
+		<developerConnection>scm:svn:https://source.emit-networking.org/emit_app/suitcase-demo/trunk/src/app-suitcase/suitcase-demo</developerConnection>
+		<url>http://svn.https://source.emit-networking.org/emit_app/suitcase-demo/trunk/src/app-suitcase</url>
+	</scm>
+</project>
