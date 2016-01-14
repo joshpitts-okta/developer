@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>org.emit-networking.parent</groupId>
+  <artifactId>dependency-management-parent</artifactId>
+  <versioning>
+    <versions>
+      <version>3-SNAPSHOT</version>
+    </versions>
+    <lastUpdated>20150612184437</lastUpdated>
+  </versioning>
+</metadata>

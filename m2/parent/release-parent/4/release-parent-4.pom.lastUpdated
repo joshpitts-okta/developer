@@ -1,0 +1,4 @@
+#NOTE: This is an internal implementation file, its format can be changed without prior notice.
+#Wed Feb 25 09:21:48 MST 2015
+default-http\://cadams\:8081/nexus/content/groups/public/.lastUpdated=1424881308578
+http\://cadams\:8081/nexus/content/groups/public/.error=Could not transfer artifact org.emit-networking.parent\:release-parent\:pom\:4 from/to nexus (http\://cadams\:8081/nexus/content/groups/public/)\: Connection refused\: no further information to http\://cadams\:8081/nexus/content/groups/public/org/emit-networking/parent/release-parent/4/release-parent-4.pom

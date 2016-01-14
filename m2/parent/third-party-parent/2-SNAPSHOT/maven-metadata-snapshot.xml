@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata modelVersion="1.1.0">
+  <groupId>org.emit-networking.parent</groupId>
+  <artifactId>third-party-parent</artifactId>
+  <version>2-SNAPSHOT</version>
+  <versioning>
+    <snapshot>
+      <timestamp>20160111.183557</timestamp>
+      <buildNumber>9</buildNumber>
+    </snapshot>
+    <lastUpdated>20160111183557</lastUpdated>
+    <snapshotVersions>
+      <snapshotVersion>
+        <extension>pom</extension>
+        <value>2-20160111.183557-9</value>
+        <updated>20160111183557</updated>
+      </snapshotVersion>
+    </snapshotVersions>
+  </versioning>
+</metadata>

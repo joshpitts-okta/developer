@@ -1,0 +1,5 @@
+#NOTE: This is an Aether internal implementation file, its format can be changed without prior notice.
+#Fri Jun 12 12:44:37 MDT 2015
+dependency-management-parent-3-20150327.005749-4.pom>nexus=
+dependency-management-parent-3-SNAPSHOT.pom>=
+dependency-management-parent-3-20150514.035832-6.pom>nexus=
