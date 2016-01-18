@@ -29,7 +29,7 @@ import com.pslcl.dtf.core.runner.resource.instance.MachineInstance;
 import com.pslcl.dtf.core.runner.resource.instance.NetworkInstance;
 import com.pslcl.dtf.core.runner.resource.instance.PersonInstance;
 import com.pslcl.dtf.core.runner.resource.provider.ResourceProvider;
-import com.pslcl.dtf.core.runner.resource.staf.DeployFuture;
+import com.pslcl.dtf.core.runner.resource.staf.futures.ConfigureFuture;
 import com.pslcl.dtf.core.util.PropertiesFile;
 import com.pslcl.dtf.resource.aws.AwsResourcesManager;
 import com.pslcl.dtf.resource.aws.attr.InstanceNames;
@@ -395,70 +395,6 @@ public class BindAwsTest implements PreStartExecuteInterface
             manager.release(templateId, false);
     }
 
-    @Override
-    public void execute(RunnerConfig config, Properties appMachineProperties, CommandLine activeCommand) throws Exception
-    {
-        this.config = config;
-        myConfig = new AwsTestConfig(appMachineProperties);
-        manager = (AwsResourcesManager) ((RunnerMachine) config.runnerService.getRunnerMachine()).getTemplateProvider().getResourceProviders().getManagers().get(0);
-        machineProvider = manager.getMachineProvider();
-        networkProvider = manager.getNetworkProvider();
-        personProvider = manager.getPersonProvider();
-
-        boolean machine = activeCommand.hasOption(AwsCliCommand.MachineShortCl);
-        boolean person = activeCommand.hasOption(AwsCliCommand.PersonShortCl);
-        boolean deploy = activeCommand.hasOption(AwsCliCommand.DeployShortCl);
-        boolean cleanup = activeCommand.hasOption(AwsCliCommand.CleanupShortCl);
-
-        //        if(deploy)
-        //        {
-        //            String partialDestPath = "toplevel";
-        //            String url = "http://mirrors.koehn.com/apache//commons/cli/binaries/commons-cli-1.3.1-bin.zip";
-        //            DeployFuture df = new DeployFuture("52.91.84.25", "/opt/dtf/sandbox", partialDestPath, url, false);
-        //            df.call();
-        //            partialDestPath = "bin/doit.bat";
-        //            url = "http://mirrors.koehn.com/apache//commons/cli/binaries/commons-cli-1.3.1-bin.zip";
-        //            df = new DeployFuture("52.91.84.25", "/opt/dtf/sandbox", partialDestPath, url, false);
-        //            df.call();
-        //            partialDestPath = "lib/someApp.jar";
-        //            url = "http://mirrors.koehn.com/apache//commons/cli/source/commons-cli-1.3.1-src.zip";
-        //            df = new DeployFuture("52.91.84.25", "/opt/dtf/sandbox", partialDestPath, url, false);
-        //            df.call();
-        //            return;
-        //        }
-
-        if (machine)
-        {
-            reserveMachine(appMachineProperties);
-            bindMachine(cleanup);
-            if (cleanup)
-            {
-                log.info("look at aws console for all pendings here, you have 5 seconds");
-                Thread.sleep(5000); // 
-            }
-            if (!cleanup)
-            {
-                reserveNetwork(appMachineProperties);
-                bindNetwork();
-                connect();
-                deploy();
-            }
-//            releaseTemplate(true);
-            if (cleanup)
-                log.info("look at aws console for all shutting down here, it will be several minutes before termination");
-            return;
-        }
-        if (person)
-        {
-            boolean useSiteDefaults = activeCommand.hasOption(AwsCliCommand.PersonDefaultShortCl);
-            reservePerson(appMachineProperties, useSiteDefaults);
-            bindPerson();
-            inspect();
-            releaseTemplate(false);
-        }
-        log.info("BindAwsTest end");
-    }
-
     private class AwsTestConfig
     {
         public final int timeout;
@@ -537,5 +473,102 @@ public class BindAwsTest implements PreStartExecuteInterface
             }
             return null;
         }
+    }
+    
+    @Override
+    public void execute(RunnerConfig config, Properties appMachineProperties, CommandLine activeCommand) throws Exception
+    {
+        this.config = config;
+        myConfig = new AwsTestConfig(appMachineProperties);
+        manager = (AwsResourcesManager) ((RunnerMachine) config.runnerService.getRunnerMachine()).getTemplateProvider().getResourceProviders().getManagers().get(0);
+        machineProvider = manager.getMachineProvider();
+        networkProvider = manager.getNetworkProvider();
+        personProvider = manager.getPersonProvider();
+
+        boolean machine = activeCommand.hasOption(AwsCliCommand.MachineShortCl);
+        boolean person = activeCommand.hasOption(AwsCliCommand.PersonShortCl);
+        boolean deploy = activeCommand.hasOption(AwsCliCommand.DeployShortCl);
+        boolean cleanup = activeCommand.hasOption(AwsCliCommand.CleanupShortCl);
+
+        if(deploy)
+        {
+//            String rst = "@SDT/*:678:@SDT/{:587::13:map-class-map@SDT/{:559::35:STAF/Service/Process/CompletionInfo@SDT/{:261::4:keys@SDT/[3:189:@SDT/{:56::12:display-name@SDT/$S:11:Return Code:3:key@SDT/$S:2:rc@SDT/{:48::12:display-name@SDT/$S:3:Key:3:key@SDT/$S:3:key@SDT/{:55::12:display-name@SDT/$S:5:Files:3:key@SDT/$S:8:fileList:4:name@SDT/$S:35:STAF/Service/Process/CompletionInfo:35:STAF/Service/Process/ReturnFileInfo@SDT/{:198::4:keys@SDT/[2:126:@SDT/{:56::12:display-name@SDT/$S:11:Return Code:3:key@SDT/$S:2:rc@SDT/{:50::12:display-name@SDT/$S:4:Data:3:key@SDT/$S:4:data:4:name@SDT/$S:35:STAF/Service/Process/ReturnFileInfo@SDT/%:70::35:STAF/Service/Process/CompletionInfo@SDT/$S:1:0@SDT/$0:0:@SDT/[0:0:";
+//            CompletionInfo complInfo = StafSupport.unmarshallWaitResult(rst);
+//            log.info(complInfo.toString());
+            log.info("\n***** l1 start *****");
+            String partialDestPath = "l1doit.bat";
+            String host = "localhost";
+            String linuxBase =  "/opt/dtf/sandbox";
+            String winBase = "\\opt\\dtf\\sandbox";
+            boolean windows = true;
+            
+            ConfigureFuture cf = new ConfigureFuture(host, linuxBase, winBase, partialDestPath, windows, this);
+            Integer ccode = cf.call();
+            log.info("\n***** l1 finished: " + ccode + " *****");
+            
+            log.info("\n***** l2 start *****");
+            partialDestPath = "bin/l2doit.bat";
+            cf = new ConfigureFuture(host, linuxBase, winBase, partialDestPath, windows, this);
+            ccode = cf.call();
+            log.info("\n***** l2 finished: " + ccode + " *****");
+
+            log.info("\n***** l3 start *****");
+            partialDestPath = "c:\\opt\\dtf\\sandbox\\l1doit.bat";
+            cf = new ConfigureFuture(host, linuxBase, winBase, partialDestPath, windows, this);
+            ccode = cf.call();
+            log.info("\n***** l3 finished: " + ccode + " *****");
+            return;
+        }
+        
+        //        if(deploy)
+        //        {
+        //            String partialDestPath = "toplevel";
+        //            String url = "http://mirrors.koehn.com/apache//commons/cli/binaries/commons-cli-1.3.1-bin.zip";
+        //            DeployFuture df = new DeployFuture("52.91.84.25", "/opt/dtf/sandbox", partialDestPath, url, false);
+        //            df.call();
+        //            partialDestPath = "bin/doit.bat";
+        //            url = "http://mirrors.koehn.com/apache//commons/cli/binaries/commons-cli-1.3.1-bin.zip";
+        //            df = new DeployFuture("52.91.84.25", "/opt/dtf/sandbox", partialDestPath, url, false);
+        //            df.call();
+        //            partialDestPath = "lib/someApp.jar";
+        //            url = "http://mirrors.koehn.com/apache//commons/cli/source/commons-cli-1.3.1-src.zip";
+        //            df = new DeployFuture("52.91.84.25", "/opt/dtf/sandbox", partialDestPath, url, false);
+        //            df.call();
+        //            return;
+        //        }
+
+        if (machine)
+        {
+            reserveMachine(appMachineProperties);
+            bindMachine(cleanup);
+            if (cleanup)
+            {
+                log.info("look at aws console for all pendings here, you have 5 seconds");
+                Thread.sleep(5000); // 
+            }
+            if (!cleanup)
+            {
+                reserveNetwork(appMachineProperties);
+                bindNetwork();
+                connect();
+                log.info("giving deploy 10 secs");
+                Thread.sleep(10000); 
+                log.info("giving deploy 10 secs is up");
+                deploy();
+            }
+//            releaseTemplate(true);
+            if (cleanup)
+                log.info("look at aws console for all shutting down here, it will be several minutes before termination");
+            return;
+        }
+        if (person)
+        {
+            boolean useSiteDefaults = activeCommand.hasOption(AwsCliCommand.PersonDefaultShortCl);
+            reservePerson(appMachineProperties, useSiteDefaults);
+            bindPerson();
+            inspect();
+            releaseTemplate(false);
+        }
+        log.info("BindAwsTest end");
     }
 }
