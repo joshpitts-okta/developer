@@ -28,6 +28,8 @@ public class AwsCliCommand extends CliCommand
     public static final String DeployLongCl = "deploy";
     public static final String MachineShortCl = "m";
     public static final String MachineLongCl = "machine";
+    public static final String RunShortCl = "r";
+    public static final String RunLongCl = "config-run-start";
 
     public final Properties properties;
 
@@ -83,6 +85,12 @@ public class AwsCliCommand extends CliCommand
             Option.builder(MachineShortCl)
                 .desc("Reserve and Bind ec2 instances")
                 .longOpt(MachineLongCl)
+                .build());
+        
+        options.addOption(
+            Option.builder(RunShortCl)
+                .desc("Configure, Run and Start direct to Future testing")
+                .longOpt(RunLongCl)
                 .build());
         //@formatter:on
     }

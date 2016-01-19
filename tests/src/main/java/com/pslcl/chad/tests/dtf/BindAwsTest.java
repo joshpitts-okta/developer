@@ -13,6 +13,7 @@ import java.util.Properties;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.cli.CommandLine;
 import org.slf4j.Logger;
@@ -29,9 +30,10 @@ import com.pslcl.dtf.core.runner.resource.instance.MachineInstance;
 import com.pslcl.dtf.core.runner.resource.instance.NetworkInstance;
 import com.pslcl.dtf.core.runner.resource.instance.PersonInstance;
 import com.pslcl.dtf.core.runner.resource.provider.ResourceProvider;
-import com.pslcl.dtf.core.runner.resource.staf.StafSupport;
 import com.pslcl.dtf.core.runner.resource.staf.futures.ConfigureFuture;
+import com.pslcl.dtf.core.runner.resource.staf.futures.DeployFuture;
 import com.pslcl.dtf.core.runner.resource.staf.futures.RunFuture;
+import com.pslcl.dtf.core.runner.resource.staf.futures.RunFuture.TimeoutData;
 import com.pslcl.dtf.core.runner.resource.staf.futures.StafRunnableProgram;
 import com.pslcl.dtf.core.util.PropertiesFile;
 import com.pslcl.dtf.resource.aws.AwsResourcesManager;
@@ -477,7 +479,132 @@ public class BindAwsTest implements PreStartExecuteInterface
             return null;
         }
     }
-    
+
+    private enum RunType
+    {
+        Config, Run, Start
+    }
+
+    private class RunWorker implements Callable<Void>
+    {
+        private final BindAwsTest test;
+        private final int machineIndex;
+        private final RunType type;
+        private final boolean windows;
+
+        private RunWorker(BindAwsTest test, int machineIndex, RunType type, boolean windows)
+        {
+            this.test = test;
+            this.machineIndex = machineIndex;
+            this.type = type;
+            this.windows = windows;
+        }
+
+        @Override
+        public Void call() throws Exception
+        {
+            //            test.runit(machineIndex);
+            return null;
+        }
+    }
+
+    private void manualDeploy() throws Exception
+    {
+        String partialDestPath = "toplevel";
+        String host = "localhost";
+        String linuxBase = "/opt/dtf/sandbox";
+        String winBase = "\\opt\\dtf\\sandbox";
+        boolean windows = true;
+        boolean doConfig = false;
+
+        String url = "http://mirrors.koehn.com/apache//commons/cli/binaries/commons-cli-1.3.1-bin.zip";
+        DeployFuture df = new DeployFuture(host, linuxBase, winBase, partialDestPath, url, false);
+        df.call();
+        partialDestPath = "bin/doit.bat";
+        url = "http://mirrors.koehn.com/apache//commons/cli/binaries/commons-cli-1.3.1-bin.zip";
+        df = new DeployFuture(host, linuxBase, winBase, partialDestPath, url, false);
+        df.call();
+        partialDestPath = "lib/someApp.jar";
+        url = "http://mirrors.koehn.com/apache//commons/cli/source/commons-cli-1.3.1-src.zip";
+        df = new DeployFuture(host, linuxBase, winBase, partialDestPath, url, false);
+        df.call();
+    }
+
+    private void runFuturesTests() throws Exception
+    {
+        String host = "localhost";
+        String linuxBase = "/opt/dtf/sandbox";
+        String winBase = "\\opt\\dtf\\sandbox";
+        TimeoutData tod = RunFuture.TimeoutData.getTimeoutData(5, TimeUnit.MINUTES, 1, TimeUnit.MINUTES);
+        String[] runPartialDestPath = new String[]{"l1doit.bat", "bin/l2doit.bat", "c:\\opt\\dtf\\sandbox\\l1doit.bat"};
+        String[] startPartialDestPath = new String[]{"l1doitPause.bat", "bin/l2doitPause.bat","c:\\opt\\dtf\\sandbox\\l1doitPause.bat"};
+        boolean doConfig = false;
+
+        for(int i=0; i < 2; i++)
+        {
+            log.info(i==0?"windows" : "linux");
+            for(int j=0; j < 3; j++)
+            {
+                boolean windows = i == 0;
+                switch (j)
+                {
+                    case 0:
+                        log.info("toplevel");
+                        break;
+                    case 1:
+                        log.info("with penultimate");
+                        break;
+                    case 2:
+                        log.info("full path");
+                        break;
+                    default:
+                        break;
+                }
+                for(int k=0; k < 3; k++)
+                {
+                    ConfigureFuture configFuture = null;
+                    RunFuture runFuture = null;
+
+                    Integer configRc = null;
+                    StafRunnableProgram runnableProgram;
+                    switch (k)
+                    {
+                        case 0:
+                            log.info("configureFuture");
+                            configFuture = new ConfigureFuture(host, linuxBase, winBase, runPartialDestPath[j], windows, this);
+                            configRc = configFuture.call();
+                            if(configRc != 0)
+                                throw new Exception("configureFuture application returned non-zero");
+                            break;
+                        case 1:
+                            log.info("runFuture");
+                            runFuture = new RunFuture(host, linuxBase, winBase, runPartialDestPath[j], null, windows, this);
+                            runnableProgram = (StafRunnableProgram) runFuture.call();
+                            if(runnableProgram.getRunResult() != 0)
+                                throw new Exception("runFuture application returned non-zero");
+                            break;
+                        case 2:
+                            log.info("startFuture");
+                            runFuture = new RunFuture(host, linuxBase, winBase, startPartialDestPath[j], config.blockingExecutor, windows, this);
+                            runnableProgram = (StafRunnableProgram) runFuture.call();
+                            if(!runnableProgram.isRunning())
+                                throw new Exception("startFuture application returned not running");
+                            if(runnableProgram.getRunResult() != null)
+                                throw new Exception("startFuture application returned non-null, it should not know results yet");
+                            Integer ccode = runnableProgram.kill().get();
+                            if(ccode != 0)
+                                throw new Exception("kill returned non-zero");
+                            if(runnableProgram.getRunResult() != 0)
+                                throw new Exception("startFuture application returned non-zero after stop");
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+        }
+    }
+
     @Override
     public void execute(RunnerConfig config, Properties appMachineProperties, CommandLine activeCommand) throws Exception
     {
@@ -492,89 +619,14 @@ public class BindAwsTest implements PreStartExecuteInterface
         boolean person = activeCommand.hasOption(AwsCliCommand.PersonShortCl);
         boolean deploy = activeCommand.hasOption(AwsCliCommand.DeployShortCl);
         boolean cleanup = activeCommand.hasOption(AwsCliCommand.CleanupShortCl);
+        boolean run = activeCommand.hasOption(AwsCliCommand.RunShortCl);
 
-        if(deploy)
+        if(run)
         {
-//            String rst = "@SDT/*:678:@SDT/{:587::13:map-class-map@SDT/{:559::35:STAF/Service/Process/CompletionInfo@SDT/{:261::4:keys@SDT/[3:189:@SDT/{:56::12:display-name@SDT/$S:11:Return Code:3:key@SDT/$S:2:rc@SDT/{:48::12:display-name@SDT/$S:3:Key:3:key@SDT/$S:3:key@SDT/{:55::12:display-name@SDT/$S:5:Files:3:key@SDT/$S:8:fileList:4:name@SDT/$S:35:STAF/Service/Process/CompletionInfo:35:STAF/Service/Process/ReturnFileInfo@SDT/{:198::4:keys@SDT/[2:126:@SDT/{:56::12:display-name@SDT/$S:11:Return Code:3:key@SDT/$S:2:rc@SDT/{:50::12:display-name@SDT/$S:4:Data:3:key@SDT/$S:4:data:4:name@SDT/$S:35:STAF/Service/Process/ReturnFileInfo@SDT/%:70::35:STAF/Service/Process/CompletionInfo@SDT/$S:1:0@SDT/$0:0:@SDT/[0:0:";
-//            CompletionInfo complInfo = StafSupport.unmarshallWaitResult(rst);
-//            log.info(complInfo.toString());
-//            String partialDestPath = "l1doit.bat";
-            String partialDestPath = "l1doitPause.bat";
-            String host = "localhost";
-            String linuxBase =  "/opt/dtf/sandbox";
-            String winBase = "\\opt\\dtf\\sandbox";
-            boolean windows = true;
-            boolean doConfig = false;
-            
-            ConfigureFuture cf = null;
-            RunFuture rf = null;
-            
-            Integer ccode = null;
-            StafRunnableProgram rfcc;
-            
-            log.info("\n***** l1 start *****");
-            if(doConfig)
-            {
-                cf = new ConfigureFuture(host, linuxBase, winBase, partialDestPath, windows, this);
-                ccode = cf.call();
-            }else
-            {
-                rf = new RunFuture(host, linuxBase, winBase, partialDestPath, true, windows, this);
-                rfcc = (StafRunnableProgram)rf.call();
-                log.info("isRunning: " + rfcc.isRunning());
-                log.info("runResult: " + rfcc.getRunResult());
-                log.info("processHandle: " + rfcc.getProcessHandle());
-                StafSupport.processQuery(rfcc);
-            }
-            
-            log.info("\n***** l1 finished: " + ccode + " *****");
-            log.info("\n***** l2 start *****");
-            
-            partialDestPath = "bin/l2doit.bat";
-            if(doConfig)
-            {
-                cf = new ConfigureFuture(host, linuxBase, winBase, partialDestPath, windows, this);
-                ccode = cf.call();
-            }else
-            {
-                rf = new RunFuture(host, linuxBase, winBase, partialDestPath, true, windows, this);
-                rfcc = (StafRunnableProgram)rf.call();
-            }
-            
-            log.info("\n***** l2 finished: " + ccode + " *****");
-            log.info("\n***** l3 start *****");
-            
-            partialDestPath = "c:\\opt\\dtf\\sandbox\\l1doit.bat";
-            if(doConfig)
-            {
-                cf = new ConfigureFuture(host, linuxBase, winBase, partialDestPath, windows, this);
-                ccode = cf.call();
-            }else
-            {
-                rf = new RunFuture(host, linuxBase, winBase, partialDestPath, true, windows, this);
-                rfcc = (StafRunnableProgram)rf.call();
-            }
-            log.info("\n***** l3 finished: " + ccode + " *****");
+            runFuturesTests();
             return;
         }
         
-        //        if(deploy)
-        //        {
-        //            String partialDestPath = "toplevel";
-        //            String url = "http://mirrors.koehn.com/apache//commons/cli/binaries/commons-cli-1.3.1-bin.zip";
-        //            DeployFuture df = new DeployFuture("52.91.84.25", "/opt/dtf/sandbox", partialDestPath, url, false);
-        //            df.call();
-        //            partialDestPath = "bin/doit.bat";
-        //            url = "http://mirrors.koehn.com/apache//commons/cli/binaries/commons-cli-1.3.1-bin.zip";
-        //            df = new DeployFuture("52.91.84.25", "/opt/dtf/sandbox", partialDestPath, url, false);
-        //            df.call();
-        //            partialDestPath = "lib/someApp.jar";
-        //            url = "http://mirrors.koehn.com/apache//commons/cli/source/commons-cli-1.3.1-src.zip";
-        //            df = new DeployFuture("52.91.84.25", "/opt/dtf/sandbox", partialDestPath, url, false);
-        //            df.call();
-        //            return;
-        //        }
-
         if (machine)
         {
             reserveMachine(appMachineProperties);
@@ -590,11 +642,11 @@ public class BindAwsTest implements PreStartExecuteInterface
                 bindNetwork();
                 connect();
                 log.info("giving deploy 10 secs");
-                Thread.sleep(10000); 
+                Thread.sleep(10000);
                 log.info("giving deploy 10 secs is up");
                 deploy();
             }
-//            releaseTemplate(true);
+            //            releaseTemplate(true);
             if (cleanup)
                 log.info("look at aws console for all shutting down here, it will be several minutes before termination");
             return;
