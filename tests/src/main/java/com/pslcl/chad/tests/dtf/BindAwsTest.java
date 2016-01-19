@@ -29,7 +29,10 @@ import com.pslcl.dtf.core.runner.resource.instance.MachineInstance;
 import com.pslcl.dtf.core.runner.resource.instance.NetworkInstance;
 import com.pslcl.dtf.core.runner.resource.instance.PersonInstance;
 import com.pslcl.dtf.core.runner.resource.provider.ResourceProvider;
+import com.pslcl.dtf.core.runner.resource.staf.StafSupport;
 import com.pslcl.dtf.core.runner.resource.staf.futures.ConfigureFuture;
+import com.pslcl.dtf.core.runner.resource.staf.futures.RunFuture;
+import com.pslcl.dtf.core.runner.resource.staf.futures.StafRunnableProgram;
 import com.pslcl.dtf.core.util.PropertiesFile;
 import com.pslcl.dtf.resource.aws.AwsResourcesManager;
 import com.pslcl.dtf.resource.aws.attr.InstanceNames;
@@ -495,27 +498,62 @@ public class BindAwsTest implements PreStartExecuteInterface
 //            String rst = "@SDT/*:678:@SDT/{:587::13:map-class-map@SDT/{:559::35:STAF/Service/Process/CompletionInfo@SDT/{:261::4:keys@SDT/[3:189:@SDT/{:56::12:display-name@SDT/$S:11:Return Code:3:key@SDT/$S:2:rc@SDT/{:48::12:display-name@SDT/$S:3:Key:3:key@SDT/$S:3:key@SDT/{:55::12:display-name@SDT/$S:5:Files:3:key@SDT/$S:8:fileList:4:name@SDT/$S:35:STAF/Service/Process/CompletionInfo:35:STAF/Service/Process/ReturnFileInfo@SDT/{:198::4:keys@SDT/[2:126:@SDT/{:56::12:display-name@SDT/$S:11:Return Code:3:key@SDT/$S:2:rc@SDT/{:50::12:display-name@SDT/$S:4:Data:3:key@SDT/$S:4:data:4:name@SDT/$S:35:STAF/Service/Process/ReturnFileInfo@SDT/%:70::35:STAF/Service/Process/CompletionInfo@SDT/$S:1:0@SDT/$0:0:@SDT/[0:0:";
 //            CompletionInfo complInfo = StafSupport.unmarshallWaitResult(rst);
 //            log.info(complInfo.toString());
-            log.info("\n***** l1 start *****");
-            String partialDestPath = "l1doit.bat";
+//            String partialDestPath = "l1doit.bat";
+            String partialDestPath = "l1doitPause.bat";
             String host = "localhost";
             String linuxBase =  "/opt/dtf/sandbox";
             String winBase = "\\opt\\dtf\\sandbox";
             boolean windows = true;
+            boolean doConfig = false;
             
-            ConfigureFuture cf = new ConfigureFuture(host, linuxBase, winBase, partialDestPath, windows, this);
-            Integer ccode = cf.call();
+            ConfigureFuture cf = null;
+            RunFuture rf = null;
+            
+            Integer ccode = null;
+            StafRunnableProgram rfcc;
+            
+            log.info("\n***** l1 start *****");
+            if(doConfig)
+            {
+                cf = new ConfigureFuture(host, linuxBase, winBase, partialDestPath, windows, this);
+                ccode = cf.call();
+            }else
+            {
+                rf = new RunFuture(host, linuxBase, winBase, partialDestPath, true, windows, this);
+                rfcc = (StafRunnableProgram)rf.call();
+                log.info("isRunning: " + rfcc.isRunning());
+                log.info("runResult: " + rfcc.getRunResult());
+                log.info("processHandle: " + rfcc.getProcessHandle());
+                StafSupport.processQuery(rfcc);
+            }
+            
             log.info("\n***** l1 finished: " + ccode + " *****");
-            
             log.info("\n***** l2 start *****");
+            
             partialDestPath = "bin/l2doit.bat";
-            cf = new ConfigureFuture(host, linuxBase, winBase, partialDestPath, windows, this);
-            ccode = cf.call();
+            if(doConfig)
+            {
+                cf = new ConfigureFuture(host, linuxBase, winBase, partialDestPath, windows, this);
+                ccode = cf.call();
+            }else
+            {
+                rf = new RunFuture(host, linuxBase, winBase, partialDestPath, true, windows, this);
+                rfcc = (StafRunnableProgram)rf.call();
+            }
+            
             log.info("\n***** l2 finished: " + ccode + " *****");
-
             log.info("\n***** l3 start *****");
+            
             partialDestPath = "c:\\opt\\dtf\\sandbox\\l1doit.bat";
-            cf = new ConfigureFuture(host, linuxBase, winBase, partialDestPath, windows, this);
-            ccode = cf.call();
+            if(doConfig)
+            {
+                cf = new ConfigureFuture(host, linuxBase, winBase, partialDestPath, windows, this);
+                ccode = cf.call();
+            }else
+            {
+                rf = new RunFuture(host, linuxBase, winBase, partialDestPath, true, windows, this);
+                rfcc = (StafRunnableProgram)rf.call();
+            }
             log.info("\n***** l3 finished: " + ccode + " *****");
             return;
         }
