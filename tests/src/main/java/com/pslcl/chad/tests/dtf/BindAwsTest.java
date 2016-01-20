@@ -511,37 +511,44 @@ public class BindAwsTest implements PreStartExecuteInterface
     private void manualDeploy() throws Exception
     {
         String partialDestPath = "toplevel";
-        String host = "localhost";
+//        String host = "localhost";
+        String host = "52.91.5.197";
         String linuxBase = "/opt/dtf/sandbox";
         String winBase = "\\opt\\dtf\\sandbox";
-        boolean windows = true;
-        boolean doConfig = false;
+        boolean windows = false;
 
         String url = "http://mirrors.koehn.com/apache//commons/cli/binaries/commons-cli-1.3.1-bin.zip";
-        DeployFuture df = new DeployFuture(host, linuxBase, winBase, partialDestPath, url, false);
+        DeployFuture df = new DeployFuture(host, linuxBase, winBase, partialDestPath, url, windows);
         df.call();
         partialDestPath = "bin/doit.bat";
         url = "http://mirrors.koehn.com/apache//commons/cli/binaries/commons-cli-1.3.1-bin.zip";
-        df = new DeployFuture(host, linuxBase, winBase, partialDestPath, url, false);
+        df = new DeployFuture(host, linuxBase, winBase, partialDestPath, url, windows);
         df.call();
         partialDestPath = "lib/someApp.jar";
         url = "http://mirrors.koehn.com/apache//commons/cli/source/commons-cli-1.3.1-src.zip";
-        df = new DeployFuture(host, linuxBase, winBase, partialDestPath, url, false);
+        df = new DeployFuture(host, linuxBase, winBase, partialDestPath, url, windows);
         df.call();
     }
 
     private void runFuturesTests() throws Exception
     {
-        String host = "localhost";
+//        String host = "localhost";
+        String host = "52.91.5.197";
         String linuxBase = "/opt/dtf/sandbox";
         String winBase = "\\opt\\dtf\\sandbox";
         TimeoutData tod = RunFuture.TimeoutData.getTimeoutData(5, TimeUnit.MINUTES, 1, TimeUnit.MINUTES);
         String[] runPartialDestPath = new String[]{"l1doit.bat", "bin/l2doit.bat", "c:\\opt\\dtf\\sandbox\\l1doit.bat"};
         String[] startPartialDestPath = new String[]{"l1doitPause.bat", "bin/l2doitPause.bat","c:\\opt\\dtf\\sandbox\\l1doitPause.bat"};
         boolean doConfig = false;
+        boolean linuxOnly = true;
+        boolean winOnly = false;
 
         for(int i=0; i < 2; i++)
         {
+            if(winOnly && i == 1)
+                continue;
+            if(linuxOnly && i == 0)
+                continue;
             log.info(i==0?"windows" : "linux");
             for(int j=0; j < 3; j++)
             {
@@ -626,7 +633,11 @@ public class BindAwsTest implements PreStartExecuteInterface
             runFuturesTests();
             return;
         }
-        
+        if(deploy)
+        {
+            manualDeploy();
+            return;
+        }
         if (machine)
         {
             reserveMachine(appMachineProperties);
@@ -646,7 +657,7 @@ public class BindAwsTest implements PreStartExecuteInterface
                 log.info("giving deploy 10 secs is up");
                 deploy();
             }
-            //            releaseTemplate(true);
+            releaseTemplate(true);
             if (cleanup)
                 log.info("look at aws console for all shutting down here, it will be several minutes before termination");
             return;
