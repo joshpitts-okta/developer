@@ -37,6 +37,7 @@ import com.pslcl.dtf.core.runner.resource.staf.futures.RunFuture.TimeoutData;
 import com.pslcl.dtf.core.runner.resource.staf.futures.StafRunnableProgram;
 import com.pslcl.dtf.core.util.PropertiesFile;
 import com.pslcl.dtf.resource.aws.AwsResourcesManager;
+import com.pslcl.dtf.resource.aws.attr.ClientNames;
 import com.pslcl.dtf.resource.aws.attr.InstanceNames;
 import com.pslcl.dtf.resource.aws.attr.ProviderNames;
 import com.pslcl.dtf.resource.aws.provider.machine.AwsMachineProvider;
@@ -49,7 +50,7 @@ public class BindAwsTest implements PreStartExecuteInterface
 {
     public final static String InspectGzPath = "/wsp/testing-framework/platform/dtf-runner/dtf-dtf-runner-1.0.src.tar.gz";
     public final static boolean actualTar = true;
-    public final static String TimeoutKey = "pslcl.resource.aws.test.timeout";
+    public final static String TimeoutKey = "pslcl.dtf.runner.resource.aws.test.timeout";
     public final static String TimeoutDefault = "15";
 
     private Logger log;
@@ -107,6 +108,7 @@ public class BindAwsTest implements PreStartExecuteInterface
         addAttribute(ProviderNames.LocationYearKey, appProperties, attrs);
         addAttribute(ProviderNames.LocationMonthKey, appProperties, attrs);
         addAttribute(ProviderNames.LocationDotKey, appProperties, attrs);
+        addAttribute(ClientNames.TestShortNameKey, appProperties, attrs);
 
         List<Entry<String, String>> flist = PropertiesFile.getPropertiesForBaseKey(ProviderNames.LocationFeatureKey, appProperties);
         for (Entry<String, String> entry : flist)
@@ -512,10 +514,10 @@ public class BindAwsTest implements PreStartExecuteInterface
     {
         String partialDestPath = "toplevel";
 //        String host = "localhost";
-        String host = "52.91.5.197";
+        String host = "54.164.156.198";
         String linuxBase = "/opt/dtf/sandbox";
         String winBase = "\\opt\\dtf\\sandbox";
-        boolean windows = false;
+        boolean windows = true;
 
         String url = "http://mirrors.koehn.com/apache//commons/cli/binaries/commons-cli-1.3.1-bin.zip";
         DeployFuture df = new DeployFuture(host, linuxBase, winBase, partialDestPath, url, windows);
@@ -579,8 +581,8 @@ public class BindAwsTest implements PreStartExecuteInterface
                         case 0:
                             log.info("configureFuture");
                             configFuture = new ConfigureFuture(host, linuxBase, winBase, runPartialDestPath[j], windows, this);
-                            configRc = configFuture.call();
-                            if(configRc != 0)
+                            runnableProgram = (StafRunnableProgram) configFuture.call();
+                            if(runnableProgram.getRunResult() != 0)
                                 throw new Exception("configureFuture application returned non-zero");
                             break;
                         case 1:
@@ -615,6 +617,9 @@ public class BindAwsTest implements PreStartExecuteInterface
     @Override
     public void execute(RunnerConfig config, Properties appMachineProperties, CommandLine activeCommand) throws Exception
     {
+//        Administrator/7Pr-PFfTHr - cat-ami-windows
+//      Administrator/
+        
         this.config = config;
         myConfig = new AwsTestConfig(appMachineProperties);
         manager = (AwsResourcesManager) ((RunnerMachine) config.runnerService.getRunnerMachine()).getTemplateProvider().getResourceProviders().getManagers().get(0);
