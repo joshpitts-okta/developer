@@ -535,15 +535,15 @@ public class BindAwsTest implements PreStartExecuteInterface
     private void runFuturesTests() throws Exception
     {
 //        String host = "localhost";
-        String host = "52.91.5.197";
+        String host = "52.90.69.192";
         String linuxBase = "/opt/dtf/sandbox";
         String winBase = "\\opt\\dtf\\sandbox";
         TimeoutData tod = RunFuture.TimeoutData.getTimeoutData(5, TimeUnit.MINUTES, 1, TimeUnit.MINUTES);
         String[] runPartialDestPath = new String[]{"l1doit.bat", "bin/l2doit.bat", "c:\\opt\\dtf\\sandbox\\l1doit.bat"};
         String[] startPartialDestPath = new String[]{"l1doitPause.bat", "bin/l2doitPause.bat","c:\\opt\\dtf\\sandbox\\l1doitPause.bat"};
         boolean doConfig = false;
-        boolean linuxOnly = true;
-        boolean winOnly = false;
+        boolean linuxOnly = false;
+        boolean winOnly = true;
 
         for(int i=0; i < 2; i++)
         {
@@ -658,7 +658,7 @@ public class BindAwsTest implements PreStartExecuteInterface
                 bindNetwork();
                 connect();
                 log.info("giving deploy 10 secs");
-                Thread.sleep(10000);
+                Thread.sleep(100);
                 log.info("giving deploy 10 secs is up");
                 deploy();
             }
@@ -676,5 +676,6 @@ public class BindAwsTest implements PreStartExecuteInterface
             releaseTemplate(false);
         }
         log.info("BindAwsTest end");
+        return;
     }
 }
