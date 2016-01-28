@@ -48,7 +48,7 @@ import com.pslcl.dtf.runner.process.RunnerMachine;
 @SuppressWarnings("javadoc")
 public class BindAwsTest implements PreStartExecuteInterface
 {
-    public final static String InspectGzPath = "/wsp/testing-framework/platform/dtf-runner/dtf-dtf-runner-1.0.src.tar.gz";
+    public final static String InspectGzPath = "/wsp/developer/tests/config/dtf/dtf-dtf-runner-1.0.src.tar.gzip";
     public final static boolean actualTar = true;
     public final static String TimeoutKey = "pslcl.dtf.runner.resource.aws.test.timeout";
     public final static String TimeoutDefault = "15";
@@ -370,12 +370,13 @@ public class BindAwsTest implements PreStartExecuteInterface
         FileInputStream fis = new FileInputStream(tarball);
 
         InputStream is = rawStream;
-        String includeName = "attachments.tar.gz";
+        String includeName = "attachments.tar.gzip";
         if (actualTar)
         {
             is = fis;
             includeName = tarball.getName();
         }
+//        includeName += ".txt";
         personInstances[personIndex].inspect(instructions, is, includeName).get();
     }
 
@@ -535,15 +536,17 @@ public class BindAwsTest implements PreStartExecuteInterface
     private void runFuturesTests() throws Exception
     {
 //        String host = "localhost";
-        String host = "52.90.69.192";
+        String host = "52.91.65.19";
         String linuxBase = "/opt/dtf/sandbox";
         String winBase = "\\opt\\dtf\\sandbox";
         TimeoutData tod = RunFuture.TimeoutData.getTimeoutData(5, TimeUnit.MINUTES, 1, TimeUnit.MINUTES);
-        String[] runPartialDestPath = new String[]{"l1doit.bat", "bin/l2doit.bat", "c:\\opt\\dtf\\sandbox\\l1doit.bat"};
-        String[] startPartialDestPath = new String[]{"l1doitPause.bat", "bin/l2doitPause.bat","c:\\opt\\dtf\\sandbox\\l1doitPause.bat"};
-        boolean doConfig = false;
-        boolean linuxOnly = false;
-        boolean winOnly = true;
+        String[] runWinPartialDestPath = new String[]{"l1doit.bat", "bin\\l2doit.bat", "c:\\opt\\dtf\\sandbox\\l1doit.bat"};
+        String[] startWinPartialDestPath = new String[]{"l1doitPause.bat", "bin\\l2doitPause.bat","c:\\opt\\dtf\\sandbox\\l1doitPause.bat"};
+        String[] runLinuxPartialDestPath = new String[]{"l1doit.sh", "bin/l2doit.sh", "/opt/dtf/sandbox/l1doit.sh"};
+        String[] startLinuxPartialDestPath = new String[]{"l1doitPause.sh", "bin/l2doitPause.bat","/opt/dtf/sandbox/l1doitPause.sh"};
+        boolean doConfig = true;
+        boolean linuxOnly = true;
+        boolean winOnly = false;
 
         for(int i=0; i < 2; i++)
         {
@@ -580,21 +583,30 @@ public class BindAwsTest implements PreStartExecuteInterface
                     {
                         case 0:
                             log.info("configureFuture");
-                            configFuture = new ConfigureFuture(host, linuxBase, winBase, runPartialDestPath[j], windows, this);
+                            String cmd = runLinuxPartialDestPath[j];
+                            if(windows)
+                                cmd = runWinPartialDestPath[j];
+                            configFuture = new ConfigureFuture(host, linuxBase, winBase, cmd, windows, this);
                             runnableProgram = (StafRunnableProgram) configFuture.call();
                             if(runnableProgram.getRunResult() != 0)
                                 throw new Exception("configureFuture application returned non-zero");
                             break;
                         case 1:
                             log.info("runFuture");
-                            runFuture = new RunFuture(host, linuxBase, winBase, runPartialDestPath[j], null, windows, this);
+                            cmd = runLinuxPartialDestPath[j];
+                            if(windows)
+                                cmd = runWinPartialDestPath[j];
+                            runFuture = new RunFuture(host, linuxBase, winBase, cmd, null, windows, this);
                             runnableProgram = (StafRunnableProgram) runFuture.call();
                             if(runnableProgram.getRunResult() != 0)
                                 throw new Exception("runFuture application returned non-zero");
                             break;
                         case 2:
                             log.info("startFuture");
-                            runFuture = new RunFuture(host, linuxBase, winBase, startPartialDestPath[j], config.blockingExecutor, windows, this);
+                            cmd = startLinuxPartialDestPath[j];
+                            if(windows)
+                                cmd = startWinPartialDestPath[j];
+                            runFuture = new RunFuture(host, linuxBase, winBase, cmd, config.blockingExecutor, windows, this);
                             runnableProgram = (StafRunnableProgram) runFuture.call();
                             if(!runnableProgram.isRunning())
                                 throw new Exception("startFuture application returned not running");
