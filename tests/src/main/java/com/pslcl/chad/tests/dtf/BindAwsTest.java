@@ -14,6 +14,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -633,22 +634,28 @@ public class BindAwsTest implements PreStartExecuteInterface
 
     private void timeoutTest()
     {
-        int maxRetries = 17;
-        int maxDelay = 5000;
+//        int maxRetries = 17;
+//        int maxDelay = 5000;
+        int maxRetries = 67;
+        int maxDelay = 15000;
         AtomicInteger count = new AtomicInteger(-1);
         AtomicLong totalTime = new AtomicLong(0);
+        AtomicBoolean done = new AtomicBoolean(false);
         do
         {
             int cnt = count.incrementAndGet();
             if(cnt >= maxRetries)
                 return;  // called by handleException
-            double power = Math.pow(2, cnt);
-            power *= 100L; 
-            if (power > Long.MAX_VALUE)
-                power = Long.MAX_VALUE;
-            long delay = (long) power;
-//            long delay = ((long) Math.pow(2, cnt) * 100L);
-            delay = Math.min(delay, maxDelay);
+            long delay = maxDelay;
+            if(!done.get())
+            {
+                delay = ((long) Math.pow(2, cnt) * 100L);
+                if(delay > maxDelay)
+                {
+                    delay = maxDelay;
+                    done.set(true);
+                }
+            }
             try
             {
                 Thread.sleep(0);//delay);
