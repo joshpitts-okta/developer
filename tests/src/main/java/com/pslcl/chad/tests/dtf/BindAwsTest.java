@@ -14,6 +14,8 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 import org.apache.commons.cli.CommandLine;
 import org.slf4j.Logger;
@@ -36,6 +38,7 @@ import com.pslcl.dtf.core.runner.resource.staf.futures.RunFuture;
 import com.pslcl.dtf.core.runner.resource.staf.futures.RunFuture.TimeoutData;
 import com.pslcl.dtf.core.runner.resource.staf.futures.StafRunnableProgram;
 import com.pslcl.dtf.core.util.PropertiesFile;
+import com.pslcl.dtf.core.util.StrH;
 import com.pslcl.dtf.resource.aws.AwsResourcesManager;
 import com.pslcl.dtf.resource.aws.attr.ClientNames;
 import com.pslcl.dtf.resource.aws.attr.InstanceNames;
@@ -515,7 +518,7 @@ public class BindAwsTest implements PreStartExecuteInterface
     {
         String partialDestPath = "toplevel";
 //        String host = "localhost";
-        String host = "54.164.156.198";
+        String host = "54.173.130.85";
         String linuxBase = "/opt/dtf/sandbox";
         String winBase = "\\opt\\dtf\\sandbox";
         boolean windows = true;
@@ -626,12 +629,53 @@ public class BindAwsTest implements PreStartExecuteInterface
         }
     }
 
+    private void timeoutTest()
+    {
+        int maxRetries = 17;
+        int maxDelay = 5000;
+        AtomicInteger count = new AtomicInteger(-1);
+        AtomicLong totalTime = new AtomicLong(0);
+        do
+        {
+            int cnt = count.incrementAndGet();
+            if(cnt >= maxRetries)
+                return;  // called by handleException
+            double power = Math.pow(2, cnt);
+            power *= 100L; 
+            if (power > Long.MAX_VALUE)
+                power = Long.MAX_VALUE;
+            long delay = (long) power;
+//            long delay = ((long) Math.pow(2, cnt) * 100L);
+            delay = Math.min(delay, maxDelay);
+            try
+            {
+                Thread.sleep(delay);
+                totalTime.addAndGet(delay);
+            }catch(InterruptedException e)
+            {
+                log.error("interruptedException", e);
+                return;
+            }
+            log.debug("count: " + cnt + " delay: " + delay + " totalwait: " + StrH.scaleMilliSeconds(totalTime.get()));
+        }while(true);
+    }
+    
     @Override
     public void execute(RunnerConfig config, Properties appMachineProperties, CommandLine activeCommand) throws Exception
     {
 //        Administrator/7Pr-PFfTHr - cat-ami-windows
 //      Administrator/
         
+        if(true)
+        {
+            log.info("start timer");
+            timeoutTest();
+            log.info("end timer");
+            TimeoutData m1tod = TimeoutData.getTimeoutData(60L, TimeUnit.SECONDS, 5, TimeUnit.SECONDS);
+            TimeoutData m15tod = TimeoutData.getTimeoutData(15L, TimeUnit.MINUTES, 15, TimeUnit.SECONDS);
+            log.info("m1tod: " + m1tod.toString());
+            log.info("m15tod: " + m15tod.toString());
+        }
         this.config = config;
         myConfig = new AwsTestConfig(appMachineProperties);
         manager = (AwsResourcesManager) ((RunnerMachine) config.runnerService.getRunnerMachine()).getTemplateProvider().getResourceProviders().getManagers().get(0);
