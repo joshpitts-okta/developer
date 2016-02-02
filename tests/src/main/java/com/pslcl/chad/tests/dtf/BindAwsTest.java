@@ -32,8 +32,10 @@ import com.pslcl.dtf.core.runner.resource.instance.MachineInstance;
 import com.pslcl.dtf.core.runner.resource.instance.NetworkInstance;
 import com.pslcl.dtf.core.runner.resource.instance.PersonInstance;
 import com.pslcl.dtf.core.runner.resource.provider.ResourceProvider;
+import com.pslcl.dtf.core.runner.resource.staf.ProcessCommandData;
 import com.pslcl.dtf.core.runner.resource.staf.futures.ConfigureFuture;
 import com.pslcl.dtf.core.runner.resource.staf.futures.DeployFuture;
+import com.pslcl.dtf.core.runner.resource.staf.futures.PingFuture;
 import com.pslcl.dtf.core.runner.resource.staf.futures.RunFuture;
 import com.pslcl.dtf.core.runner.resource.staf.futures.RunFuture.TimeoutData;
 import com.pslcl.dtf.core.runner.resource.staf.futures.StafRunnableProgram;
@@ -542,7 +544,7 @@ public class BindAwsTest implements PreStartExecuteInterface
         String host = "52.91.65.19";
         String linuxBase = "/opt/dtf/sandbox";
         String winBase = "\\opt\\dtf\\sandbox";
-        TimeoutData tod = RunFuture.TimeoutData.getTimeoutData(5, TimeUnit.MINUTES, 1, TimeUnit.MINUTES);
+        TimeoutData tod = RunFuture.TimeoutData.getTimeoutData(5, TimeUnit.MINUTES, 1, TimeUnit.MINUTES, 100);
         String[] runWinPartialDestPath = new String[]{"l1doit.bat", "bin\\l2doit.bat", "c:\\opt\\dtf\\sandbox\\l1doit.bat"};
         String[] startWinPartialDestPath = new String[]{"l1doitPause.bat", "bin\\l2doitPause.bat","c:\\opt\\dtf\\sandbox\\l1doitPause.bat"};
         String[] runLinuxPartialDestPath = new String[]{"l1doit.sh", "bin/l2doit.sh", "/opt/dtf/sandbox/l1doit.sh"};
@@ -649,7 +651,7 @@ public class BindAwsTest implements PreStartExecuteInterface
             delay = Math.min(delay, maxDelay);
             try
             {
-                Thread.sleep(delay);
+                Thread.sleep(0);//delay);
                 totalTime.addAndGet(delay);
             }catch(InterruptedException e)
             {
@@ -659,23 +661,110 @@ public class BindAwsTest implements PreStartExecuteInterface
             log.debug("count: " + cnt + " delay: " + delay + " totalwait: " + StrH.scaleMilliSeconds(totalTime.get()));
         }while(true);
     }
-    
+
+    private void getStafCommandTest() throws Exception
+    {
+        ProcessCommandData cmdData = new ProcessCommandData(null, null, null, false, false);
+        StafRunnableProgram runnableProgram = new StafRunnableProgram(null, cmdData);
+        cmdData.setHost("localhost");
+        cmdData.setWait(true);
+        PingFuture pingFuture = new PingFuture(runnableProgram);
+        Integer rc = config.blockingExecutor.submit(pingFuture).get();
+        if(rc == null || rc != 0)
+            throw new Exception();
+        
+        
+        String linuxBase = "/opt/dtf/sandbox";
+        String winBase = "\\opt\\dtf\\sandbox";
+        String[] runWinPartialDestPath = new String[]{"l1doit.bat /arg1 /arg2", "bin\\l2doit.bat arg1 arg2", "c:\\opt\\dtf\\sandbox\\l1doit.bat arg1 arg2"};
+        String[] startWinPartialDestPath = new String[]{"l1doitPause.bat /arg1 /arg2", "bin\\l2doitPause.bat arg1 arg2","c:\\opt\\dtf\\sandbox\\l1doitPause.bat arg1 arg2"};
+        String[] runLinuxPartialDestPath = new String[]{"l1doit.sh /arg1 /arg2", "bin/l2doit.sh arg1 arg2", "/opt/dtf/sandbox/l1doit.sh arg1 arg2"};
+        String[] startLinuxPartialDestPath = new String[]{"l1doitPause.sh /arg1 /arg2", "bin/l2doitPause.bat arg1 arg2","/opt/dtf/sandbox/l1doitPause.sh arg1 arg2"};
+        for(int i=0; i < 2; i++)
+        {
+            log.info(i==0?"windows" : "linux");
+            for(int j=0; j < 3; j++)
+            {
+                boolean windows = i == 0;
+                switch (j)
+                {
+                    case 0:
+                        log.info("toplevel");
+                        break;
+                    case 1:
+                        log.info("with penultimate");
+                        break;
+                    case 2:
+                        log.info("full path");
+                        break;
+                    default:
+                        break;
+                }
+                for(int k=0; k < 3; k++)
+                {
+                    ConfigureFuture configFuture = null;
+                    RunFuture runFuture = null;
+
+                    Integer configRc = null;
+                    switch (k)
+                    {
+                        case 0:
+                            log.info("configureFuture");
+                            String cmd = runLinuxPartialDestPath[j];
+                            if(windows)
+                                cmd = runWinPartialDestPath[j];
+                            cmdData = DeployFuture.getCommandPath(cmd, linuxBase, winBase, windows);
+                            log.info("\n"+cmdData.toString());
+//                            configFuture = new ConfigureFuture(host, linuxBase, winBase, cmd, windows, this);
+//                            runnableProgram = (StafRunnableProgram) configFuture.call();
+//                            if(runnableProgram.getRunResult() != 0)
+//                                throw new Exception("configureFuture application returned non-zero");
+                            break;
+                        case 1:
+                            log.info("runFuture");
+                            cmd = runLinuxPartialDestPath[j];
+                            if(windows)
+                                cmd = runWinPartialDestPath[j];
+                            cmdData = DeployFuture.getCommandPath(cmd, linuxBase, winBase, windows);
+                            log.info("\n"+cmdData.toString());
+//                            runFuture = new RunFuture(host, linuxBase, winBase, cmd, null, windows, this);
+//                            runnableProgram = (StafRunnableProgram) runFuture.call();
+//                            if(runnableProgram.getRunResult() != 0)
+//                                throw new Exception("runFuture application returned non-zero");
+                            break;
+                        case 2:
+                            log.info("startFuture");
+                            cmd = startLinuxPartialDestPath[j];
+                            if(windows)
+                                cmd = startWinPartialDestPath[j];
+                            cmdData = DeployFuture.getCommandPath(cmd, linuxBase, winBase, windows);
+                            log.info("\n"+cmdData.toString());
+//                            runFuture = new RunFuture(host, linuxBase, winBase, cmd, config.blockingExecutor, windows, this);
+//                            runnableProgram = (StafRunnableProgram) runFuture.call();
+//                            if(!runnableProgram.isRunning())
+//                                throw new Exception("startFuture application returned not running");
+//                            if(runnableProgram.getRunResult() != null)
+//                                throw new Exception("startFuture application returned non-null, it should not know results yet");
+//                            Integer ccode = runnableProgram.kill().get();
+//                            if(ccode != 0)
+//                                throw new Exception("kill returned non-zero");
+//                            if(runnableProgram.getRunResult() != 0)
+//                                throw new Exception("startFuture application returned non-zero after stop");
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+        }
+    }
+
     @Override
     public void execute(RunnerConfig config, Properties appMachineProperties, CommandLine activeCommand) throws Exception
     {
 //        Administrator/7Pr-PFfTHr - cat-ami-windows
 //      Administrator/
         
-        if(true)
-        {
-            log.info("start timer");
-            timeoutTest();
-            log.info("end timer");
-            TimeoutData m1tod = TimeoutData.getTimeoutData(60L, TimeUnit.SECONDS, 5, TimeUnit.SECONDS);
-            TimeoutData m15tod = TimeoutData.getTimeoutData(15L, TimeUnit.MINUTES, 15, TimeUnit.SECONDS);
-            log.info("m1tod: " + m1tod.toString());
-            log.info("m15tod: " + m15tod.toString());
-        }
         this.config = config;
         myConfig = new AwsTestConfig(appMachineProperties);
         manager = (AwsResourcesManager) ((RunnerMachine) config.runnerService.getRunnerMachine()).getTemplateProvider().getResourceProviders().getManagers().get(0);
@@ -689,6 +778,19 @@ public class BindAwsTest implements PreStartExecuteInterface
         boolean cleanup = activeCommand.hasOption(AwsCliCommand.CleanupShortCl);
         boolean run = activeCommand.hasOption(AwsCliCommand.RunShortCl);
 
+        if(true)
+        {
+            getStafCommandTest();
+//            log.info("start timer");
+//            timeoutTest();
+//            log.info("end timer");
+//            TimeoutData m1tod = TimeoutData.getTimeoutData(60L, TimeUnit.SECONDS, 5, TimeUnit.SECONDS, 100);
+//            TimeoutData m15tod = TimeoutData.getTimeoutData(15L, TimeUnit.MINUTES, 15, TimeUnit.SECONDS, 100);
+//            log.info("m1tod: " + m1tod.toString());
+//            log.info("m15tod: " + m15tod.toString());
+        }
+
+        
         if(run)
         {
             runFuturesTests();
