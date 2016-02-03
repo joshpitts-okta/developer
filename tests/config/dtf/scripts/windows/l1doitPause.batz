@@ -1,0 +1,5 @@
+dir
+:loop
+echo l1doit loop forever
+ping 127.0.0.1 -n 10
+goto loop

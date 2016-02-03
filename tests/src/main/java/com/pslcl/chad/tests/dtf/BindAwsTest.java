@@ -542,7 +542,7 @@ public class BindAwsTest implements PreStartExecuteInterface
     private void runFuturesTests() throws Exception
     {
 //        String host = "localhost";
-        String host = "52.91.65.19";
+        String host = "52.90.20.89";
         String linuxBase = "/opt/dtf/sandbox";
         String winBase = "\\opt\\dtf\\sandbox";
         TimeoutData tod = RunFuture.TimeoutData.getTimeoutData(5, TimeUnit.MINUTES, 1, TimeUnit.MINUTES, 100);
@@ -551,8 +551,8 @@ public class BindAwsTest implements PreStartExecuteInterface
         String[] runLinuxPartialDestPath = new String[]{"l1doit.sh", "bin/l2doit.sh", "/opt/dtf/sandbox/l1doit.sh"};
         String[] startLinuxPartialDestPath = new String[]{"l1doitPause.sh", "bin/l2doitPause.bat","/opt/dtf/sandbox/l1doitPause.sh"};
         boolean doConfig = true;
-        boolean linuxOnly = true;
-        boolean winOnly = false;
+        boolean linuxOnly = false;
+        boolean winOnly = true;
 
         for(int i=0; i < 2; i++)
         {
@@ -774,7 +774,10 @@ public class BindAwsTest implements PreStartExecuteInterface
         
         this.config = config;
         myConfig = new AwsTestConfig(appMachineProperties);
-        manager = (AwsResourcesManager) ((RunnerMachine) config.runnerService.getRunnerMachine()).getTemplateProvider().getResourceProviders().getManagers().get(0);
+        //@formatter:off
+        manager = (AwsResourcesManager) ((RunnerMachine) config.runnerService.getRunnerMachine())
+                        .getTemplateProvider().getResourceProviders().getManagers().get(0);
+        //@formatter:on
         machineProvider = manager.getMachineProvider();
         networkProvider = manager.getNetworkProvider();
         personProvider = manager.getPersonProvider();
@@ -785,7 +788,7 @@ public class BindAwsTest implements PreStartExecuteInterface
         boolean cleanup = activeCommand.hasOption(AwsCliCommand.CleanupShortCl);
         boolean run = activeCommand.hasOption(AwsCliCommand.RunShortCl);
 
-        if(true)
+        if(false)
         {
             getStafCommandTest();
 //            log.info("start timer");
