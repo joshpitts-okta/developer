@@ -550,6 +550,7 @@ public class BindAwsTest implements PreStartExecuteInterface
         String[] startWinPartialDestPath = new String[]{"l1doitPause.bat", "bin\\l2doitPause.bat","c:\\opt\\dtf\\sandbox\\l1doitPause.bat"};
         String[] runLinuxPartialDestPath = new String[]{"l1doit.sh", "bin/l2doit.sh", "/opt/dtf/sandbox/l1doit.sh"};
         String[] startLinuxPartialDestPath = new String[]{"l1doitPause.sh", "bin/l2doitPause.bat","/opt/dtf/sandbox/l1doitPause.sh"};
+        int[] serviceRc = new int[]{0, 55, 1};
         boolean doConfig = true;
         boolean linuxOnly = false;
         boolean winOnly = true;
@@ -594,8 +595,8 @@ public class BindAwsTest implements PreStartExecuteInterface
                                 cmd = runWinPartialDestPath[j];
                             configFuture = new ConfigureFuture(host, linuxBase, winBase, cmd, windows, this);
                             runnableProgram = (StafRunnableProgram) configFuture.call();
-                            if(runnableProgram.getRunResult() != 0)
-                                throw new Exception("configureFuture application returned non-zero");
+                            if(runnableProgram.getRunResult() != serviceRc[j])
+                                throw new Exception("configureFuture application returned non-zero: " + runnableProgram.getRunResult());
                             break;
                         case 1:
                             log.info("runFuture");
@@ -604,7 +605,7 @@ public class BindAwsTest implements PreStartExecuteInterface
                                 cmd = runWinPartialDestPath[j];
                             runFuture = new RunFuture(host, linuxBase, winBase, cmd, null, windows, this);
                             runnableProgram = (StafRunnableProgram) runFuture.call();
-                            if(runnableProgram.getRunResult() != 0)
+                            if(runnableProgram.getRunResult() != serviceRc[j])
                                 throw new Exception("runFuture application returned non-zero");
                             break;
                         case 2:
