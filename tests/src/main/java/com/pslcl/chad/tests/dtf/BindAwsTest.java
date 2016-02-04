@@ -43,7 +43,6 @@ import com.pslcl.dtf.core.runner.resource.staf.futures.StafRunnableProgram;
 import com.pslcl.dtf.core.util.PropertiesFile;
 import com.pslcl.dtf.core.util.StrH;
 import com.pslcl.dtf.resource.aws.AwsResourcesManager;
-import com.pslcl.dtf.resource.aws.attr.ClientNames;
 import com.pslcl.dtf.resource.aws.attr.InstanceNames;
 import com.pslcl.dtf.resource.aws.attr.ProviderNames;
 import com.pslcl.dtf.resource.aws.provider.machine.AwsMachineProvider;
@@ -114,7 +113,7 @@ public class BindAwsTest implements PreStartExecuteInterface
         addAttribute(ProviderNames.LocationYearKey, appProperties, attrs);
         addAttribute(ProviderNames.LocationMonthKey, appProperties, attrs);
         addAttribute(ProviderNames.LocationDotKey, appProperties, attrs);
-        addAttribute(ClientNames.TestShortNameKey, appProperties, attrs);
+        addAttribute(InstanceNames.TestShortNameKey, appProperties, attrs);
 
         List<Entry<String, String>> flist = PropertiesFile.getPropertiesForBaseKey(ProviderNames.LocationFeatureKey, appProperties);
         for (Entry<String, String> entry : flist)
