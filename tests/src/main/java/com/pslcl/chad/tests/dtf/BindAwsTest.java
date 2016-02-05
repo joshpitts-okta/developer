@@ -27,6 +27,7 @@ import com.pslcl.dtf.core.runner.resource.ReservedResource;
 import com.pslcl.dtf.core.runner.resource.ResourceCoordinates;
 import com.pslcl.dtf.core.runner.resource.ResourceDescImpl;
 import com.pslcl.dtf.core.runner.resource.ResourceDescription;
+import com.pslcl.dtf.core.runner.resource.ResourceNames;
 import com.pslcl.dtf.core.runner.resource.ResourceReserveDisposition;
 import com.pslcl.dtf.core.runner.resource.instance.CableInstance;
 import com.pslcl.dtf.core.runner.resource.instance.MachineInstance;
@@ -58,7 +59,7 @@ public class BindAwsTest implements PreStartExecuteInterface
     public final static String TimeoutKey = "pslcl.dtf.runner.resource.aws.test.timeout";
     public final static String TimeoutDefault = "15";
 
-    private Logger log;
+    private final Logger log;
     private volatile RunnerConfig config;
     private volatile AwsTestConfig myConfig;
     private volatile AwsMachineProvider machineProvider;
@@ -113,7 +114,7 @@ public class BindAwsTest implements PreStartExecuteInterface
         addAttribute(ProviderNames.LocationYearKey, appProperties, attrs);
         addAttribute(ProviderNames.LocationMonthKey, appProperties, attrs);
         addAttribute(ProviderNames.LocationDotKey, appProperties, attrs);
-        addAttribute(InstanceNames.TestShortNameKey, appProperties, attrs);
+        addAttribute(ResourceNames.ResourceShortNameKey, appProperties, attrs);
 
         List<Entry<String, String>> flist = PropertiesFile.getPropertiesForBaseKey(ProviderNames.LocationFeatureKey, appProperties);
         for (Entry<String, String> entry : flist)
@@ -170,7 +171,7 @@ public class BindAwsTest implements PreStartExecuteInterface
         for (Entry<String, String> entry : flist)
             attrs.put(entry.getKey(), entry.getValue());
 
-        addAttribute(InstanceNames.AvailabilityZoneKey, appProperties, attrs);
+//        addAttribute(InstanceNames.AvailabilityZoneKey, appProperties, attrs);
 
         if (attrsIn == null)
         {
@@ -194,12 +195,12 @@ public class BindAwsTest implements PreStartExecuteInterface
     private List<ResourceDescription> getPersonResourceDescription(String name, int resourceId, int runId, Properties appProperties, List<ResourceDescription> list, boolean useSiteDefault)
     {
         Map<String, String> attrs = new HashMap<String, String>();
-        addAttribute(ProviderNames.SesMaxDelayKey, appProperties, attrs);
-        addAttribute(ProviderNames.SesMaxRetriesKey, appProperties, attrs);
+        addAttribute(ResourceNames.InspectMaxDelayKey, appProperties, attrs);
+        addAttribute(ResourceNames.InspectMaxRetriesKey, appProperties, attrs);
 
         if (!useSiteDefault)
         {
-            List<Entry<String, String>> ilist = PropertiesFile.getPropertiesForBaseKey(ProviderNames.SesInspectorKey, appProperties);
+            List<Entry<String, String>> ilist = PropertiesFile.getPropertiesForBaseKey(ResourceNames.InspectInspectorKey, appProperties);
             for (Entry<String, String> entry : ilist)
                 attrs.put(entry.getKey(), entry.getValue());
         }
@@ -772,6 +773,7 @@ public class BindAwsTest implements PreStartExecuteInterface
 //        Administrator/7Pr-PFfTHr - cat-ami-windows
 //      Administrator/
         
+        log.info("daemon init chain format:\n"+config.initsb.toString());
         this.config = config;
         myConfig = new AwsTestConfig(appMachineProperties);
         //@formatter:off
