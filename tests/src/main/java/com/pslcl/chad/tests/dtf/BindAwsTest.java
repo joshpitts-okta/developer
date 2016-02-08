@@ -127,7 +127,7 @@ public class BindAwsTest implements PreStartExecuteInterface
             {
                 addAttribute("architecture", appProperties, attrs);
                 if(!platform.equals("archOnly"))
-                    attrs.put(ResourceNames.ImagePlatformKey, platform);
+                    attrs.put(ResourceNames.ImageOsKey, platform);
             }
         }
 
