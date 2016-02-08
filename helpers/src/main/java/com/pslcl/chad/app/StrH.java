@@ -152,6 +152,13 @@ public class StrH
         return value;
     }
     
+    public static String trim(String value)
+    {
+        if(value == null)
+            return value;
+        return value.trim();
+    }
+    
     public static class StringPair implements Entry<String, String>
     {
         private final String key;
