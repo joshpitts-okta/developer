@@ -56,7 +56,7 @@ public class BindAwsTest implements PreStartExecuteInterface
 {
     public final static String InspectGzPath = "/wsp/developer/tests/config/dtf/dtf-dtf-runner-1.0.src.tar.gzip";
     public final static boolean ActualTar = true;
-    public final static boolean UseScriptGlobals = true;
+    public final static boolean UseScriptGlobals = false;
     public final static String TimeoutKey = "pslcl.dtf.runner.resource.aws.test.timeout";
     public final static String TimeoutDefault = "15";
 
@@ -91,11 +91,11 @@ public class BindAwsTest implements PreStartExecuteInterface
         getMachineResourceDescription(ResourceProvider.MachineName, 11, 80, "archOnly", appProperties, list);
         getMachineResourceDescription(ResourceProvider.MachineName, 22, 80, "windows", appProperties, list);
         getMachineResourceDescription(ResourceProvider.MachineName, 33, 80, "linux", appProperties, list);
-        getMachineResourceDescription(ResourceProvider.MachineName, 44, 80, null, appProperties, list);
+        getMachineResourceDescription(ResourceProvider.MachineName, 44, 80, "javaOnly", appProperties, list);
         return list;
     }
 
-    private List<ResourceDescription> getMachineResourceDescription(String name, int resourceId, int runId, String platform, Properties appProperties, List<ResourceDescription> list)
+    private List<ResourceDescription> getMachineResourceDescription(String name, int resourceId, int runId, String os, Properties appProperties, List<ResourceDescription> list)
     {
         Map<String, String> attrs = new HashMap<String, String>();
         addAttribute(ProviderNames.InstanceTypeKey, appProperties, attrs);
@@ -117,17 +117,19 @@ public class BindAwsTest implements PreStartExecuteInterface
         addAttribute(ProviderNames.LocationYearKey, appProperties, attrs);
         addAttribute(ProviderNames.LocationMonthKey, appProperties, attrs);
         addAttribute(ProviderNames.LocationDotKey, appProperties, attrs);
-        addAttribute(ResourceNames.ResourceShortNameKey, appProperties, attrs);
+        addAttribute(ProviderNames.ResourcePrefixNameKey, appProperties, attrs);
         addAttribute(ResourceNames.MachineCoresKey, appProperties, attrs);
         addAttribute(ResourceNames.MachineMemoryKey, appProperties, attrs);
         addAttribute(ResourceNames.MachineDiskKey, appProperties, attrs);
         if(UseScriptGlobals)
         {
-            if(platform != null)
+            if(os.equals("javaOnly"))
+                addAttribute("java", appProperties, attrs);
+            else
             {
                 addAttribute("architecture", appProperties, attrs);
-                if(!platform.equals("archOnly"))
-                    attrs.put(ResourceNames.ImageOsKey, platform);
+                if(!os.equals("archOnly"))
+                    attrs.put(ResourceNames.ImageOsKey, os);
             }
         }
 
