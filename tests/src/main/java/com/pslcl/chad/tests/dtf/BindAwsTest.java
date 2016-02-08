@@ -55,7 +55,8 @@ import com.pslcl.dtf.runner.process.RunnerMachine;
 public class BindAwsTest implements PreStartExecuteInterface
 {
     public final static String InspectGzPath = "/wsp/developer/tests/config/dtf/dtf-dtf-runner-1.0.src.tar.gzip";
-    public final static boolean actualTar = true;
+    public final static boolean ActualTar = true;
+    public final static boolean UseScriptGlobals = true;
     public final static String TimeoutKey = "pslcl.dtf.runner.resource.aws.test.timeout";
     public final static String TimeoutDefault = "15";
 
@@ -87,21 +88,23 @@ public class BindAwsTest implements PreStartExecuteInterface
     private List<ResourceDescription> getMachineResourceDescriptions(Properties appProperties)
     {
         List<ResourceDescription> list = new ArrayList<ResourceDescription>();
-        getMachineResourceDescription(ResourceProvider.MachineName, 11, 80, appProperties, list);
-        getMachineResourceDescription(ResourceProvider.MachineName, 22, 80, appProperties, list);
-        getMachineResourceDescription(ResourceProvider.MachineName, 33, 80, appProperties, list);
-        getMachineResourceDescription(ResourceProvider.MachineName, 44, 80, appProperties, list);
+        getMachineResourceDescription(ResourceProvider.MachineName, 11, 80, "archOnly", appProperties, list);
+        getMachineResourceDescription(ResourceProvider.MachineName, 22, 80, "windows", appProperties, list);
+        getMachineResourceDescription(ResourceProvider.MachineName, 33, 80, "linux", appProperties, list);
+        getMachineResourceDescription(ResourceProvider.MachineName, 44, 80, null, appProperties, list);
         return list;
     }
 
-    private List<ResourceDescription> getMachineResourceDescription(String name, int resourceId, int runId, Properties appProperties, List<ResourceDescription> list)
+    private List<ResourceDescription> getMachineResourceDescription(String name, int resourceId, int runId, String platform, Properties appProperties, List<ResourceDescription> list)
     {
         Map<String, String> attrs = new HashMap<String, String>();
         addAttribute(ProviderNames.InstanceTypeKey, appProperties, attrs);
         addAttribute(ProviderNames.ImageArchitectureKey, appProperties, attrs);
         addAttribute(ProviderNames.ImageHypervisorKey, appProperties, attrs);
-        addAttribute(ProviderNames.ImageImageIdKey, appProperties, attrs);
+        addAttribute(ResourceNames.ImageImageIdKey, appProperties, attrs);
         addAttribute(ProviderNames.ImageImageTypeKey, appProperties, attrs);
+        addAttribute(ProviderNames.ImagePlatformKey, appProperties, attrs);
+        
         addAttribute(ProviderNames.ImageIsPublicKey, appProperties, attrs);
         addAttribute(ProviderNames.ImageNameKey, appProperties, attrs);
         addAttribute(ProviderNames.ImageOwnerKey, appProperties, attrs);
@@ -115,6 +118,18 @@ public class BindAwsTest implements PreStartExecuteInterface
         addAttribute(ProviderNames.LocationMonthKey, appProperties, attrs);
         addAttribute(ProviderNames.LocationDotKey, appProperties, attrs);
         addAttribute(ResourceNames.ResourceShortNameKey, appProperties, attrs);
+        addAttribute(ResourceNames.MachineCoresKey, appProperties, attrs);
+        addAttribute(ResourceNames.MachineMemoryKey, appProperties, attrs);
+        addAttribute(ResourceNames.MachineDiskKey, appProperties, attrs);
+        if(UseScriptGlobals)
+        {
+            if(platform != null)
+            {
+                addAttribute("architecture", appProperties, attrs);
+                if(!platform.equals("archOnly"))
+                    attrs.put(ResourceNames.ImagePlatformKey, platform);
+            }
+        }
 
         List<Entry<String, String>> flist = PropertiesFile.getPropertiesForBaseKey(ProviderNames.LocationFeatureKey, appProperties);
         for (Entry<String, String> entry : flist)
@@ -131,6 +146,7 @@ public class BindAwsTest implements PreStartExecuteInterface
     private void addAttribute(String key, Properties appProperties, Map<String, String> attrs)
     {
         String value = appProperties.getProperty(key);
+        value = StrH.trim(value);
         if (value == null)
             return;
         attrs.put(key, value);
@@ -139,8 +155,8 @@ public class BindAwsTest implements PreStartExecuteInterface
     private List<ResourceDescription> getNetworkResourceDescriptions(Properties appProperties)
     {
         List<ResourceDescription> list = new ArrayList<ResourceDescription>();
-        getMachineResourceDescription(ResourceProvider.NetworkName, 111, 80, appProperties, list);
-        getMachineResourceDescription(ResourceProvider.NetworkName, 222, 80, appProperties, list);
+        getMachineResourceDescription(ResourceProvider.NetworkName, 111, 80, null, appProperties, list);
+        getMachineResourceDescription(ResourceProvider.NetworkName, 222, 80, null, appProperties, list);
         return list;
     }
 
@@ -377,7 +393,7 @@ public class BindAwsTest implements PreStartExecuteInterface
 
         InputStream is = rawStream;
         String includeName = "attachments.tar.gzip";
-        if (actualTar)
+        if (ActualTar)
         {
             is = fis;
             includeName = tarball.getName();
