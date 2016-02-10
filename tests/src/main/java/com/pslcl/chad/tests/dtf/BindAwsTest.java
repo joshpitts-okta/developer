@@ -213,8 +213,8 @@ public class BindAwsTest implements PreStartExecuteInterface
     private List<ResourceDescription> getPersonResourceDescription(String name, int resourceId, int runId, Properties appProperties, List<ResourceDescription> list, boolean useSiteDefault)
     {
         Map<String, String> attrs = new HashMap<String, String>();
-        addAttribute(ResourceNames.InspectMaxDelayKey, appProperties, attrs);
-        addAttribute(ResourceNames.InspectMaxRetriesKey, appProperties, attrs);
+        addAttribute(ProviderNames.SesMaxDelayKey, appProperties, attrs);
+        addAttribute(ProviderNames.SesMaxRetriesKey, appProperties, attrs);
 
         if (!useSiteDefault)
         {
