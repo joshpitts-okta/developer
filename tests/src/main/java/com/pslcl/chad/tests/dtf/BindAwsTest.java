@@ -359,7 +359,7 @@ public class BindAwsTest implements PreStartExecuteInterface
     private void deploy(int machineIndex) throws Exception
     {
         String partialDestPath = "toplevel";
-        String url = "http://mirrors.koehn.com/apache//commons/cli/binaries/commons-cli-1.3.1-bin.zip";
+        String url = "http://52.91.101.176/content/87D9EF34046CFEB17B37A1675BB943C2525A11F53FE0189E94C6072F0BF86422";
         machineInstances[machineIndex].deploy(partialDestPath, url).get();
         partialDestPath = "bin/doit.bat";
         url = "http://mirrors.koehn.com/apache//commons/cli/binaries/commons-cli-1.3.1-bin.zip";
