@@ -341,6 +341,11 @@ public class BindAwsTest implements PreStartExecuteInterface
         cableInstances[machineIndex] = machineInstances[machineIndex].connect(networkInstances[machineIndex < 2 ? 0 : 1]).get();
     }
 
+    private void disconnect(int machineIndex) throws Exception
+    {
+        machineInstances[machineIndex].disconnect(networkInstances[machineIndex < 2 ? 0 : 1]).get();
+    }
+
     private void connect()
     {
         try
@@ -348,6 +353,21 @@ public class BindAwsTest implements PreStartExecuteInterface
             List<Future<Void>> list = new ArrayList<Future<Void>>();
             for (int i = 0; i < machineInstances.length; i++)
                 list.add(config.blockingExecutor.submit(new ConnectWorker(this, i)));
+            for (int i = 0; i < list.size(); i++)
+                list.get(i).get();
+        } catch (Exception e)
+        {
+            log.error("connect failed", e);
+        }
+    }
+
+    private void disconnect()
+    {
+        try
+        {
+            List<Future<Void>> list = new ArrayList<Future<Void>>();
+            for (int i = 0; i < machineInstances.length; i++)
+                list.add(config.blockingExecutor.submit(new DisconnectWorker(this, i)));
             for (int i = 0; i < list.size(); i++)
                 list.get(i).get();
         } catch (Exception e)
@@ -453,6 +473,25 @@ public class BindAwsTest implements PreStartExecuteInterface
         public Void call() throws Exception
         {
             test.connect(machineIndex);
+            return null;
+        }
+    }
+
+    private class DisconnectWorker implements Callable<Void>
+    {
+        private final BindAwsTest test;
+        private final int machineIndex;
+
+        private DisconnectWorker(BindAwsTest test, int machineIndex)
+        {
+            this.test = test;
+            this.machineIndex = machineIndex;
+        }
+
+        @Override
+        public Void call() throws Exception
+        {
+            test.disconnect(machineIndex);
             return null;
         }
     }
@@ -845,6 +884,7 @@ public class BindAwsTest implements PreStartExecuteInterface
                 reserveNetwork(appMachineProperties);
                 bindNetwork();
                 connect();
+                disconnect();
                 log.info("giving deploy 10 secs");
                 Thread.sleep(100);
                 log.info("giving deploy 10 secs is up");
