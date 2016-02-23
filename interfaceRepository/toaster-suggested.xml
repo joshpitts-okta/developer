@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface 
+    xmlns="http://opendof.org/schema/interface-repository" 
+    xmlns:md="http://opendof.org/schema/interface-repository-meta" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://opendof.org/schema/interface-repository http://opendof.org/schema/interface-repository.xsd "
+    iid="[1:{01000023}]">
+	<md:code-name>TOASTER</md:code-name>
+	<md:display-name xml:lang="ja">翻訳希望</md:display-name>
+	<md:display-name xml:lang="en">Toaster</md:display-name>
+	<md:description xml:lang="ja">翻訳希望</md:description>
+	<md:description xml:lang="en">This interface represents a toaster. The definition includes all the required functionality. This toaster can toast one set of bread at a time.</md:description>
+	<typedefs>
+		<boolean typeid="0">
+			<md:code-name>Powered</md:code-name>
+			<md:display-name xml:lang="ja">翻訳希望</md:display-name>
+			<md:display-name xml:lang="en">Powered State</md:display-name>
+			<md:description xml:lang="ja">翻訳希望</md:description>
+			<md:description xml:lang="en">A power state (on/off). True means 'on'.</md:description>
+		</boolean>
+		<uint8 typeid="1">
+			<md:code-name>Intensity</md:code-name>
+			<md:display-name xml:lang="ja">翻訳希望</md:display-name>
+			<md:display-name xml:lang="en">Intensity</md:display-name>
+			<md:description xml:lang="ja">翻訳希望</md:description>
+			<md:description xml:lang="en">An indication of desired intensity. The larger the number, the more intense.</md:description>
+		</uint8>
+		<uint8 typeid="2">
+			<md:code-name>Mode</md:code-name>
+			<md:display-name xml:lang="ja">翻訳希望</md:display-name>
+			<md:display-name xml:lang="en">Mode</md:display-name>
+			<md:description xml:lang="ja">翻訳希望</md:description>
+			<md:description xml:lang="en">A mode for a toaster. The allowed values are: 0, toast, 1, bagel.</md:description>
+		</uint8>
+		<blob typeid="3" length="65535">
+			<md:code-name>PNGImage</md:code-name>
+			<md:display-name xml:lang="ja">翻訳希望</md:display-name>
+			<md:display-name xml:lang="en">PNG Image</md:display-name>
+			<md:description xml:lang="ja">翻訳希望</md:description>
+			<md:description xml:lang="en">A PNG image.</md:description>
+		</blob>
+		<nullable typeid="4" typeref="3">
+			<md:code-name>NullablePNGImage</md:code-name>
+			<md:display-name xml:lang="ja">翻訳希望</md:display-name>
+			<md:display-name xml:lang="en">Nullable PNG Image</md:display-name>
+			<md:description xml:lang="ja">翻訳希望</md:description>
+			<md:description xml:lang="en">A PNG image that also allows a NULL value.</md:description>
+		</nullable>
+	</typedefs>
+	<properties>
+		<property itemid="1" typeref="0" read="true" write="true">
+			<md:code-name>powered</md:code-name>
+			<md:display-name xml:lang="ja">翻訳希望</md:display-name>
+			<md:display-name xml:lang="en">Powered</md:display-name>
+			<md:description xml:lang="ja">翻訳希望</md:description>
+			<md:description xml:lang="en">The power state of the toaster.</md:description>
+		</property>
+		<property itemid="2" typeref="1" read="true" write="true">
+			<md:code-name>intensity</md:code-name>
+			<md:display-name xml:lang="ja">翻訳希望</md:display-name>
+			<md:display-name xml:lang="en">Desired Intensity</md:display-name>
+			<md:description xml:lang="ja">翻訳希望</md:description>
+			<md:description xml:lang="en">The desired intensity of the toasting.</md:description>
+		</property>
+		<property itemid="3" typeref="2" read="true" write="true">
+			<md:code-name>mode</md:code-name>
+			<md:display-name xml:lang="ja">翻訳希望</md:display-name>
+			<md:display-name xml:lang="en">Mode</md:display-name>
+			<md:description xml:lang="ja">翻訳希望</md:description>
+			<md:description xml:lang="en">The mode the toaster is in.</md:description>
+		</property>
+	</properties>
+	<methods>
+		<method itemid="4">
+			<md:code-name>cancel</md:code-name>
+			<md:display-name xml:lang="ja">翻訳希望</md:display-name>
+			<md:display-name xml:lang="en">Cancel</md:display-name>
+			<md:description xml:lang="ja">翻訳希望</md:description>
+			<md:description xml:lang="en">Cancel the current toasting.</md:description>
+		</method>
+		<method itemid="5">
+			<md:code-name>setStamp</md:code-name>
+			<md:display-name xml:lang="ja">翻訳希望</md:display-name>
+			<md:display-name xml:lang="en">Set Stamp</md:display-name>
+			<md:description xml:lang="ja">翻訳希望</md:description>
+			<md:description xml:lang="en">Set the stamp to use for future toast. Null indicates no stamp.</md:description>
+			<inputs>
+				<input typeref="4">
+					<md:code-name>stamp</md:code-name>
+					<md:display-name xml:lang="ja">翻訳希望</md:display-name>
+					<md:display-name xml:lang="en">Stamp</md:display-name>
+					<md:description xml:lang="ja">翻訳希望</md:description>
+					<md:description xml:lang="en">The desired stamp, or null.</md:description>
+				</input>
+			</inputs>
+		</method>
+	</methods>
+	<events>
+		<event itemid="6">
+			<md:code-name>done</md:code-name>
+			<md:display-name xml:lang="ja">翻訳希望</md:display-name>
+			<md:display-name xml:lang="en">Done</md:display-name>
+			<md:description xml:lang="ja">翻訳希望</md:description>
+			<md:description xml:lang="en">Indicates that a toasting operation has completed.</md:description>
+		</event>
+		<event itemid="7">
+			<md:code-name>burning</md:code-name>
+			<md:display-name xml:lang="ja">翻訳希望</md:display-name>
+			<md:display-name xml:lang="en">Burning</md:display-name>
+			<md:description xml:lang="ja">翻訳希望</md:description>
+			<md:description xml:lang="en">Indicates that the toast is burning.</md:description>
+		</event>
+	</events>
+	<exceptions>
+		<exception itemid="8">
+			<md:code-name>notToasting</md:code-name>
+			<md:display-name xml:lang="ja">翻訳希望</md:display-name>
+			<md:display-name xml:lang="en">Not Toasting</md:display-name>
+			<md:description xml:lang="ja">翻訳希望</md:description>
+			<md:description xml:lang="en">Indicates that the toaster is not toasting, and so a request is not valid.</md:description>
+		</exception>
+	</exceptions>
+</interface>
