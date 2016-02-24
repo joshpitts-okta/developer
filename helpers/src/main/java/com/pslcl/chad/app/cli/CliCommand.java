@@ -409,7 +409,7 @@ public abstract class CliCommand
      * @param msg Optional error message.  Null if only help is to be displayed, 
      * Message is sent to standard err before the help if not null.
      */
-    protected void help(int exitCode, String msg)
+    public void help(int exitCode, String msg)
     {
         help(exitCode, msg, null, null);
     }
@@ -442,8 +442,8 @@ public abstract class CliCommand
         
         HelpFormatter formatter = new HelpFormatter();
         formatter.printHelp(cliBase.getMaxHelpWidth(), command.toString(), header, options, footer, true);
-//        System.exit(exitCode);
-        throw new RuntimeException(getClass().getSimpleName() + " Help displayed, see logs");
+        System.exit(exitCode);
+//        throw new RuntimeException(getClass().getSimpleName() + " Help displayed, see logs");
     }
     
     

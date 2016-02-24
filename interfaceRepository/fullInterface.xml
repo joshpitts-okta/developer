@@ -1,0 +1,451 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+	version required immutable
+	iid required immutable
+	all elements are sequence and must be in the order shown here
+	all "metablocks" are optional and if given are as follows:
+		code-name elements are required and mutable.  Only one
+		semantics elements are required and mutable. Only one
+		display-name and description are optional and mutable
+		multiple display-name and descriptions can be given, but only one per language
+-->
+<interface 
+    xmlns="http://opendof.org/schema/interface-repository" 
+    xmlns:md="http://opendof.org/schema/interface-repository-meta" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://opendof.org/schema/interface-repository http://opendof.org/schema/interface-repository.xsd" 
+    iid="[63:{01020304}]">
+	<!-- code-name required mutable, only one -->
+	<md:code-name>cn_Full_Interface</md:code-name>
+	<!-- display-name optional mutable, one per language-->
+	<md:display-name xml:lang="en">dn_Full Interface</md:display-name>
+	<md:display-name xml:lang="ja">エアコンディショナーの状態．</md:display-name>
+	<!-- description optional mutable, one per language-->
+	<md:description xml:lang="en">desc_A test interface with one of everything</md:description>
+	<md:description xml:lang="ja">エアコンディショナーの状態．</md:description>
+	<!-- 
+			typedefs optional
+		-->
+	<!-- zero to many typedef 
+				for all typedef within typedefs
+					typeid is required, immutable and must be unique within typedefs
+				for all dof types within typedef's 
+					min and max ranging is optional on all numerical types.
+			-->
+	<typedefs>
+		<!-- encoding, length required and immutable -->
+		<string type-id="0" encoding="3" length="256">
+			<md:code-name>cn_string</md:code-name>
+			<md:display-name xml:lang="en">dn_string</md:display-name>
+			<md:display-name xml:lang="ja">dn_文字列</md:display-name>
+			<md:description xml:lang="en">desc_String Type</md:description>
+			<md:description xml:lang="ja">DESC -文字列型</md:description>
+		</string>
+		<boolean type-id="1">
+			<md:code-name>cn_boolean</md:code-name>
+			<md:known-value value="true" xml:lang="en">kv_on</md:known-value>
+			<md:known-value value="false" xml:lang="en">kv_off</md:known-value>
+			<md:known-value value="true" xml:lang="ja">KV1-ブール</md:known-value>
+			<md:known-value value="false" xml:lang="ja">KV2_ブール</md:known-value>
+			<md:display-name xml:lang="en">dn_boolean</md:display-name>
+			<md:display-name xml:lang="ja">dn_ブール</md:display-name>
+			<md:description xml:lang="en">desc_Boolean Type</md:description>
+			<md:description xml:lang="ja">DESC 、ブール型</md:description>
+		</boolean>
+		<uint8 type-id="2" min="1" max="10">
+			<md:code-name>cn_uint8</md:code-name>
+			<md:known-value value="2" xml:lang="en">kv_one</md:known-value>
+			<md:known-value value="4" xml:lang="en">kv_two</md:known-value>
+			<md:known-value value="6" xml:lang="en">kv_three</md:known-value>
+			<md:known-value value="2" xml:lang="ja">VK1ブール</md:known-value>
+			<md:known-value value="4" xml:lang="ja">KV2_ブール</md:known-value>
+			<md:known-value value="6" xml:lang="ja">KV3_ブール</md:known-value>
+			<md:display-name xml:lang="en">dn_unit8</md:display-name>
+			<md:display-name xml:lang="ja">dn_ブール</md:display-name>
+			<md:description xml:lang="en">desc_UInt8 Type</md:description>
+			<md:description xml:lang="ja">DESC 、ブール型</md:description>
+			<unit>miles</unit>
+		</uint8>
+		<uint16 type-id="3" min="1" max="10">
+			<md:code-name>cn_uint16</md:code-name>
+			<md:known-value value="2" xml:lang="en">kv_one</md:known-value>
+			<md:known-value value="4" xml:lang="en">kv_two</md:known-value>
+			<md:known-value value="6" xml:lang="en">kv_three</md:known-value>
+			<md:known-value value="2" xml:lang="ja">VK1ブール</md:known-value>
+			<md:known-value value="4" xml:lang="ja">KV2_ブール</md:known-value>
+			<md:known-value value="6" xml:lang="ja">KV3_ブール</md:known-value>
+			<md:display-name xml:lang="en">dn_uint16</md:display-name>
+			<md:display-name xml:lang="ja">dn_ブール</md:display-name>
+			<md:description xml:lang="en">desc_Uint16 Type</md:description>
+			<md:description xml:lang="ja">DESC 、ブール型</md:description>
+			<unit>yards</unit>
+		</uint16>
+		<uint32 type-id="4" min="1" max="10">
+			<md:code-name>cn_uint32</md:code-name>
+			<md:known-value value="2" xml:lang="en">kv_one</md:known-value>
+			<md:known-value value="4" xml:lang="en">kv_two</md:known-value>
+			<md:known-value value="6" xml:lang="en">kv_three</md:known-value>
+			<md:known-value value="2" xml:lang="ja">VK1ブール</md:known-value>
+			<md:known-value value="4" xml:lang="ja">KV2_ブール</md:known-value>
+			<md:known-value value="6" xml:lang="ja">KV3_ブール</md:known-value>
+			<md:display-name xml:lang="en">dn_uint32</md:display-name>
+			<md:display-name xml:lang="ja">dn_ブール</md:display-name>
+			<md:description xml:lang="en">desc_Uint32 Type</md:description>
+			<md:description xml:lang="ja">DESC 、ブール型</md:description>
+			<unit>feet</unit>
+		</uint32>
+		<uint64 type-id="5" min="1" max="10">
+			<md:code-name>cn_uint64</md:code-name>
+			<md:known-value value="2" xml:lang="en">kv_one</md:known-value>
+			<md:known-value value="4" xml:lang="en">kv_two</md:known-value>
+			<md:known-value value="6" xml:lang="en">kv_three</md:known-value>
+			<md:known-value value="2" xml:lang="ja">VK1ブール</md:known-value>
+			<md:known-value value="4" xml:lang="ja">KV2_ブール</md:known-value>
+			<md:known-value value="6" xml:lang="ja">KV3_ブール</md:known-value>
+			<md:display-name xml:lang="en">dn_uint64</md:display-name>
+			<md:display-name xml:lang="ja">dn_ブール</md:display-name>
+			<md:description xml:lang="en">desc_Uint64 Type</md:description>
+			<md:description xml:lang="ja">DESC 、ブール型</md:description>
+			<unit>inches</unit>
+		</uint64>
+		<int8 type-id="6" min="1" max="10">
+			<md:code-name>cn_int8</md:code-name>
+			<md:known-value value="2" xml:lang="en">kv_one</md:known-value>
+			<md:known-value value="4" xml:lang="en">kv_two</md:known-value>
+			<md:known-value value="6" xml:lang="en">kv_three</md:known-value>
+			<md:known-value value="2" xml:lang="ja">VK1ブール</md:known-value>
+			<md:known-value value="4" xml:lang="ja">KV2_ブール</md:known-value>
+			<md:known-value value="6" xml:lang="ja">KV3_ブール</md:known-value>
+			<md:display-name xml:lang="en">dn_int8</md:display-name>
+			<md:display-name xml:lang="ja">dn_ブール</md:display-name>
+			<md:description xml:lang="en">desc_Int8 Type</md:description>
+			<md:description xml:lang="ja">DESC 、ブール型</md:description>
+			<unit>miles</unit>
+		</int8>
+		<int16 type-id="7" min="1" max="10">
+			<md:code-name>cn_int16</md:code-name>
+			<md:known-value value="2" xml:lang="en">kv_one</md:known-value>
+			<md:known-value value="4" xml:lang="en">kv_two</md:known-value>
+			<md:known-value value="6" xml:lang="en">kv_three</md:known-value>
+			<md:known-value value="2" xml:lang="ja">VK1ブール</md:known-value>
+			<md:known-value value="4" xml:lang="ja">KV2_ブール</md:known-value>
+			<md:known-value value="6" xml:lang="ja">KV3_ブール</md:known-value>
+			<md:display-name xml:lang="en">dn_int16</md:display-name>
+			<md:display-name xml:lang="ja">dn_ブール</md:display-name>
+			<md:description xml:lang="en">desc_Int16 Type</md:description>
+			<md:description xml:lang="ja">DESC 、ブール型</md:description>
+			<unit>yards</unit>
+		</int16>
+		<int32 type-id="8" min="1" max="10">
+			<md:code-name>cn_int32</md:code-name>
+			<md:known-value value="2" xml:lang="en">kv_one</md:known-value>
+			<md:known-value value="4" xml:lang="en">kv_two</md:known-value>
+			<md:known-value value="6" xml:lang="en">kv_three</md:known-value>
+			<md:known-value value="2" xml:lang="ja">VK1ブール</md:known-value>
+			<md:known-value value="4" xml:lang="ja">KV2_ブール</md:known-value>
+			<md:known-value value="6" xml:lang="ja">KV3_ブール</md:known-value>
+			<md:display-name xml:lang="en">dn_int32</md:display-name>
+			<md:display-name xml:lang="ja">dn_ブール</md:display-name>
+			<md:description xml:lang="en">desc_Int32 Type</md:description>
+			<md:description xml:lang="ja">DESC 、ブール型</md:description>
+			<unit>feet</unit>
+		</int32>
+		<int64 type-id="9" min="1" max="10">
+			<md:code-name>cn_int64</md:code-name>
+			<md:known-value value="2" xml:lang="en">kv_one</md:known-value>
+			<md:known-value value="4" xml:lang="en">kv_two</md:known-value>
+			<md:known-value value="6" xml:lang="en">kv_three</md:known-value>
+			<md:known-value value="2" xml:lang="ja">VK1ブール</md:known-value>
+			<md:known-value value="4" xml:lang="ja">KV2_ブール</md:known-value>
+			<md:known-value value="6" xml:lang="ja">KV3_ブール</md:known-value>
+			<md:display-name xml:lang="en">dn_int64</md:display-name>
+			<md:display-name xml:lang="ja">dn_ブール</md:display-name>
+			<md:description xml:lang="en">desc_Int64 Type</md:description>
+			<md:description xml:lang="ja">DESC 、ブール型</md:description>
+			<unit>inches</unit>
+		</int64>
+		<float32 type-id="10" min="1.0" max="10.0">
+			<md:code-name>cn_float32</md:code-name>
+			<md:known-value value="2.0" xml:lang="en">kv_one</md:known-value>
+			<md:known-value value="4.0" xml:lang="en">kv_two</md:known-value>
+			<md:known-value value="6.0" xml:lang="en">kv_three</md:known-value>
+			<md:known-value value="2.0" xml:lang="ja">VK1ブール</md:known-value>
+			<md:known-value value="4.0" xml:lang="ja">KV2_ブール</md:known-value>
+			<md:known-value value="6.0" xml:lang="ja">KV3_ブール</md:known-value>
+			<md:display-name xml:lang="en">dn_float32</md:display-name>
+			<md:display-name xml:lang="ja">dn_ブール</md:display-name>
+			<md:description xml:lang="en">desc_float32 Type</md:description>
+			<md:description xml:lang="ja">DESC 、ブール型</md:description>
+			<unit>inches</unit>
+		</float32>
+		<float64 type-id="11" min="1.0" max="10.0">
+			<md:code-name>cn_float64</md:code-name>
+			<md:known-value value="2.0" xml:lang="en">kv_one</md:known-value>
+			<md:known-value value="4.0" xml:lang="en">kv_two</md:known-value>
+			<md:known-value value="6.0" xml:lang="en">kv_three</md:known-value>
+			<md:known-value value="2.0" xml:lang="ja">VK1ブール</md:known-value>
+			<md:known-value value="4.0" xml:lang="ja">KV2_ブール</md:known-value>
+			<md:known-value value="6.0" xml:lang="ja">KV3_ブール</md:known-value>
+			<md:display-name xml:lang="en">dn_float64</md:display-name>
+			<md:display-name xml:lang="ja">dn_ブール</md:display-name>
+			<md:description xml:lang="en">desc_float64 Type</md:description>
+			<md:description xml:lang="ja">DESC 、ブール型</md:description>
+			<unit>inches</unit>
+		</float64>
+		<datetime type-id="12">
+			<md:code-name>cn_datetime</md:code-name>
+			<md:display-name xml:lang="en">dn_datetime</md:display-name>
+			<md:display-name xml:lang="ja">dn_ブール</md:display-name>
+			<md:description xml:lang="en">desc_Datetime Type</md:description>
+			<md:description xml:lang="ja">DESC 、ブール型</md:description>
+		</datetime>
+		<!-- 
+			min-length optional, length required, both immutable, min set to length if not given 
+			typeref is required and immutable.  The typeref values must match a typedef ids in this typedefs block 
+		-->
+		<array type-id="13"  type-ref="0" min-length="3" length="10">
+				<md:code-name>cn_stringarray</md:code-name>
+				<md:display-name xml:lang="en">dn_stringarray</md:display-name>
+				<md:display-name xml:lang="ja">dn_ブール</md:display-name>
+				<md:description xml:lang="en">desc_Array of String Type</md:description>
+				<md:description xml:lang="ja">DESC 、ブール型</md:description>
+		</array>
+		<structure type-id="15">
+			<md:code-name>cn_structure</md:code-name>
+			<md:display-name xml:lang="en">dn_structure</md:display-name>
+			<md:display-name xml:lang="ja">dn_ブール</md:display-name>
+			<md:description xml:lang="en">desc_Structure Type</md:description>
+			<md:description xml:lang="ja">DESC 、ブール型</md:description>
+			<!-- one to many field's required.  The number of field's and their values are immutable.  The type-ref values must match a typedef ids in this typedefs block -->
+			<field type-ref="18">
+				<md:code-name>cn_selfReference</md:code-name>
+				<md:display-name xml:lang="en">dn_selfReference</md:display-name>
+				<md:display-name xml:lang="ja">dn_ブール</md:display-name>
+				<md:description xml:lang="en">desc_Nullable Self Reference</md:description>
+				<md:description xml:lang="ja">DESC - NULL可能セルフリファレンス</md:description>
+			</field >
+			<field  type-ref="0">
+				<md:code-name>cn_firstName</md:code-name>
+				<md:display-name xml:lang="en">dn_firstName</md:display-name>
+				<md:display-name xml:lang="ja">dn_ブール</md:display-name>
+				<md:description xml:lang="en">desc_The First Name</md:description>
+				<md:description xml:lang="ja">DESC 、ブール型</md:description>
+			</field >
+			<field  type-ref="1">
+				<md:code-name>cn_qualified</md:code-name>
+				<md:display-name xml:lang="en">dn_qualified</md:display-name>
+				<md:display-name xml:lang="ja">dn_ブール</md:display-name>
+				<md:description xml:lang="en">desc_Boolean, is firstName qualidfied</md:description>
+				<md:description xml:lang="ja">DESC 、ブール型</md:description>
+			</field >
+			<field  type-ref="2">
+				<md:code-name>cn_age</md:code-name>
+				<md:display-name xml:lang="en">dn_age</md:display-name>
+				<md:display-name xml:lang="ja">dn_ブール</md:display-name>
+				<md:description xml:lang="en">desc_Age of firstname</md:description>
+				<md:description xml:lang="ja">DESC 、ブール型</md:description>
+			</field >
+		</structure>
+		<uuid type-id="16">
+			<md:code-name>cn_guid</md:code-name>
+			<md:display-name xml:lang="en">dn_guid</md:display-name>
+			<md:display-name xml:lang="ja">dn_ブール</md:display-name>
+			<md:description xml:lang="en">desc_Guid Type</md:description>
+			<md:description xml:lang="ja">DESC 、ブール型</md:description>
+		</uuid>
+		<!-- min-length optional, length required, both immutable, min set to length if not given -->
+		<blob type-id="17" min-length="3" length="10">
+			<md:code-name>cn_blob</md:code-name>
+			<md:display-name xml:lang="en">dn_blob</md:display-name>
+			<md:display-name xml:lang="ja">dn_ブール</md:display-name>
+			<md:description xml:lang="en">desc_Blob Type</md:description>
+			<md:description xml:lang="ja">DESC 、ブール型</md:description>
+		</blob>
+			<!-- type-ref is required and immutable.  It must match a typedef id in this typedefs block -->
+		<nullable type-id="18"  type-ref="15">
+			<md:code-name>cn_nullableStructPointer</md:code-name>
+			<md:display-name xml:lang="en">dn_nullableStructPointer</md:display-name>
+			<md:display-name xml:lang="ja">dn_ブール</md:display-name>
+			<md:description xml:lang="en">desc_Nullable Structure Pointer Type</md:description>
+			<md:description xml:lang="ja">DESC 、ブール型</md:description>
+		</nullable>
+		<oid type-id="19">
+			<md:code-name>cn_oid</md:code-name>
+			<md:display-name xml:lang="en">dn_oid</md:display-name>
+			<md:display-name xml:lang="ja">dn_ブール</md:display-name>
+			<md:description xml:lang="en">desc_Oid Type</md:description>
+			<md:description xml:lang="ja">DESC 、ブール型</md:description>
+		</oid>
+		<iid type-id="20">
+			<md:code-name>cn_iid</md:code-name>
+			<md:display-name xml:lang="en">dn_iid</md:display-name>
+			<md:display-name xml:lang="ja">dn_ブール</md:display-name>
+			<md:description xml:lang="en">desc_Iid Type</md:description>
+			<md:description xml:lang="ja">DESC 、ブール型</md:description>
+		</iid>
+		<nullable type-id="21"  type-ref="0">
+			<md:code-name>cn_nullableStringPointer</md:code-name>
+			<md:display-name xml:lang="en">dn_nullableStringPointer</md:display-name>
+			<md:display-name xml:lang="ja">dn_ブール</md:display-name>
+			<md:description xml:lang="en">desc_Nullable String Pointer Type</md:description>
+			<md:description xml:lang="ja">DESC 、ブール型</md:description>
+		</nullable>
+	</typedefs>
+	<!-- 
+			properties optional
+		-->
+	<properties>
+		<!-- 
+				zero to many properties 
+				itemid required immutable and must be unique within interfaces
+				read, write required and immutable
+				type-ref ref must match a typedef id from the typedefs section
+			-->
+		<property item-id="0" type-ref= "0" read="true" write="true">
+				<md:code-name>cn_stringProperty</md:code-name>
+				<md:display-name xml:lang="en">dn_stringProperty</md:display-name>
+				<md:display-name xml:lang="ja">dn_ブール</md:display-name>
+				<md:description xml:lang="en">desc_String Property</md:description>
+				<md:description xml:lang="ja">DESC 、ブール型</md:description>
+		</property>
+		<property item-id="1" type-ref= "1" read="true" write="true">
+				<md:code-name>cn_booleanProperty</md:code-name>
+				<md:display-name xml:lang="en">dn_booleanProperty</md:display-name>
+				<md:display-name xml:lang="ja">dn_ブール</md:display-name>
+				<md:description xml:lang="en">desc_Boolean Property</md:description>
+				<md:description xml:lang="ja">DESC 、ブール型</md:description>
+		</property>
+	</properties>
+	<!-- 
+			methods optional
+		-->
+	<methods>
+		<!-- 
+				zero to many methods 
+				itemid required immutable and must be unique within interfaces
+				all type-ref ref's must match a typedef id from the typedefs section
+			-->
+		<method item-id="2">
+			<md:code-name>cn_method1</md:code-name>
+			<md:display-name xml:lang="en">dn_method1</md:display-name>
+			<md:display-name xml:lang="ja">dn_ブール</md:display-name>
+			<md:description xml:lang="en">desc_Method 1</md:description>
+			<md:description xml:lang="ja">DESC 、ブール型</md:description>
+			<!-- inputs optional -->
+			<inputs>
+				<!-- zero to many input type-ref's, each could have metablocks -->
+				<input type-ref="2">
+					<md:code-name>cn_m1i1-age</md:code-name>
+					<md:display-name xml:lang="en">dn_m1i1-age</md:display-name>
+					<md:display-name xml:lang="ja">dn_ブール</md:display-name>
+					<md:description xml:lang="en">desc_Method1' first input parameter which is of type Uint8</md:description>
+					<md:description xml:lang="ja">DESC 、ブール型</md:description>
+				</input>
+				<input type-ref="3"/>
+				<input type-ref="4"/>
+			</inputs>
+			<!-- outputs optional -->
+			<outputs>
+				<!-- zero to many output type-ref's, each could have metablocks -->
+				<output type-ref="5"/>
+				<output type-ref="6">
+					<md:code-name>cn_m1o2-age</md:code-name>
+					<md:display-name xml:lang="en">dn_m1o2-age</md:display-name>
+					<md:display-name xml:lang="ja">dn_ブール</md:display-name>
+					<md:description xml:lang="en">desc_Method1' second output parameter which is of type Int8</md:description>
+					<md:description xml:lang="ja">タイプのINT8あるDESC -方法1 「第二の出力パラメータ</md:description>
+				</output>
+				<output type-ref="7"/>
+			</outputs>
+		</method>
+		<method item-id="8">
+			<md:code-name>cn_method2</md:code-name>
+			<md:display-name xml:lang="en">dn_method2</md:display-name>
+			<md:display-name xml:lang="ja">dn_ブール</md:display-name>
+			<md:description xml:lang="en">desc_method 2</md:description>
+			<md:description xml:lang="ja">DESC 、ブール型</md:description>
+			<inputs>
+				<input type-ref="9"/>
+				<input type-ref="10"/>
+				<input type-ref="11"/>
+			</inputs>
+			<outputs>
+				<output type-ref="12"/>
+				<output type-ref="13"/>
+				<output type-ref="15"/>
+			</outputs>
+		</method>
+	</methods>
+	<!-- 
+			events required 
+		-->
+	<events>
+		<!-- 
+				zero to many events 
+				itemid required immutable and must be unique within interfaces
+				all typeref ref's must match a typedef id from the typedefs section
+			-->
+		<event item-id="4">
+			<md:code-name>cn_event1</md:code-name>
+			<md:display-name xml:lang="en">dn_event1</md:display-name>
+			<md:display-name xml:lang="ja">dn_ブール</md:display-name>
+			<md:description xml:lang="en">desc_Event 1</md:description>
+			<md:description xml:lang="ja">DESC 、ブール型</md:description>
+			<!-- outputs optional -->
+			<outputs>
+				<!-- zero to many output typeref's, each typeref could have a metablock  -->
+				<output type-ref="15">
+					<md:code-name>cn_event1o1</md:code-name>
+					<md:display-name xml:lang="en">dn_event1o1</md:display-name>
+					<md:display-name xml:lang="ja">dn_ブール</md:display-name>
+					<md:description xml:lang="en">desc_Event 1's output 1 which is our structure</md:description>
+					<md:description xml:lang="ja">DESC 、ブール型</md:description>
+				</output>
+				<output type-ref="16"/>
+				<output type-ref="17"/>
+			</outputs>
+		</event>
+		<event item-id="5">
+			<md:code-name>cn_event2</md:code-name>
+			<md:display-name xml:lang="en">dn_event2</md:display-name>
+			<md:display-name xml:lang="ja">dn_ブール</md:display-name>
+			<md:description xml:lang="en">desc_Event 2</md:description>
+			<md:description xml:lang="ja">DESC 、ブール型</md:description>
+		</event>
+	</events>
+	<!-- 
+			exceptions optional 
+		-->
+	<exceptions>
+		<!-- 
+				zero to many exceptions 
+				item-id required immutable and must be unique within interfaces
+			-->
+		<exception item-id="6">
+			<md:code-name>cn_exception1</md:code-name>
+			<md:display-name xml:lang="en">dn_exception1</md:display-name>
+			<md:display-name xml:lang="ja">dn_ブール</md:display-name>
+			<md:description xml:lang="en">desc_Exception 1</md:description>
+			<md:description xml:lang="ja">DESC 、ブール型</md:description>
+			<!-- outputs optional -->
+			<outputs>
+				<!-- zero to many output typeref's, each typeref could have a metablock  -->
+				<output type-ref="18"/>
+				<output type-ref="19"/>
+				<output type-ref="20"/>
+			</outputs>
+		</exception>
+		<exception item-id="7">
+			<md:code-name>cn_exception2</md:code-name>
+			<md:display-name xml:lang="en">dn_exception2</md:display-name>
+			<md:display-name xml:lang="ja">dn_ブール</md:display-name>
+			<md:description xml:lang="en">desc_exception2</md:description>
+			<md:description xml:lang="ja">DESC 、ブール型</md:description>
+			<outputs>
+				<output type-ref="17"/>
+				<output type-ref="18"/>
+				<output type-ref="19"/>
+			</outputs>
+		</exception>
+	</exceptions>
+</interface>
