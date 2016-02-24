@@ -75,7 +75,8 @@ public class BindAwsTest implements PreStartExecuteInterface
     private final NetworkInstance[] networkInstances;
     private final PersonInstance[] personInstances;
     private final CableInstance[] cableInstances;
-
+    private final int[] runIds;
+    
     public BindAwsTest()
     {
         log = LoggerFactory.getLogger(getClass());
@@ -83,15 +84,20 @@ public class BindAwsTest implements PreStartExecuteInterface
         machineInstances = new MachineInstance[4];
         networkInstances = new NetworkInstance[2];
         personInstances = new PersonInstance[4];
+        runIds = new int[4];
+        runIds[0] = 80; 
+        runIds[1] = 80;
+        runIds[2] = 80;
+        runIds[3] = 80;
     }
 
     private List<ResourceDescription> getMachineResourceDescriptions(Properties appProperties)
     {
         List<ResourceDescription> list = new ArrayList<ResourceDescription>();
-        getMachineResourceDescription(ResourceProvider.MachineName, 11, 80, "archOnly", appProperties, list);
-        getMachineResourceDescription(ResourceProvider.MachineName, 22, 80, "windows", appProperties, list);
-        getMachineResourceDescription(ResourceProvider.MachineName, 33, 80, "linux", appProperties, list);
-        getMachineResourceDescription(ResourceProvider.MachineName, 44, 80, "javaOnly", appProperties, list);
+        getMachineResourceDescription(ResourceProvider.MachineName, 11, runIds[0], "archOnly", appProperties, list);
+        getMachineResourceDescription(ResourceProvider.MachineName, 22, runIds[1], "windows", appProperties, list);
+        getMachineResourceDescription(ResourceProvider.MachineName, 33, runIds[2], "linux", appProperties, list);
+        getMachineResourceDescription(ResourceProvider.MachineName, 44, runIds[3], "javaOnly", appProperties, list);
         return list;
     }
 
@@ -584,15 +590,15 @@ public class BindAwsTest implements PreStartExecuteInterface
         boolean windows = true;
 
         String url = "http://mirrors.koehn.com/apache//commons/cli/binaries/commons-cli-1.3.1-bin.zip";
-        DeployFuture df = new DeployFuture(host, linuxBase, winBase, partialDestPath, url, windows);
+        DeployFuture df = new DeployFuture(host, linuxBase, winBase, partialDestPath, url, windows, runIds[0]);
         df.call();
         partialDestPath = "bin/doit.bat";
         url = "http://mirrors.koehn.com/apache//commons/cli/binaries/commons-cli-1.3.1-bin.zip";
-        df = new DeployFuture(host, linuxBase, winBase, partialDestPath, url, windows);
+        df = new DeployFuture(host, linuxBase, winBase, partialDestPath, url, windows, runIds[0]);
         df.call();
         partialDestPath = "lib/someApp.jar";
         url = "http://mirrors.koehn.com/apache//commons/cli/source/commons-cli-1.3.1-src.zip";
-        df = new DeployFuture(host, linuxBase, winBase, partialDestPath, url, windows);
+        df = new DeployFuture(host, linuxBase, winBase, partialDestPath, url, windows, runIds[0]);
         df.call();
     }
 
@@ -650,7 +656,7 @@ public class BindAwsTest implements PreStartExecuteInterface
                             String cmd = runLinuxPartialDestPath[j];
                             if(windows)
                                 cmd = runWinPartialDestPath[j];
-                            configFuture = new ConfigureFuture(host, linuxBase, winBase, cmd, windows, this);
+                            configFuture = new ConfigureFuture(host, linuxBase, winBase, cmd, windows, runIds[0], null);
                             runnableProgram = (StafRunnableProgram) configFuture.call();
                             if(runnableProgram.getRunResult() != serviceRc[j])
                                 throw new Exception("configureFuture application returned non-zero: " + runnableProgram.getRunResult());
@@ -660,7 +666,7 @@ public class BindAwsTest implements PreStartExecuteInterface
                             cmd = runLinuxPartialDestPath[j];
                             if(windows)
                                 cmd = runWinPartialDestPath[j];
-                            runFuture = new RunFuture(host, linuxBase, winBase, cmd, null, windows, this);
+                            runFuture = new RunFuture(host, linuxBase, winBase, cmd, null, windows, runIds[0], this);
                             runnableProgram = (StafRunnableProgram) runFuture.call();
                             if(runnableProgram.getRunResult() != serviceRc[j])
                                 throw new Exception("runFuture application returned non-zero");
@@ -670,7 +676,7 @@ public class BindAwsTest implements PreStartExecuteInterface
                             cmd = startLinuxPartialDestPath[j];
                             if(windows)
                                 cmd = startWinPartialDestPath[j];
-                            runFuture = new RunFuture(host, linuxBase, winBase, cmd, config.blockingExecutor, windows, this);
+                            runFuture = new RunFuture(host, linuxBase, winBase, cmd, config.blockingExecutor, windows, runIds[0], this);
                             runnableProgram = (StafRunnableProgram) runFuture.call();
                             if(!runnableProgram.isRunning())
                                 throw new Exception("startFuture application returned not running");
@@ -778,7 +784,7 @@ public class BindAwsTest implements PreStartExecuteInterface
                             String cmd = runLinuxPartialDestPath[j];
                             if(windows)
                                 cmd = runWinPartialDestPath[j];
-                            cmdData = DeployFuture.getCommandPath(cmd, linuxBase, winBase, windows);
+                            cmdData = DeployFuture.getCommandPath(cmd, linuxBase, winBase, windows, runIds[0]);
                             log.info("\n"+cmdData.toString());
 //                            configFuture = new ConfigureFuture(host, linuxBase, winBase, cmd, windows, this);
 //                            runnableProgram = (StafRunnableProgram) configFuture.call();
@@ -790,7 +796,7 @@ public class BindAwsTest implements PreStartExecuteInterface
                             cmd = runLinuxPartialDestPath[j];
                             if(windows)
                                 cmd = runWinPartialDestPath[j];
-                            cmdData = DeployFuture.getCommandPath(cmd, linuxBase, winBase, windows);
+                            cmdData = DeployFuture.getCommandPath(cmd, linuxBase, winBase, windows, runIds[0]);
                             log.info("\n"+cmdData.toString());
 //                            runFuture = new RunFuture(host, linuxBase, winBase, cmd, null, windows, this);
 //                            runnableProgram = (StafRunnableProgram) runFuture.call();
@@ -802,7 +808,7 @@ public class BindAwsTest implements PreStartExecuteInterface
                             cmd = startLinuxPartialDestPath[j];
                             if(windows)
                                 cmd = startWinPartialDestPath[j];
-                            cmdData = DeployFuture.getCommandPath(cmd, linuxBase, winBase, windows);
+                            cmdData = DeployFuture.getCommandPath(cmd, linuxBase, winBase, windows, runIds[0]);
                             log.info("\n"+cmdData.toString());
 //                            runFuture = new RunFuture(host, linuxBase, winBase, cmd, config.blockingExecutor, windows, this);
 //                            runnableProgram = (StafRunnableProgram) runFuture.call();
@@ -885,9 +891,6 @@ public class BindAwsTest implements PreStartExecuteInterface
                 bindNetwork();
                 connect();
                 disconnect();
-                log.info("giving deploy 10 secs");
-                Thread.sleep(100);
-                log.info("giving deploy 10 secs is up");
                 deploy();
             }
             releaseTemplate(true);
