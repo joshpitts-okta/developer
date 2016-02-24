@@ -13,6 +13,11 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>org.opendof.tools-interface-repository</groupId>
+			<artifactId>interface-repository-core</artifactId>
+	    	<version>1.0</version>
+		</dependency>
+		<dependency>
 			<groupId>org.opendof.core</groupId>
 			<artifactId>dof-oal</artifactId>
 		</dependency>
@@ -40,9 +45,9 @@
 			<artifactId>logback-core</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.emit-networking.internal.chad</groupId>
-			<artifactId>test</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<groupId>com.pslcl.chad.developer</groupId>
+			<artifactId>helpers</artifactId>
+			<version>1.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>

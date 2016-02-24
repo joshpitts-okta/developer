@@ -27,10 +27,10 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathFactory;
 
-import org.emitdo.internal.app.util.StrH;
 import org.opendof.tools.repository.interfaces.core.CoreController;
 import org.opendof.tools.repository.interfaces.core.InterfaceRequest;
 import org.opendof.tools.repository.interfaces.core.RequestData;
+import org.opendof.tools.repository.interfaces.core.SubmitterRequest;
 import org.opendof.tools.repository.interfaces.test.legacySax.LegacySaxParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,6 +39,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
+
+import com.pslcl.chad.app.StrH;
 
 @SuppressWarnings("javadoc")
 public class Converter
@@ -404,7 +406,10 @@ public class Converter
         	}
             String xml = fileToString(currentfile);
             InterfaceRequest iface = new InterfaceRequest(null, "1", "opendof");
-            RequestData request = new RequestData(null, null, ConverterGroup, iface);
+            SubmitterRequest submitter = new SubmitterRequest(null, ConverterGroup, null, null);
+            RequestData request = new RequestData(null, null, submitter, iface);
+            
+            
             log.debug("\nadding file: " + currentfile.getAbsolutePath());
             controller.addInterface(request);
         }
@@ -426,8 +431,9 @@ public class Converter
             if(currentfile.getAbsolutePath().contains("org.allseen") || currentfile.getAbsolutePath().contains("org.freedesktop"))
             	repoType = "allseen";
             	
-            InterfaceRequest iface = new InterfaceRequest(null, repoType, false, xml);
-            RequestData request = new RequestData(null, ConverterGroup, null, null, iface);
+            InterfaceRequest iface = new InterfaceRequest(null, null, repoType);
+            SubmitterRequest submitter = new SubmitterRequest(null, ConverterGroup, null, null);
+            RequestData request = new RequestData(null, null, submitter, iface);
             log.debug("\nadding file: " + currentfile.getAbsolutePath());
             controller.addInterface(request);
         }

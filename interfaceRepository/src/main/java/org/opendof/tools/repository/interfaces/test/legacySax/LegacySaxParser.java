@@ -31,8 +31,8 @@ public class LegacySaxParser
     // private final static String xmlFile = "C:/tmp/irepository/output/working/10020018.xml";
     private final static String xmlFile = "/tmp/irepository/output/working/TemporaryCredentials.xml";
     //  private final static String xmlFile = "/tmp/irepository/output/working/GPSLocation.xml";
-    private final static boolean singleFile = true;
-    private final static boolean publishOnly = true;
+    private final static boolean singleFile = false;
+    private final static boolean publishOnly = false;
     private final static boolean workingOnly = false;
     private final static boolean doExport = true;
     private final static boolean validate = true;
@@ -95,15 +95,41 @@ public class LegacySaxParser
         "C:/tmp/irepository/output/publish/air-flow-volume.xml",  //iid="[1:{01000041}] cdata with html
         "C:/tmp/irepository/output/publish/BaseInterface.xml",  //iid="[1:{01000000}] no context
         "C:/tmp/irepository/output/publish/device-control.xml", //iid=[1:{09}] no context
-        "C:/tmp/irepository/output/publish/hostel-ac-platform.xml", //iid=[1:{01000043}] range being set on array
         "C:/tmp/irepository/output/publish/hostel-ac-snapshot.xml", //iid=[1:{01000044}] no context garbled
 */      
+        "C:/tmp/irepository/output/publish/hostel-ac-platform.xml", //iid=[1:{01000043}] range being set on array
+        
     	// waiting for translation decisions 
         "C:/tmp/irepository/output/publish/MultiPowerMeter.xml", //iid=[1:{0233}] duplicate lang on description typeid 3
         
         
         // working
-        "C:/tmp/irepository/output/working/10020011.xml", //iid=[2:{10020011}] http://emitdo.org/schema/RM hex, decimals, conversion
+        "C:/tmp/irepository/output/working/v-r.xml",      
+        "C:/tmp/irepository/output/working/v-p.xml",      
+        "C:/tmp/irepository/output/working/v-o.xml",      
+        "C:/tmp/irepository/output/working/v-f.xml",      
+        "C:/tmp/irepository/output/working/v-c.xml",      
+        "C:/tmp/irepository/output/working/refrigerant.xml",      
+        "C:/tmp/irepository/output/working/PT4Plus FuelCellRealTimeValue.xml",      
+        "C:/tmp/irepository/output/working/processing-result-notify.xml",      
+        "C:/tmp/irepository/output/working/lamp-state.xml",      
+        "C:/tmp/irepository/output/working/i-u.xml",      
+        "C:/tmp/irepository/output/working/g-w.xml",      
+        "C:/tmp/irepository/output/working/g-r.xml",      
+        "C:/tmp/irepository/output/working/g-o.xml",      
+        "C:/tmp/irepository/output/working/g-h.xml",      
+        "C:/tmp/irepository/output/working/g-g.xml",      
+        "C:/tmp/irepository/output/working/g-f.xml",      
+        "C:/tmp/irepository/output/working/g-e.xml",      
+        "C:/tmp/irepository/output/working/g-c.xml",       
+        "C:/tmp/irepository/output/working/FuelCellNetworkBoardErrorMonitor.xml",      
+        "C:/tmp/irepository/output/working/energy-saving-mode.xml",      
+        "C:/tmp/irepository/output/working/electrical-device-rated-value.xml",      
+        "C:/tmp/irepository/output/working/air-conditioner-indoor-unit-operation-time.xml",      
+        "C:/tmp/irepository/output/working/air-conditioner-indoor-unit-operation-mode-list.xml",       
+        "C:/tmp/irepository/output/working/air-conditioner-indoor-unit-operation-mode-configuration.xml",      
+        "C:/tmp/irepository/output/working/air-conditioner-indoor-unit-info.xml",      
+        "C:/tmp/irepository/output/working/about-device-data.xml", // cdata null      
         "C:/tmp/irepository/output/working/ACGenerator.xml", // sibling url null      
         "C:/tmp/irepository/output/working/automobile-probe.xml", // cdata empty
         "C:/tmp/irepository/output/working/AccessPointMarker.xml", // context empty
@@ -243,7 +269,7 @@ public class LegacySaxParser
         file = file.replace('\\', '/');
         for(int i=0; i < badInterfaces.length; i++)
         {
-            if(badInterfaces[i].equals(file))
+            if(badInterfaces[i].contains(file))
                 return;
         }
         System.out.print(file + " ");
