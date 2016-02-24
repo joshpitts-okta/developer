@@ -70,7 +70,8 @@ public class BindAwsTest implements PreStartExecuteInterface
     private volatile List<ResourceReserveDisposition> machineResult;
     private volatile List<ResourceReserveDisposition> networkResult;
     private volatile List<ResourceReserveDisposition> personResult;
-    private volatile String templateId;
+    private final long templateInstanceId = 0xaaaaaaaaL;
+
     private final MachineInstance[] machineInstances;
     private final NetworkInstance[] networkInstances;
     private final PersonInstance[] personInstances;
@@ -144,8 +145,8 @@ public class BindAwsTest implements PreStartExecuteInterface
             attrs.put(entry.getKey(), entry.getValue());
 
         getNetworkResourceDescription(name, resourceId, runId, appProperties, list, attrs);
-        templateId = getTemplateId();
-        ResourceCoordinates coord = new ResourceCoordinates(templateId, resourceId, runId);
+        String templateId = getTemplateId();
+        ResourceCoordinates coord = new ResourceCoordinates(templateId, templateInstanceId, resourceId, runId);
         ResourceDescImpl resource = new ResourceDescImpl(name, coord, attrs);
         list.add(resource);
         return list;
@@ -199,7 +200,7 @@ public class BindAwsTest implements PreStartExecuteInterface
 
         if (attrsIn == null)
         {
-            ResourceCoordinates coord = new ResourceCoordinates(getTemplateId(), resourceId, runId);
+            ResourceCoordinates coord = new ResourceCoordinates(getTemplateId(), templateInstanceId, resourceId, runId);
             ResourceDescImpl resource = new ResourceDescImpl(name, coord, attrs);
             list.add(resource);
         }
@@ -229,7 +230,7 @@ public class BindAwsTest implements PreStartExecuteInterface
                 attrs.put(entry.getKey(), entry.getValue());
         }
 
-        ResourceCoordinates coord = new ResourceCoordinates(getTemplateId(), resourceId, runId);
+        ResourceCoordinates coord = new ResourceCoordinates(getTemplateId(), templateInstanceId, resourceId, runId);
         ResourceDescImpl resource = new ResourceDescImpl(name, coord, attrs);
         list.add(resource);
         return list;
@@ -448,9 +449,9 @@ public class BindAwsTest implements PreStartExecuteInterface
     private void releaseTemplate(boolean machine)
     {
         if (machine)
-            manager.release(templateId, false);
+            manager.release(templateInstanceId, false);
         else
-            manager.release(templateId, false);
+            manager.release(templateInstanceId, false);
     }
 
     private class AwsTestConfig
