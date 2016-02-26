@@ -30,6 +30,8 @@ public class AwsCliCommand extends CliCommand
     public static final String MachineLongCl = "machine";
     public static final String RunShortCl = "r";
     public static final String RunLongCl = "config-run-start";
+    public static final String ReuseShortCl = "u";
+    public static final String ReuseLongCl = "reuse";
 
     public final Properties properties;
 
@@ -91,6 +93,12 @@ public class AwsCliCommand extends CliCommand
             Option.builder(RunShortCl)
                 .desc("Configure, Run and Start direct to Future testing")
                 .longOpt(RunLongCl)
+                .build());
+        
+        options.addOption(
+            Option.builder(ReuseShortCl)
+                .desc("Reuse testing")
+                .longOpt(ReuseLongCl)
                 .build());
         //@formatter:on
     }

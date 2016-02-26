@@ -290,62 +290,50 @@ public class BindAwsTest implements PreStartExecuteInterface
         }
     }
 
-    private void bindMachine(boolean earlyout)
+    private void bind(int machineIdx, ReservedResource rresource, boolean earlyout) throws Exception
     {
-        try
-        {
-            List<ReservedResource> resources = new ArrayList<ReservedResource>();
-            for (ResourceReserveDisposition disposition : machineResult)
-                resources.add(disposition.getReservedResource());
-            List<Future<MachineInstance>> futures = machineProvider.bind(resources);
-            int index = 0;
-            if (earlyout)
-                return;
-            for (Future<MachineInstance> future : futures)
-                machineInstances[index++] = future.get();
-        } catch (Exception e)
-        {
-            log.error("bind machine failed", e);
-        }
+        Future<MachineInstance> future = machineProvider.bind(rresource);
+        if(earlyout)
+            return;
+        machineInstances[machineIdx] = future.get();
+        log.info("bind idx " + machineIdx + " completed");
+    }
+    
+    private void bindMachine(boolean earlyout)throws Exception
+    {
+        int i = 0;
+        List<Future<Void>> futures = new ArrayList<Future<Void>>();
+        for (ResourceReserveDisposition disposition : machineResult)
+            futures.add(config.blockingExecutor.submit(new BindWorker(this, disposition.getReservedResource(), earlyout, i++)));
+        for(Future<Void> future : futures)
+            future.get();
     }
 
-    private void bindNetwork()
+    private void bindNetwork() throws Exception
     {
-        try
-        {
-            List<ReservedResource> resources = new ArrayList<ReservedResource>();
-            for (ResourceReserveDisposition disposition : networkResult)
-                resources.add(disposition.getReservedResource());
-            List<Future<NetworkInstance>> futures = networkProvider.bind(resources);
-            int index = 0;
-            for (Future<NetworkInstance> future : futures)
-                networkInstances[index++] = future.get();
-        } catch (Exception e)
-        {
-            log.error("bind network failed", e);
-        }
+        List<ReservedResource> resources = new ArrayList<ReservedResource>();
+        for (ResourceReserveDisposition disposition : networkResult)
+            resources.add(disposition.getReservedResource());
+        List<Future<NetworkInstance>> futures = networkProvider.bind(resources);
+        int index = 0;
+        for (Future<NetworkInstance> future : futures)
+            networkInstances[index++] = future.get();
     }
 
-    private void bindPerson()
+    private void bindPerson() throws Exception
     {
-        try
-        {
-            List<ReservedResource> resources = new ArrayList<ReservedResource>();
-            for (ResourceReserveDisposition disposition : personResult)
-                resources.add(disposition.getReservedResource());
-            List<Future<PersonInstance>> futures = personProvider.bind(resources);
-            int index = 0;
-            for (Future<PersonInstance> future : futures)
-                personInstances[index++] = future.get();
-        } catch (Exception e)
-        {
-            log.error("bind network failed", e);
-        }
+        List<ReservedResource> resources = new ArrayList<ReservedResource>();
+        for (ResourceReserveDisposition disposition : personResult)
+            resources.add(disposition.getReservedResource());
+        List<Future<PersonInstance>> futures = personProvider.bind(resources);
+        int index = 0;
+        for (Future<PersonInstance> future : futures)
+            personInstances[index++] = future.get();
     }
 
     private void connect(int machineIndex) throws Exception
     {
-        cableInstances[machineIndex] = machineInstances[machineIndex].connect(networkInstances[machineIndex < 2 ? 0 : 1]).get();
+       cableInstances[machineIndex] = machineInstances[machineIndex].connect(networkInstances[machineIndex < 2 ? 0 : 1]).get();
     }
 
     private void disconnect(int machineIndex) throws Exception
@@ -353,19 +341,13 @@ public class BindAwsTest implements PreStartExecuteInterface
         machineInstances[machineIndex].disconnect(networkInstances[machineIndex < 2 ? 0 : 1]).get();
     }
 
-    private void connect()
+    private void connect() throws Exception
     {
-        try
-        {
-            List<Future<Void>> list = new ArrayList<Future<Void>>();
-            for (int i = 0; i < machineInstances.length; i++)
-                list.add(config.blockingExecutor.submit(new ConnectWorker(this, i)));
-            for (int i = 0; i < list.size(); i++)
-                list.get(i).get();
-        } catch (Exception e)
-        {
-            log.error("connect failed", e);
-        }
+        List<Future<Void>> list = new ArrayList<Future<Void>>();
+        for (int i = 0; i < machineInstances.length; i++)
+            list.add(config.blockingExecutor.submit(new ConnectWorker(this, i)));
+        for (int i = 0; i < list.size(); i++)
+            list.get(i).get();
     }
 
     private void disconnect()
@@ -449,9 +431,9 @@ public class BindAwsTest implements PreStartExecuteInterface
     private void releaseTemplate(boolean machine)
     {
         if (machine)
-            manager.release(templateInstanceId, false);
+            manager.release(templateInstanceId, true);
         else
-            manager.release(templateInstanceId, false);
+            manager.release(templateInstanceId, true);
     }
 
     private class AwsTestConfig
@@ -558,25 +540,25 @@ public class BindAwsTest implements PreStartExecuteInterface
         Config, Run, Start
     }
 
-    private class RunWorker implements Callable<Void>
+    private class BindWorker implements Callable<Void>
     {
         private final BindAwsTest test;
         private final int machineIndex;
-        private final RunType type;
-        private final boolean windows;
+        private final boolean earlyout;
+        private final ReservedResource rresource;
 
-        private RunWorker(BindAwsTest test, int machineIndex, RunType type, boolean windows)
+        private BindWorker(BindAwsTest test, ReservedResource rresource, boolean earlyout, int machineIndex)
         {
             this.test = test;
             this.machineIndex = machineIndex;
-            this.type = type;
-            this.windows = windows;
+            this.earlyout = earlyout;
+            this.rresource = rresource;
         }
 
         @Override
         public Void call() throws Exception
         {
-            //            test.runit(machineIndex);
+            test.bind(machineIndex, rresource, earlyout);
             return null;
         }
     }
@@ -853,6 +835,7 @@ public class BindAwsTest implements PreStartExecuteInterface
         boolean deploy = activeCommand.hasOption(AwsCliCommand.DeployShortCl);
         boolean cleanup = activeCommand.hasOption(AwsCliCommand.CleanupShortCl);
         boolean run = activeCommand.hasOption(AwsCliCommand.RunShortCl);
+        boolean reuse = activeCommand.hasOption(AwsCliCommand.ReuseShortCl);
 
         if(false)
         {
@@ -879,24 +862,34 @@ public class BindAwsTest implements PreStartExecuteInterface
         }
         if (machine)
         {
-            reserveMachine(appMachineProperties);
-            bindMachine(cleanup);
-            if (cleanup)
+            int size = config.blockingExecutor.getActiveCount();
+            size = config.blockingExecutor.getCorePoolSize();
+            size = config.blockingExecutor.getPoolSize();
+            size = config.blockingExecutor.getMaximumPoolSize();
+            size = config.blockingExecutor.getLargestPoolSize();
+            do
             {
-                log.info("look at aws console for all pendings here, you have 5 seconds");
-                Thread.sleep(5000); // 
-            }
-            if (!cleanup)
-            {
-                reserveNetwork(appMachineProperties);
-                bindNetwork();
-                connect();
-                disconnect();
-                deploy();
-            }
-            releaseTemplate(true);
-            if (cleanup)
-                log.info("look at aws console for all shutting down here, it will be several minutes before termination");
+                reserveMachine(appMachineProperties);
+                bindMachine(cleanup);
+                if (cleanup)
+                {
+                    log.info("look at aws console for all pendings here, you have 5 seconds");
+                    Thread.sleep(5000); // 
+                }
+                if (!cleanup)
+                {
+                    reserveNetwork(appMachineProperties);
+                    bindNetwork();
+                    connect();
+                    disconnect();
+                    deploy();
+                }
+                releaseTemplate(true);
+                if (cleanup)
+                    log.info("look at aws console for all shutting down here, it will be several minutes before termination");
+                if(!reuse)
+                    break;
+            }while(true);
             return;
         }
         if (person)
