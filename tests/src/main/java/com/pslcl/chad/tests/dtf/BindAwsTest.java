@@ -849,7 +849,6 @@ public class BindAwsTest implements PreStartExecuteInterface
 //            log.info("m15tod: " + m15tod.toString());
         }
 
-        
         if(run)
         {
             runFuturesTests();
@@ -862,11 +861,7 @@ public class BindAwsTest implements PreStartExecuteInterface
         }
         if (machine)
         {
-            int size = config.blockingExecutor.getActiveCount();
-            size = config.blockingExecutor.getCorePoolSize();
-            size = config.blockingExecutor.getPoolSize();
-            size = config.blockingExecutor.getMaximumPoolSize();
-            size = config.blockingExecutor.getLargestPoolSize();
+            int count = 0;
             do
             {
                 reserveMachine(appMachineProperties);
@@ -878,11 +873,21 @@ public class BindAwsTest implements PreStartExecuteInterface
                 }
                 if (!cleanup)
                 {
-                    reserveNetwork(appMachineProperties);
-                    bindNetwork();
-                    connect();
-                    disconnect();
+                    if(!reuse)
+                    {
+                        reserveNetwork(appMachineProperties);
+                        bindNetwork();
+                        connect();
+                        disconnect();
+                    }
                     deploy();
+                }
+                if(reuse)
+                {
+                    log.info("variable minute break");
+                    Thread.sleep(1000*60*count++);
+                    if(count == 5)
+                        count = 0;
                 }
                 releaseTemplate(true);
                 if (cleanup)
