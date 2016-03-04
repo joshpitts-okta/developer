@@ -884,7 +884,7 @@ public class BindAwsTest implements PreStartExecuteInterface
                 }
                 if(reuse)
                 {
-                    log.info("variable minute break");
+                    log.info("variable minute break: " + count);
                     Thread.sleep(1000*60*count++);
                     if(count == 5)
                         count = 0;
