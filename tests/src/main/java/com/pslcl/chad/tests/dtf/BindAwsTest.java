@@ -76,6 +76,7 @@ public class BindAwsTest implements PreStartExecuteInterface
     private final NetworkInstance[] networkInstances;
     private final PersonInstance[] personInstances;
     private final CableInstance[] cableInstances;
+    private final AtomicLong resourceId;
     private final int[] runIds;
     
     public BindAwsTest()
@@ -85,6 +86,7 @@ public class BindAwsTest implements PreStartExecuteInterface
         machineInstances = new MachineInstance[4];
         networkInstances = new NetworkInstance[2];
         personInstances = new PersonInstance[4];
+        resourceId = new AtomicLong(0);
         runIds = new int[4];
         runIds[0] = 80; 
         runIds[1] = 80;
@@ -95,14 +97,14 @@ public class BindAwsTest implements PreStartExecuteInterface
     private List<ResourceDescription> getMachineResourceDescriptions(Properties appProperties)
     {
         List<ResourceDescription> list = new ArrayList<ResourceDescription>();
-        getMachineResourceDescription(ResourceProvider.MachineName, 11, runIds[0], "archOnly", appProperties, list);
-        getMachineResourceDescription(ResourceProvider.MachineName, 22, runIds[1], "windows", appProperties, list);
-        getMachineResourceDescription(ResourceProvider.MachineName, 33, runIds[2], "linux", appProperties, list);
-        getMachineResourceDescription(ResourceProvider.MachineName, 44, runIds[3], "javaOnly", appProperties, list);
+        getMachineResourceDescription(ResourceProvider.MachineName, runIds[0], "archOnly", appProperties, list);
+        getMachineResourceDescription(ResourceProvider.MachineName, runIds[1], "windows", appProperties, list);
+        getMachineResourceDescription(ResourceProvider.MachineName, runIds[2], "linux", appProperties, list);
+        getMachineResourceDescription(ResourceProvider.MachineName, runIds[3], "javaOnly", appProperties, list);
         return list;
     }
 
-    private List<ResourceDescription> getMachineResourceDescription(String name, int resourceId, int runId, String os, Properties appProperties, List<ResourceDescription> list)
+    private List<ResourceDescription> getMachineResourceDescription(String name, int runId, String os, Properties appProperties, List<ResourceDescription> list)
     {
         Map<String, String> attrs = new HashMap<String, String>();
         addAttribute(ProviderNames.InstanceTypeKey, appProperties, attrs);
@@ -144,9 +146,10 @@ public class BindAwsTest implements PreStartExecuteInterface
         for (Entry<String, String> entry : flist)
             attrs.put(entry.getKey(), entry.getValue());
 
-        getNetworkResourceDescription(name, resourceId, runId, appProperties, list, attrs);
+        long rid = resourceId.incrementAndGet();
+        getNetworkResourceDescription(name, rid, runId, appProperties, list, attrs);
         String templateId = getTemplateId();
-        ResourceCoordinates coord = new ResourceCoordinates(templateId, templateInstanceId, resourceId, runId);
+        ResourceCoordinates coord = new ResourceCoordinates(templateId, templateInstanceId, rid, runId);
         ResourceDescImpl resource = new ResourceDescImpl(name, coord, attrs);
         list.add(resource);
         return list;
@@ -164,12 +167,12 @@ public class BindAwsTest implements PreStartExecuteInterface
     private List<ResourceDescription> getNetworkResourceDescriptions(Properties appProperties)
     {
         List<ResourceDescription> list = new ArrayList<ResourceDescription>();
-        getMachineResourceDescription(ResourceProvider.NetworkName, 111, 80, null, appProperties, list);
-        getMachineResourceDescription(ResourceProvider.NetworkName, 222, 80, null, appProperties, list);
+        getMachineResourceDescription(ResourceProvider.NetworkName, 80, null, appProperties, list);
+        getMachineResourceDescription(ResourceProvider.NetworkName, 80, null, appProperties, list);
         return list;
     }
 
-    private List<ResourceDescription> getNetworkResourceDescription(String name, int resourceId, int runId, Properties appProperties, List<ResourceDescription> list, Map<String, String> attrsIn)
+    private List<ResourceDescription> getNetworkResourceDescription(String name, long resourceId, int runId, Properties appProperties, List<ResourceDescription> list, Map<String, String> attrsIn)
     {
         Map<String, String> attrs = new HashMap<String, String>();
         if (attrsIn != null)
@@ -461,7 +464,10 @@ public class BindAwsTest implements PreStartExecuteInterface
         @Override
         public Void call() throws Exception
         {
+            String tname = Thread.currentThread().getName();
+            Thread.currentThread().setName("ConnectWorkerFuture");
             test.connect(machineIndex);
+            Thread.currentThread().setName(tname);
             return null;
         }
     }
@@ -480,7 +486,10 @@ public class BindAwsTest implements PreStartExecuteInterface
         @Override
         public Void call() throws Exception
         {
+            String tname = Thread.currentThread().getName();
+            Thread.currentThread().setName("DisconnectWorkerFuture");
             test.disconnect(machineIndex);
+            Thread.currentThread().setName(tname);
             return null;
         }
     }
@@ -499,6 +508,8 @@ public class BindAwsTest implements PreStartExecuteInterface
         @Override
         public Void call() throws Exception
         {
+            String tname = Thread.currentThread().getName();
+            Thread.currentThread().setName("InspectWorkerFuture");
             try
             {
                 test.inspect(personIndex);
@@ -506,6 +517,7 @@ public class BindAwsTest implements PreStartExecuteInterface
             {
                 log.error("inspect failed", e);
             }
+            Thread.currentThread().setName(tname);
             return null;
         }
     }
@@ -524,6 +536,8 @@ public class BindAwsTest implements PreStartExecuteInterface
         @Override
         public Void call() throws Exception
         {
+            String tname = Thread.currentThread().getName();
+            Thread.currentThread().setName("DeployWorkerFuture");
             try
             {
                 test.deploy(personIndex);
@@ -531,6 +545,7 @@ public class BindAwsTest implements PreStartExecuteInterface
             {
                 log.error("deploy failed", e);
             }
+            Thread.currentThread().setName(tname);
             return null;
         }
     }
@@ -558,7 +573,10 @@ public class BindAwsTest implements PreStartExecuteInterface
         @Override
         public Void call() throws Exception
         {
+            String tname = Thread.currentThread().getName();
+            Thread.currentThread().setName("BindWorkerFuture");
             test.bind(machineIndex, rresource, earlyout);
+            Thread.currentThread().setName(tname);
             return null;
         }
     }
@@ -884,16 +902,15 @@ public class BindAwsTest implements PreStartExecuteInterface
                 }
                 if(reuse)
                 {
-                    log.info("variable minute break: " + count);
-                    Thread.sleep(1000*60*count++);
-                    if(count == 5)
-                        count = 0;
+                    log.info("\n***** count: " + count + "variable minute break: " + count % 5);
+                    Thread.sleep(1000*60* (count % 5));
                 }
                 releaseTemplate(true);
                 if (cleanup)
                     log.info("look at aws console for all shutting down here, it will be several minutes before termination");
                 if(!reuse)
                     break;
+                Thread.sleep(1000);
             }while(true);
             return;
         }
