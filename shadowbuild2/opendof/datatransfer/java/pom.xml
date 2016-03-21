@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+	    <groupId>org.opendof.datatransfer-java</groupId>
+	    <artifactId>builder</artifactId>
+	    <version>2.0-SNAPSHOT</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>builder-java</artifactId>
+	<packaging>pom</packaging>
+	<name>OpenDOF Data Transfer builder java</name>
+	<modules>
+		<module>dof-data-transfer-common</module>
+		<module>dof-data-transfer-manager</module>
+		<module>dof-data-transfer-sink</module>
+		<module>dof-data-transfer-snapshot</module>
+		<module>dof-data-transfer-source</module>
+	</modules>
+</project>

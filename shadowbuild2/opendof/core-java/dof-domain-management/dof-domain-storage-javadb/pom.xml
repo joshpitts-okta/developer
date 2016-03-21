@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+	    <groupId>org.opendof.core-java</groupId>
+	    <artifactId>dof-domain-management-builder</artifactId>
+	    <version>3.0-SNAPSHOT</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+    <groupId>org.opendof.core-java-internal</groupId>
+	<artifactId>dof-domain-storage-javadb-builder</artifactId>
+	<packaging>pom</packaging>
+	<name>OpenDOF Domain storage javadb builder</name>
+	<modules>
+		<module>dof-domain-storage-javadb</module>
+		<module>dof-domain-storage-javadb-installer</module>
+		<module>dof-domain-storage-javadb-routines</module>
+	</modules>
+</project>

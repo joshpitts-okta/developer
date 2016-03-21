@@ -1,0 +1,25 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+	    <groupId>org.opendof.core-java</groupId>
+	    <artifactId>builder</artifactId>
+	    <version>3.0-SNAPSHOT</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>dof-inet</artifactId>
+	<version>7.0-SNAPSHOT</version>
+    <packaging>bundle</packaging>
+	<name>OpenDOF Internet Transport (INET)</name>
+	<dependencies>
+		<dependency>
+			<groupId>org.opendof.core</groupId>
+			<artifactId>dof-oal</artifactId>
+			<version>7.0-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
+	<scm>
+		<connection>scm:svn:https://source.emit-networking.org/emit/trunk/src/emit-oal-java/emit-inet</connection>
+		<developerConnection>scm:svn:https://source.emit-networking.org/emit/trunk/src/emit-oal-java/emit-inet</developerConnection>
+		<url>http://svn.https://source.emit-networking.org/emit/trunk/src/emit-oal-java</url>
+	</scm>
+</project>

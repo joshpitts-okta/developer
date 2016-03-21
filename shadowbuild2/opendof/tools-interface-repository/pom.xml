@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<groupId>com.opendof.builder</groupId>
+		<artifactId>opendof</artifactId>
+		<version>1</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.opendof.tools-interface-repository</groupId>
+	<artifactId>builder</artifactId>
+	<version>1.0</version>
+	<packaging>pom</packaging>
+	<name>OpenDOF Interface Repository builder</name>
+	<modules>
+		<module>interface-repository-allseen</module>
+		<module>interface-repository-cli</module>
+		<module>interface-repository-core</module>
+		<module>interface-repository-data-accessor</module>
+		<module>interface-repository-mysql</module>
+		<module>interface-repository-opendof</module>
+		<module>interface-repository-servlet</module>
+		<module>interface-repository-web</module>
+	</modules>
+</project>
