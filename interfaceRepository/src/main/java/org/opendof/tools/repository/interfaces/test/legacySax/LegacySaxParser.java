@@ -29,7 +29,7 @@ public class LegacySaxParser
 {
 	public final static String XsdCatalogFileKey = "opendof.tools.interface.repository.catalog.file";
     // private final static String xmlFile = "C:/tmp/irepository/output/working/10020018.xml";
-    private final static String xmlFile = "/tmp/irepository/output/working/TemporaryCredentials.xml";
+    private final static String xmlFile = "/tmp/irepository/output/working/bidirectional-pcs.xml";
     //  private final static String xmlFile = "/tmp/irepository/output/working/GPSLocation.xml";
     private final static boolean singleFile = false;
     private final static boolean publishOnly = false;
@@ -43,7 +43,7 @@ public class LegacySaxParser
 
     public static final String XsdFileInBaseDir = "/ws2/dof-interface-repository/schema/";
     public static final String MergedXmlFileOutBaseDir = "/tmp/irepository/output/";
-    public static final String ConvertedXmlFileOutBaseDir = "/tmp/irepository/converted/";
+    public static final String ConvertedXmlFileOutBaseDir = "/tmp/irepository/production/converted/";
     public static final String ConvertedXmlFileOutPubishDir = ConvertedXmlFileOutBaseDir + "publish/";
     public static final String ConvertedXmlFileOutWorkingDir = ConvertedXmlFileOutBaseDir + "working/";
 

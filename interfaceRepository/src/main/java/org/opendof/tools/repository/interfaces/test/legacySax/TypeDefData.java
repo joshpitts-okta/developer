@@ -213,6 +213,7 @@ public class TypeDefData extends LegacySaxHandler implements ChildComplete
     @Override
     public void setChildComplete(Object listener, Object obj) throws SAXException
     {
+        ((DofType)obj).currentType.setUnit(unit);
         if(min == null && max == null)
             return;
 //        if(min == null)
@@ -220,7 +221,6 @@ public class TypeDefData extends LegacySaxHandler implements ChildComplete
 //        if(max == null)
 //            throw new SAXException(currentPath() + " setChildComplete max is null with min given");
         ((DofType)obj).currentType.setRange(min, max);
-        ((DofType)obj).currentType.setUnit(unit);
 //        ((DofType)obj).currentType.setEnums(enums);
     }
     

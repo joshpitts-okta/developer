@@ -212,7 +212,8 @@ public class DofType extends LegacySaxHandler
     
     protected void setUnit(String unit) throws SAXException
     {
-        throw new SAXException(currentPath() + " does not support unit");
+        log.info(currentPath() + " does not support unit");
+//        throw new SAXException(currentPath() + " does not support unit");
     }
     
     public void validate(ContextData context) throws SAXException

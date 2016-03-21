@@ -1,12 +1,10 @@
 package org.opendof.tools.repository.interfaces.test;
 
 import java.util.List;
-import java.util.Properties;
 
 import org.apache.commons.cli.CommandLine;
 import org.opendof.tools.repository.interfaces.core.CoreController;
 import org.opendof.tools.repository.interfaces.core.InterfaceRequest;
-import org.opendof.tools.repository.interfaces.core.PropertiesFile;
 import org.opendof.tools.repository.interfaces.core.RequestData;
 import org.opendof.tools.repository.interfaces.core.RequestData.CommandType;
 import org.opendof.tools.repository.interfaces.da.DataAccessor;
