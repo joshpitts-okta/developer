@@ -14,7 +14,7 @@
 	<name>PSLCL Chad Developer Tools</name>
 	<modules>
 		<module>helpers</module>
-		<module>simple-node-framework</module>
+		<!-- module>simple-node-framework</module -->
 		<module>sourcesink</module>
 		<module>tests</module>
 	</modules>

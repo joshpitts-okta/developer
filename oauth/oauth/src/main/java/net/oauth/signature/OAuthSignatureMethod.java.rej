@@ -1,0 +1,49 @@
+***************
+*** 17,22 ****
+  package net.oauth.signature;
+  
+  import java.io.IOException;
+  import java.net.URI;
+  import java.net.URISyntaxException;
+  import java.util.ArrayList;
+--- 17,23 ----
+  package net.oauth.signature;
+  
+  import java.io.IOException;
++ import java.io.UnsupportedEncodingException;
+  import java.net.URI;
+  import java.net.URISyntaxException;
+  import java.util.ArrayList;
+***************
+*** 237,247 ****
+      }
+  
+      public static byte[] decodeBase64(String s) {
+-         return BASE64.decode(s.getBytes());
+      }
+  
+      public static String base64Encode(byte[] b) {
+-         return new String(BASE64.encode(b));
+      }
+  
+      private static final Base64 BASE64 = new Base64();
+--- 238,256 ----
+      }
+  
+      public static byte[] decodeBase64(String s) {
++         try {
++ 			return BASE64.decode(s.getBytes(OAuth.ENCODING));
++ 		} catch (UnsupportedEncodingException wow) {
++ 			throw new RuntimeException(wow);
++ 		}
+      }
+  
+      public static String base64Encode(byte[] b) {
++         try {
++ 			return new String(BASE64.encode(b), OAuth.ENCODING);
++ 		} catch (UnsupportedEncodingException wow) {
++ 			throw new RuntimeException(wow);
++ 		}
+      }
+  
+      private static final Base64 BASE64 = new Base64();
