@@ -178,7 +178,7 @@ public class BindAwsTest implements PreStartExecuteInterface
         if (attrsIn != null)
             attrs = attrsIn;
 
-        addAttribute(InstanceNames.VpcNameKey, appProperties, attrs);
+        addAttribute(InstanceNames.VpcIdKey, appProperties, attrs);
         addAttribute(InstanceNames.VpcCidrKey, appProperties, attrs);
         addAttribute(InstanceNames.VpcTenancyKey, appProperties, attrs);
         addAttribute(InstanceNames.VpcMaxDelayKey, appProperties, attrs);
