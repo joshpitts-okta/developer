@@ -59,7 +59,7 @@ public class IrTestRunner extends CliBase
     private void ListInterfaces() throws Exception
     {
     	InterfaceRequest ir = new InterfaceRequest(null, null, null); 
-    	RequestData request = new RequestData(CommandType.ListAll, null, null, ir);
+    	RequestData request = new RequestData(CommandType.ListAll, ir);
         List<InterfaceData> list = controller.getAllInterfaces(request);
         for (InterfaceData iface : list)
             log.info(iface.toString());

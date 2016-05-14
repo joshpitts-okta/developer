@@ -407,7 +407,7 @@ public class Converter
             String xml = fileToString(currentfile);
             InterfaceRequest iface = new InterfaceRequest(null, "1", "opendof");
             SubmitterRequest submitter = new SubmitterRequest(null, ConverterGroup, null, null);
-            RequestData request = new RequestData(null, null, submitter, iface);
+            RequestData request = new RequestData(submitter, iface);
             
             
             log.debug("\nadding file: " + currentfile.getAbsolutePath());
@@ -433,7 +433,7 @@ public class Converter
             	
             InterfaceRequest iface = new InterfaceRequest(null, null, repoType);
             SubmitterRequest submitter = new SubmitterRequest(null, ConverterGroup, null, null);
-            RequestData request = new RequestData(null, null, submitter, iface);
+            RequestData request = new RequestData(submitter, iface);
             log.debug("\nadding file: " + currentfile.getAbsolutePath());
             controller.addInterface(request);
         }
