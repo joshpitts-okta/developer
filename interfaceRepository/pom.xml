@@ -15,7 +15,12 @@
 		<dependency>
 			<groupId>org.opendof.tools-interface-repository</groupId>
 			<artifactId>interface-repository-core</artifactId>
-	    	<version>1.0</version>
+	    	<version>2.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.opendof.tools-interface-repository</groupId>
+			<artifactId>interface-repository-cli</artifactId>
+	    	<version>2.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.opendof.core</groupId>
@@ -24,17 +29,17 @@
         <dependency>
             <groupId>org.opendof.tools-interface-repository</groupId>
             <artifactId>interface-repository-servlet</artifactId>
-            <version>1.0</version>
+            <version>2.0</version>
         </dependency>
 		<dependency>
 			<groupId>org.opendof.tools-interface-repository</groupId>
 			<artifactId>interface-repository-opendof</artifactId>
-			<version>1.0</version>
+			<version>2.0</version>
 		</dependency>
         <dependency>
             <groupId>org.opendof.tools-interface-repository</groupId>
             <artifactId>interface-repository-allseen</artifactId>
-            <version>1.0</version>
+            <version>2.0</version>
         </dependency>
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
