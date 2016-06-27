@@ -1,14 +1,8 @@
 package org.opendof.tools.repository.interfaces.test;
 
-import java.util.List;
-
 import org.apache.commons.cli.CommandLine;
 import org.opendof.tools.repository.interfaces.core.CoreController;
-import org.opendof.tools.repository.interfaces.core.InterfaceRequest;
-import org.opendof.tools.repository.interfaces.core.RequestData;
-import org.opendof.tools.repository.interfaces.core.RequestData.CommandType;
 import org.opendof.tools.repository.interfaces.da.DataAccessor;
-import org.opendof.tools.repository.interfaces.da.InterfaceData;
 
 import com.pslcl.chad.app.cli.CliBase;
 import com.pslcl.chad.app.cli.CliCommand;
@@ -58,12 +52,12 @@ public class IrTestRunner extends CliBase
 
     private void ListInterfaces() throws Exception
     {
-    	InterfaceRequest ir = new InterfaceRequest(null, null, null); 
-    	RequestData request = new RequestData(CommandType.ListAll, ir);
-        List<InterfaceData> list = controller.getAllInterfaces(request);
-        for (InterfaceData iface : list)
-            log.info(iface.toString());
-        log.info("look here");
+//    	InterfaceRequest ir = new InterfaceRequest(null, null, null); 
+//    	RequestData request = new RequestData(CommandType.ListAll, ir);
+//        List<InterfaceData> list = controller.getAllInterfaces(request);
+//        for (InterfaceData iface : list)
+//            log.info(iface.toString());
+//        log.info("look here");
     }
     
 //    private void iidVerify() throws Exception
@@ -154,7 +148,7 @@ public class IrTestRunner extends CliBase
                 {
                     if (controller != null)
                         controller.destroy();
-                    command.help(1, "no command line switch given");
+//                    command.help(1, "no command line switch given");
                 }
                 log.info("IrTestRunner exiting with no exception");
             }

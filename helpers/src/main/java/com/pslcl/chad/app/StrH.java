@@ -14,7 +14,7 @@ public class StrH
 
     public static StringBuilder ttl(StringBuilder sb, int level, Object ... values)
     {
-        String[] array = new String[values.length];
+        Object[] array = new String[values.length];
         for(int i=0; i < array.length; i++)
             array[i] = (values[i] == null ? "null" : values[i].toString());
         return tabToLevel(sb, level, true, array);
@@ -29,12 +29,19 @@ public class StrH
      * @param values list of values to add
      * @return the string builder that has handed in.
      */
-    public static StringBuilder tabToLevel(StringBuilder sb, int level, boolean eol, String ... values)
+    public static StringBuilder tabToLevel(StringBuilder sb, int level, boolean eol, Object ... values)
     {
         for(int i=0; i < level; i++)
             sb.append("\t");
         for(int j=0; j < values.length; j++)
-            sb.append(values[j]);
+        {
+            Object v = values[j];
+            if(v == null)
+                v = new String("null");
+            else
+                v = v.toString();
+            sb.append(v);
+        }
         if(eol)
             sb.append("\n");
         return sb;
@@ -64,7 +71,7 @@ public class StrH
     }
     
     /**
-     * Gets the atomic name from a character seperated full name.
+     * Gets the atomic name from a character separated full name.
      *
      * @param name the fully distinguished name
      * @param seperator the name space separator
@@ -85,7 +92,7 @@ public class StrH
      * Gets the penultimate name.
      *
      * @param name the name
-     * @param seperator the seperator
+     * @param seperator the separator
      * @return the penultimate name
      */
     public static String getPenultimateName(String name, char seperator)
@@ -150,13 +157,6 @@ public class StrH
         if(value.charAt(value.length() - 1) == '\\')
             value = value.substring(0, value.length() - 1);
         return value;
-    }
-    
-    public static String trim(String value)
-    {
-        if(value == null)
-            return value;
-        return value.trim();
     }
     
     public static class StringPair implements Entry<String, String>

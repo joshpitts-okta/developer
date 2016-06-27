@@ -1,18 +1,3 @@
-/*
- * Copyright (c) 2010-2015, Panasonic Corporation.
- *
- * Permission to use, copy, modify, and/or distribute this software for any
- * purpose with or without fee is hereby granted, provided that the above
- * copyright notice and this permission notice appear in all copies.
- *
- * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
- * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
- * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
- * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
- * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
- * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
- * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
- */
 package com.pslcl.chad.app.cli;
 
 import java.io.File;
@@ -83,8 +68,8 @@ public abstract class CliCommand
     protected final CliBase cliBase;
     private final Hashtable<String, CliCommand> commands;
     protected volatile CommandLine commandline;
-    private volatile CliCommand parent;
-    
+    protected volatile CliCommand parent;
+
     /**
      * Simple constructor.
      * @param cliBase the <code>Object</code> of the class extending <code>CliBase</code>.  
@@ -96,7 +81,7 @@ public abstract class CliCommand
     {
         this(cliBase, null, commandName);
     }
-    
+
     /**
      * Full constructor.
      * @param cliBase the <code>Object</code> of the class extending <code>CliBase</code>.  
@@ -113,7 +98,7 @@ public abstract class CliCommand
         options = new Options();
         commands = new Hashtable<String, CliCommand>();
     }
-    
+
     /**
      * Return Leading Command String.
      * @param command the node to determine the path to.
@@ -126,16 +111,16 @@ public abstract class CliCommand
         while (command != null)
         {
             command = command.getParent();
-            if(command != null)
+            if (command != null)
                 names.add(command.getCommandName());
         }
         StringBuilder sb = new StringBuilder(cliBase.getExecutableName());
         int size = names.size();
-        for(int j=size-1; j >= 0; j--)
+        for (int j = size - 1; j >= 0; j--)
             sb.append(" " + names.get(j));
         return sb.toString();
     }
-    
+
     /**
      * Return Parent.
      * @return my parent.  Null if my parent is the <code>CliBase</code>.
@@ -179,7 +164,7 @@ public abstract class CliCommand
     {
         return commands.size() > 0;
     }
-    
+
     /**
      * Report if this node has <code>Options</code>.
      * <p>A command node might not have any switches (i.e. clear).
@@ -189,14 +174,13 @@ public abstract class CliCommand
     {
         return options.getOptions().size() > 0;
     }
-    
+
     /**
      * Add a command child.
      * @param command the child command to add.
      */
     public void addChild(CliCommand command)
     {
-        command.parent = this;
         commands.put(command.getCommandName(), command);
         command.cliSetup();
     }
@@ -216,17 +200,17 @@ public abstract class CliCommand
     {
         String[] originalArgs = cliBase.getOriginalArgs();
         // if no more nested commands, get this commands commons-cli CommandLine
-        if(commands.size() == 0)
+        if (commands.size() == 0)
         {
             originalArgs = cliBase.getOriginalArgs();
-            if(!originalArgs[commandDepth].equals(commandName)) // -1 because CliBase holds 0th
+            if (!originalArgs[commandDepth].equals(commandName))
                 return null;
             commandDepth++;
-            if(commandDepth >= originalArgs.length && hasOptions())
+            if (commandDepth >= originalArgs.length && hasOptions())
                 help(0, null);
             String[] myArgs = new String[originalArgs.length - commandDepth];
             int j = commandDepth;
-            for(int i = 0; i < myArgs.length; i++)
+            for (int i = 0; i < myArgs.length; i++)
                 myArgs[i] = originalArgs[j++];
             parseCommandLine(myArgs);
             customInit();
@@ -234,38 +218,41 @@ public abstract class CliCommand
         }
 
         String[] args = cliBase.getOriginalArgs();
-        if(!args[commandDepth].equals(commandName))
+        if (!args[commandDepth].equals(commandName))
             return null; // not my command.
-        
-        if(commandDepth + 1 > args.length)
+
+        if (commandDepth + 1 > args.length)
             commandHelp(0, null);
-        
-        String arg = args[commandDepth+1];
-        if(arg.equals("-" + CliBase.HelpShortCl) || arg.equals("--" + CliBase.HelpLongCl))
+
+        String arg = args[commandDepth + 1];
+        if (arg.equals("-" + CliBase.HelpShortCl) || arg.equals("--" + CliBase.HelpLongCl))
             commandHelp(0, null);
-        
+
         commandDepth++;
-        for(Entry<String, CliCommand> entry : commands.entrySet())
+        for (Entry<String, CliCommand> entry : commands.entrySet())
         {
-            if(entry.getKey().equals(arg))
+            if (entry.getKey().equals(arg))
             {
                 CliCommand cliCommand = entry.getValue().validateCommands(commandDepth);
-                if(cliCommand != null)
-                  return cliCommand;
+                if (cliCommand != null)
+                {
+                    commandline = cliCommand.getCommandLine();
+                    return cliCommand;
+                }
             }
         }
-        if(hasChildren())
+        if (hasChildren())
             commandHelp(CliBase.InvalidCommand, "Invalid command: " + arg);
         return null;
     }
-    
+
     /**
      * Handle Configuration file.
      * <p>The method will attempt to obtain the properties file from the reserved
      * configuration switch if it is enabled.  The application wide <code>Properties</code>
      * obtained from the <code>CliBase</code> will be loaded with the configuration if 
      * enabled and found.
-     * <p>If the configuration switch is enabled and the <code>Properties</code> can not be 
+     * <p>If the configuration switch is enabled and the <code>Properties</code> cannot be 
      * loaded with the given file, this method will call Help with error information.  Help
      * will exit the application and this method will never return in this case.
      * @return true if the configuration switch is enabled and the configuration was obtained.  
@@ -274,34 +261,34 @@ public abstract class CliCommand
     public boolean handleConfiguration()
     {
         boolean gotConfig = false;
-        if(cliBase.isConfigSwitch() || !cliBase.isLogToFile())
+        if (cliBase.isConfigSwitch() || !cliBase.isLogToFile())
         {
             // if !logToFileSwitch try looking in the configuration file for configPathKey
             gotConfig = true;
-            if(!commandline.hasOption(CliBase.ConfigurationPathShortCl))
+            if (!commandline.hasOption(CliBase.ConfigurationPathShortCl))
             {
                 gotConfig = false;
-                if(cliBase.isConfigSwitch() && commandline.hasOption(CliBase.HelpShortCl))
+                if (cliBase.isConfigSwitch() && commandline.hasOption(CliBase.HelpShortCl))
                 {
                     System.err.println("-" + CliBase.ConfigurationPathShortCl + " | --" + CliBase.ConfigurationPathLongCl + " required\n");
                     help(CliBase.ConfigNotFound, "Given configuration file not found");
                 }
             }
-            if(gotConfig)
+            if (gotConfig)
             {
                 StringBuilder sb = cliBase.getInitsb();
-                Properties properties = cliBase.properties;
+                Properties properties = cliBase.getProperties();
                 String configPathKey = cliBase.getConfigPathKey();
                 String configPath = commandline.getOptionValue(CliBase.ConfigurationPathShortCl);
-                StrH.ttl(sb, 1, "--",CliBase.ConfigurationPathLongCl, " = ", configPath);
+                StrH.ttl(sb, 1, "--", CliBase.ConfigurationPathLongCl, " = ", configPath);
                 try
                 {
                     PropertiesFile.loadFile(properties, new File(configPath));
-                }catch(Exception e)
+                } catch (Exception e)
                 {
                     help(CliBase.ConfigNotFound, "Given configuration file not found");
                 }
-                if(configPathKey != null)
+                if (configPathKey != null)
                 {
                     StrH.ttl(sb, 1, configPathKey, " = ", configPath);
                     System.setProperty(configPathKey, configPath);
@@ -317,7 +304,7 @@ public abstract class CliCommand
      * be used by extending class to register it's custom switches for this node.
      */
     protected abstract void cliSetup();
-    
+
     /**
      * Custom extending class Init.
      * After this objects <code>validateCommands</code> method has determined 
@@ -326,38 +313,32 @@ public abstract class CliCommand
      * <code>cliSetup</code> method above, this method will be called allowing
      * the customizing class to do an needed initialization given a valid
      * <code>CommandLine</code> object.
-     */ 
+     */
     protected abstract void customInit();
-    
+
     void parseCommandLine(String[] args)
     {
         //@formatter:on
-        CommandLineParser parser = new DefaultParser(); 
+        CommandLineParser parser = new DefaultParser();
         try
         {
             commandline = parser.parse(options, args);
-        }
-        catch(AlreadySelectedException ase)
+        } catch (AlreadySelectedException ase)
         {
             help(CliBase.InvalidCommandLine, "Already Selected: " + ase.getOption());
-        }
-        catch(AmbiguousOptionException aoe)
+        } catch (AmbiguousOptionException aoe)
         {
             help(CliBase.InvalidCommandLine, "Ambiguous Option: " + aoe.getMatchingOptions());
-        }
-        catch(MissingArgumentException mae)
+        } catch (MissingArgumentException mae)
         {
             help(CliBase.InvalidCommandLine, "Missing Argument: " + mae.getOption());
-        }
-        catch(MissingOptionException moe)
+        } catch (MissingOptionException moe)
         {
             help(CliBase.InvalidCommandLine, "Missing Option: " + moe.getMissingOptions());
-        }
-        catch(UnrecognizedOptionException uoe)
+        } catch (UnrecognizedOptionException uoe)
         {
             help(CliBase.InvalidCommandLine, "Unrecongnized Option: " + uoe.getOption());
-        }
-        catch (Exception e)
+        } catch (Exception e)
         {
             help(CliBase.InvalidCommandLine, "Unexpected Exception: " + e.getClass().getName());
         }
@@ -366,7 +347,7 @@ public abstract class CliCommand
         if (commandline.hasOption(CliBase.VersionShortCl))
             cliBase.version();
     }
-    
+
     /**
      * Non-Leaf command help.
      * <p>This method is called if the given command line <code>args</code>
@@ -377,16 +358,16 @@ public abstract class CliCommand
      */
     protected void commandHelp(int exitCode, String msg)
     {
-        if(exitCode != 0 && msg != null)
+        if (exitCode != 0 && msg != null)
             System.err.println(msg);
         String cmdStr = getLeadingCommandString(this);
-        if(commandName != null)
+        if (commandName != null)
             cmdStr += " " + commandName;
         StringBuilder sb = new StringBuilder("\nValid commands: " + cmdStr + " [-h|--help]|<");
         boolean first = true;
-        for(Entry<String, CliCommand> entry : commands.entrySet())
+        for (Entry<String, CliCommand> entry : commands.entrySet())
         {
-            if(!first)
+            if (!first)
                 sb.append("|");
             sb.append(entry.getKey());
             first = false;
@@ -394,11 +375,10 @@ public abstract class CliCommand
         sb.append(">\n");
         sb.append(" -h,--help        Display " + commandName + " help.\n");
         sb.append("\n  Help for any given " + commandName + " sub-command can be obtained by:\n");
-        for(Entry<String, CliCommand> entry : commands.entrySet())
+        for (Entry<String, CliCommand> entry : commands.entrySet())
             sb.append("    " + entry.getKey() + " [-" + CliBase.HelpShortCl + " | --" + CliBase.HelpLongCl + "]\n");
         System.out.println(sb.toString());
-//        System.exit(exitCode);
-        throw new RuntimeException(getClass().getSimpleName() + " Help displayed, see logs");
+        System.exit(exitCode);
     }
 
     /**
@@ -409,11 +389,11 @@ public abstract class CliCommand
      * @param msg Optional error message.  Null if only help is to be displayed, 
      * Message is sent to standard err before the help if not null.
      */
-    public void help(int exitCode, String msg)
+    protected void help(int exitCode, String msg)
     {
         help(exitCode, msg, null, null);
     }
-    
+
     /**
      * Leaf command help.
      * <p>This method is called if the given command line <code>args</code>
@@ -427,26 +407,23 @@ public abstract class CliCommand
     protected void help(int exitCode, String msg, String header, String footer)
     {
         StringBuilder command = new StringBuilder(getLeadingCommandString(this));
-        if(commandName != null)
+        if (commandName != null)
             command.append(" " + commandName);
-        
-        if(exitCode != 0)
+
+        if (exitCode != 0)
         {
             String[] args = cliBase.getOriginalArgs();
-            StringBuilder sb = new StringBuilder(msg == null ? "commandline: " : msg+"\ncommandline: ");
-            for(int i=0; i < args.length; i++)
+            StringBuilder sb = new StringBuilder(msg == null ? "commandline: " : msg + "\ncommandline: ");
+            for (int i = 0; i < args.length; i++)
                 sb.append(" " + args[i]);
-            sb.append("\n");
             System.err.println(sb.toString());
         }
-        
+
         HelpFormatter formatter = new HelpFormatter();
         formatter.printHelp(cliBase.getMaxHelpWidth(), command.toString(), header, options, footer, true);
         System.exit(exitCode);
-//        throw new RuntimeException(getClass().getSimpleName() + " Help displayed, see logs");
     }
-    
-    
+
     /**
      * Convert String array into space separated name. 
      * @param spacedName the string array to be space seperated. 
@@ -455,9 +432,9 @@ public abstract class CliCommand
     public String getSpacedName(String[] spacedName)
     {
         StringBuilder sb = new StringBuilder();
-        for(int i=0; i < spacedName.length; i++)
+        for (int i = 0; i < spacedName.length; i++)
         {
-            if(i != 0)
+            if (i != 0)
                 sb.append(" ");
             sb.append(spacedName[i]);
         }

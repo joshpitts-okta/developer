@@ -9,7 +9,6 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.opendof.tools.repository.interfaces.servlet.HttpCommandParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -73,8 +72,8 @@ public class GoogleSearch
 
     public void testUriStandform()
     {
-        for (int i = 0; i < iids.length; i++)
-            log.info(HttpCommandParser.fixupIidStandardForm(iids[i]));
+//        for (int i = 0; i < iids.length; i++)
+//            log.info(HttpCommandParser.fixupIidStandardForm(iids[i]));
     }
 
     private static final String SolAwsTomcat = "http://52.7.126.107/ir-servlet-1.0.0-SNAPSHOT/interfaceRepository";

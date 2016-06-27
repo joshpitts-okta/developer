@@ -28,9 +28,6 @@ import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathFactory;
 
 import org.opendof.tools.repository.interfaces.core.CoreController;
-import org.opendof.tools.repository.interfaces.core.InterfaceRequest;
-import org.opendof.tools.repository.interfaces.core.RequestData;
-import org.opendof.tools.repository.interfaces.core.SubmitterRequest;
 import org.opendof.tools.repository.interfaces.test.legacySax.LegacySaxParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -405,13 +402,13 @@ public class Converter
         			continue;
         	}
             String xml = fileToString(currentfile);
-            InterfaceRequest iface = new InterfaceRequest(null, "1", "opendof");
-            SubmitterRequest submitter = new SubmitterRequest(null, ConverterGroup, null, null);
-            RequestData request = new RequestData(submitter, iface);
-            
-            
-            log.debug("\nadding file: " + currentfile.getAbsolutePath());
-            controller.addInterface(request);
+//            InterfaceRequest iface = new InterfaceRequest(null, "1", "opendof");
+//            SubmitterRequest submitter = new SubmitterRequest(null, ConverterGroup, null, null);
+//            RequestData request = new RequestData(submitter, iface);
+//            
+//            
+//            log.debug("\nadding file: " + currentfile.getAbsolutePath());
+//            controller.addInterface(request);
         }
     	if(fixups.length > 0)
     	{
@@ -431,11 +428,11 @@ public class Converter
             if(currentfile.getAbsolutePath().contains("org.allseen") || currentfile.getAbsolutePath().contains("org.freedesktop"))
             	repoType = "allseen";
             	
-            InterfaceRequest iface = new InterfaceRequest(null, null, repoType);
-            SubmitterRequest submitter = new SubmitterRequest(null, ConverterGroup, null, null);
-            RequestData request = new RequestData(submitter, iface);
-            log.debug("\nadding file: " + currentfile.getAbsolutePath());
-            controller.addInterface(request);
+//            InterfaceRequest iface = new InterfaceRequest(null, null, repoType);
+//            SubmitterRequest submitter = new SubmitterRequest(null, ConverterGroup, null, null);
+//            RequestData request = new RequestData(submitter, iface);
+//            log.debug("\nadding file: " + currentfile.getAbsolutePath());
+//            controller.addInterface(request);
         }
         controller.destroy();
     }

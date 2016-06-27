@@ -1,18 +1,3 @@
-/*
- * Copyright (c) 2010-2015, Panasonic Corporation.
- *
- * Permission to use, copy, modify, and/or distribute this software for any
- * purpose with or without fee is hereby granted, provided that the above
- * copyright notice and this permission notice appear in all copies.
- *
- * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
- * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
- * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
- * ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
- * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
- * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
- * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
- */
 package com.pslcl.chad.app.cli;
 
 import java.util.HashMap;
@@ -26,14 +11,15 @@ import javax.swing.JOptionPane;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
+import org.opendof.core.oal.DOF;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import ch.qos.logback.classic.LoggerContext;
-import ch.qos.logback.core.util.StatusPrinter;
-
 import com.pslcl.chad.app.StrH;
 import com.pslcl.chad.app.serviceUtility.ClassInfo;
+
+import ch.qos.logback.classic.LoggerContext;
+import ch.qos.logback.core.util.StatusPrinter;
 
 /**
  * Command line Interface Base.
@@ -126,7 +112,7 @@ public class CliBase extends Thread
     public static final String ConfigurationPathLongCl = "config-path";
 
     private final String[] originalArgs;
-    private final String executableName;
+    private String executableName;
     private final boolean configSwitch;
     private final boolean logToFile;
     private final String configPathKey;
@@ -134,7 +120,7 @@ public class CliBase extends Thread
     private final Map<String, CliCommand> commands;
     private final String version;
     private final StringBuilder initsb;
-    public final Properties properties;
+    protected final Properties properties;
     private AtomicBoolean nonCommandCli;
     protected volatile Logger log;
     protected volatile CliCommand activeCommand;
@@ -208,9 +194,18 @@ public class CliBase extends Thread
      * @return the simple name of the class extending this base.  
      * Will never be null. 
      */
-    public String getExecutableName()
+    public synchronized String getExecutableName()
     {
         return executableName;
+    }
+    
+    /**
+     * Return Executable class name.
+     * @param name the name to use instead of the classes simple name.  Must not be null. 
+     */
+    public synchronized void setExecutableName(String name)
+    {
+        executableName = name;
     }
     
     /**
@@ -251,10 +246,10 @@ public class CliBase extends Thread
      * @return the application wide <code>Properties</code>.  
      * Will never be null, maybe empty. 
      */
-//    public Properties getProperties()
-//    {
-//        return properties;
-//    }
+    public Properties getProperties()
+    {
+        return properties;
+    }
     
     /**
      * Return Configuration file path.
@@ -330,8 +325,7 @@ public class CliBase extends Thread
      * <code>CommandLine</code> available for the application.
      * @return the selected <code>CliCommand</code>
      */
-    @SuppressWarnings("null")
-    public CliCommand validateCommands()
+    protected CliCommand validateCommands()
     {
         // check for no arguments help
         if(originalArgs.length == 0)
@@ -391,8 +385,8 @@ public class CliBase extends Thread
                break;
         }
         
-        boolean gotConfig = activeCommand.handleConfiguration();
-        handleLogger(activeCommand.getCommandLine(), gotConfig);
+        boolean gotConfig = command.handleConfiguration();
+        handleLogger(command.getCommandLine(), gotConfig);
         if(log.isDebugEnabled())
         {
             StrH.ttl(initsb, 1, "java.class.path:");
@@ -478,6 +472,14 @@ public class CliBase extends Thread
             LoggerContext lc = (LoggerContext) LoggerFactory.getILoggerFactory();
             // TODO: StatusPrinter.setPrintStream
             StatusPrinter.print(lc);
+            try
+            {
+                ClassInfo classInfo = ClassInfo.getInfo(DOF.class);
+                StrH.ttl(initsb, 1, "OAL JAR", " = ", classInfo.getLocation().toExternalForm());
+            }catch(Exception e)
+            {
+                StrH.ttl(initsb, 1, "OAL JAR", " = null");
+            }
         }
         return name;
     }
@@ -519,7 +521,6 @@ public class CliBase extends Thread
                     .desc("Path to configuration file.")
                     .longOpt(ConfigurationPathLongCl)
                     .hasArg()
-                    .required()
                     .build());
         }
         //@formatter:on
