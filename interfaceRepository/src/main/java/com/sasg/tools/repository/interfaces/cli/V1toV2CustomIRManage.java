@@ -1,4 +1,4 @@
-package com.sasg.tools.repository.interfaces.cli.cmds;
+package com.sasg.tools.repository.interfaces.cli;
 
 import org.opendof.tools.repository.interfaces.cli.InterfaceRepositoryManage;
 import org.opendof.tools.repository.interfaces.cli.ManageController;
@@ -34,7 +34,7 @@ public class V1toV2CustomIRManage extends InterfaceRepositoryManage
 {
     public V1toV2CustomIRManage(String[] args)
     {
-        super(args, true);
+        super(args, true, false, true);
         MigrateCommand migrateCmd = new MigrateCommand(this, "migrate");
         addCommand(migrateCmd);
         migrateCmd.addChild(new ScriptMigrateCommand(this, migrateCmd, ScriptMigrateCommand.Command.Script.command));

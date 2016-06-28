@@ -1,4 +1,4 @@
-package com.sasg.tools.repository.interfaces.cli.cmds;
+package com.sasg.tools.repository.interfaces.cli;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -178,11 +178,11 @@ public class MigrateController extends ManageController
             String iidstr = iid.getKey().toStandardString();
             if(iid.getKey().getRegistry() != 1)
             {
-                
-                int idx = iidstr.indexOf('{');
-                String str = "[1:";
-                str += iidstr.substring(idx);
-                iidstr = str;
+                throw new Exception("non-registry 1 found in alloc list");
+//                int idx = iidstr.indexOf('{');
+//                String str = "[1:";
+//                str += iidstr.substring(idx);
+//                iidstr = str;
             }
             iidstr += "\n";
             os.write(iidstr.getBytes());
@@ -226,7 +226,8 @@ public class MigrateController extends ManageController
             String iidStr = xml.substring(sidx, eidx);
             DOFInterfaceID iid = DOFInterfaceID.create(iidStr);
             inSvnMap.put(iid, iid);
-            boolean skip = false;
+            boolean skipr2 = false;
+            boolean skipr3 = false;
             boolean is63 = false;
             switch(iid.getRegistry())
             {
@@ -235,23 +236,29 @@ public class MigrateController extends ManageController
                     break;
                 case 2:
                     count2.incrementAndGet();
-                    skip = true;
+                    skipr2 = true;
                     break;
                 case 3:
                     count3.incrementAndGet();
+                    skipr3 = true;
                     break;
                 case 63:
                     count63.incrementAndGet();
                     is63 = true;
+                    skipr3 = true;
                     break;
                 default:
                     throw new Exception("registry type: " + iid.toStandardString());
             }
-            if(skip)
+            if(skipr2)
                 continue;
             String msg = iid.toStandardString();
             if(existsMap.get(iid) == null)
             {
+                if(!skipr2)
+                { // skipr2 used to be just skip and was reused in here, as above continue cleared its previous usage
+                  // current choice is to no reserve 3/63 at all, but I still want to log them
+                  // basically this code block is commented out.
                 if(is63)
                 {
                     // see if there is already an existing reg 1
@@ -261,26 +268,29 @@ public class MigrateController extends ManageController
                         {
                             msg += " WARN: 63 where InIr has same identifier";
                             dupcount.incrementAndGet();
-                            skip = true;
+                            skipr2 = true;
                             break;
                         }
                     }
-                    if(!skip)
+                    if(!skipr2)
                     {
                         idx = iid.toStandardString().indexOf('{');
                         String str = "[1:";
                         str += iid.toStandardString().substring(idx);
                         iid = DOFInterfaceID.create(str);
                     }
-                }
-                msg += " needs allocation";
+                }}
+                if(skipr3)
+                    msg += " needs email/possible re-allocation";
+                else
+                    msg += " needs allocation";
                 if(allocList.get(iid) != null)
                 {
                     msg += " WARN already seen";
                     dupcount.incrementAndGet();
                 }else
                 {
-                    if(!skip)
+                    if(!skipr3)
                         allocList.put(iid, iid);
                 }
             }

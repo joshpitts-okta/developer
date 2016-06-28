@@ -46,6 +46,29 @@ public class StrH
             sb.append("\n");
         return sb;
     }
+
+    public static String combinePaths(String path1, String path2, boolean urlFormat, boolean finalSlash)
+    {
+        path1 = path1.replace('\\', '/');
+        path2 = path2.replace('\\', '/');
+        if(path1.endsWith("/") && path2.startsWith("/"))
+            path2 = path2.substring(1); // remove unwanted slash
+        if(!path1.endsWith("/") && !path2.startsWith("/"))
+            path1 += "/"; // add needed slash
+        if(urlFormat)
+        {
+            if(!path1.startsWith("file:"))
+                path1 = "file:///" + path1;
+        }
+        
+        if(finalSlash)
+        {
+            if(!path2.endsWith("/"))
+                path2 += "/";
+        }
+        return path1 + path2;
+    }
+
     
     /**
      * Pad string to width and add to StringBuilder.
