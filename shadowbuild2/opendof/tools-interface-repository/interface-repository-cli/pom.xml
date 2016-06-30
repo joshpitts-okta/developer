@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>org.opendof.tools-interface-repository</groupId>
 		<artifactId>builder</artifactId>
-		<version>1.0</version>
+		<version>2.0</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>interface-repository-cli</artifactId>
@@ -13,22 +13,22 @@
 		<dependency>
 			<groupId>org.opendof.tools-interface-repository</groupId>
 			<artifactId>interface-repository-core</artifactId>
-			<version>1.0</version>
+			<version>2.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.opendof.tools-interface-repository</groupId>
 			<artifactId>interface-repository-opendof</artifactId>
-			<version>1.0</version>
+			<version>2.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.opendof.tools-interface-repository</groupId>
 			<artifactId>interface-repository-allseen</artifactId>
-			<version>1.0</version>
+			<version>2.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.opendof.tools-interface-repository</groupId>
 			<artifactId>interface-repository-mysql</artifactId>
-			<version>1.0</version>
+			<version>2.0</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-cli</groupId>
@@ -61,17 +61,17 @@
 						<manifestEntries>
 							<mode>development</mode>
 							<url>${project.url}</url>
-							<Implementation-Version>1.1.1</Implementation-Version>
+							<Implementation-Version>2.0</Implementation-Version>
 						</manifestEntries>
 						<manifestSections>
 							<manifestSection>
 								<name>common</name>
 								<manifestEntries>
 									<Specification-Title>tools-interface-repository-cli</Specification-Title>
-									<Specification-Version>1.0</Specification-Version>
+									<Specification-Version>2.0</Specification-Version>
 									<Specification-Vendor>OpenDOF Project, Inc.</Specification-Vendor>
 									<Implementation-Title>tools-interface-repository-cli</Implementation-Title>
-									<Implementation-Version>1.0.0.0</Implementation-Version>
+									<Implementation-Version>2.0.0.0</Implementation-Version>
 									<Implementation-Vendor>OpenDOF Project, Inc.</Implementation-Vendor>
 								</manifestEntries>
 							</manifestSection>
@@ -79,10 +79,10 @@
 								<name>org/opendof/tools/repository/interfaces/cli</name>
 								<manifestEntries>
 									<Specification-Title>tools-interface-repository-cli-util</Specification-Title>
-									<Specification-Version>1.0</Specification-Version>
+									<Specification-Version>2.0</Specification-Version>
 									<Specification-Vendor>OpenDOF Project, Inc.</Specification-Vendor>
 									<Implementation-Title>tools-interface-repository-cli-util</Implementation-Title>
-									<Implementation-Version>1.0.2.0</Implementation-Version>
+									<Implementation-Version>2.0.0.0</Implementation-Version>
 									<Implementation-Vendor>OpenDOF Project, Inc.</Implementation-Vendor>
 								</manifestEntries>
 							</manifestSection>

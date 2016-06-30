@@ -1,17 +1,38 @@
-@echo on
-set base=\wsp\
-rem copy %base%antbuild.bat 
-copy %base%pom.xml 
+@echo off
+if [%1]==[] goto error
+if [%2]==[] goto error
 
-rem copy %base%eclipse\pom.xml eclipse
+set coreSrcBase=%1\platform\core-java
+set coreDestBase=%2\core-java
 
-copy %base%testing-framework\pom.xml testing-framework
-copy %base%testing-framework\platform\pom.xml testing-framework\platform
-rem copy %base%testing-framework\platform\antbuild.bat testing-framework
+echo on
+copy %1\antbuild.bat %2
+copy %1\pom.xml %2
 
-copy %base%testing-framework\platform\dtf-aws-attr\pom.xml testing-framework\platform\dtf-aws-attr
-copy %base%testing-framework\platform\dtf-aws-resource\pom.xml testing-framework\platform\dtf-aws-resource
-copy %base%testing-framework\platform\dtf-core\pom.xml testing-framework\platform\dtf-core
-copy %base%testing-framework\platform\dtf-exec\pom.xml testing-framework\platform\dtf-exec
-copy %base%testing-framework\platform\dtf-ivy-artifact\pom.xml testing-framework\platform\dtf-ivy-artifact
-copy %base%testing-framework\platform\dtf-runner\pom.xml testing-framework\platform\dtf-runner
+copy %1\testing-framework\pom.xml %2\testing-framework
+copy %1\testing-framework\antbuild.bat %2\testing-framework
+
+copy %1\testing-framework\platform\pom.xml %2\testing-framework\platform
+copy %1\testing-framework\platform\antbuild.bat %2\testing-framework\platform
+
+copy %1\testing-framework\platform\dtf-aws-resource\pom.xml %2\testing-framework\platform\dtf-aws-resource
+copy %1\testing-framework\platform\dtf-core\pom.xml %2\testing-framework\platform\dtf-core
+copy %1\testing-framework\platform\dtf-ivy-artifact\pom.xml %2\testing-framework\platform\dtf-ivy-artifact
+copy %1\testing-framework\platform\dtf-runner\pom.xml %2\testing-framework\platform\dtf-runner
+
+echo off
+goto exit
+
+:error
+echo.
+echo Typically this file is not executed stand alone, see ...\shadowbuild2\getbuild.bat
+echo.
+echo usage: getbuild ^<src-base^> ^<dest-base^>
+echo where:
+echo.   src-base is the base path the sasg modules i.e. \wsp
+echo.   dest-base is the base path of the shawdow build i.e. \wsp\developer\shadowbuild2
+echo.
+
+:exit
+echo.
+

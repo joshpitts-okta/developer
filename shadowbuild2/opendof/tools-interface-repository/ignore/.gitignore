@@ -1,0 +1,9 @@
+/.gitignore
+**/antbuild.bat
+**/pom.xml
+**/target/
+**/.settings
+**/bin
+**/.classpath
+**/.project
+

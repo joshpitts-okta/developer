@@ -1,17 +1,44 @@
-@echo on
-set base=\wsp\
-rem copy %base%antbuild.bat 
-copy %base%pom.xml 
+@echo off
+if [%1]==[] goto error
+if [%2]==[] goto error
 
-rem copy %base%eclipse\pom.xml eclipse
+set coreSrcBase=%1\core-java
+set coreDestBase=%2\core-java
 
-copy %base%testing-framework\pom.xml testing-framework
-copy %base%testing-framework\platform\pom.xml testing-framework\platform
-rem copy %base%testing-framework\platform\antbuild.bat testing-framework
+set datatransferSrcBase=%1\datatransfer
+set datatransferDestBase=%2\datatransfer
 
-copy %base%testing-framework\platform\dtf-aws-attr\pom.xml testing-framework\platform\dtf-aws-attr
-copy %base%testing-framework\platform\dtf-aws-resource\pom.xml testing-framework\platform\dtf-aws-resource
-copy %base%testing-framework\platform\dtf-core\pom.xml testing-framework\platform\dtf-core
-copy %base%testing-framework\platform\dtf-exec\pom.xml testing-framework\platform\dtf-exec
-copy %base%testing-framework\platform\dtf-ivy-artifact\pom.xml testing-framework\platform\dtf-ivy-artifact
-copy %base%testing-framework\platform\dtf-runner\pom.xml testing-framework\platform\dtf-runner
+set toolsdomainSrcBase=%1\tools-domain
+set toolsdomainDestBase=%2\tools-domain
+
+set irSrcBase=%1\tools-interface-repository
+set irDestBase=%2\tools-interface-repository
+
+echo copy %1\antbuild.bat %2
+copy %1\antbuild.bat %2
+
+echo copy %1\pom.xml %2
+copy %1\pom.xml %2
+
+
+::call %coreSrcBase%\getbuild.bat %coreSrcBase%  %coreDestBase%
+::call %datatransferSrcBase%\getbuild.bat %datatransferSrcBase%  %datatransferDestBase%
+::call %toolsdomainSrcBase%\getbuild.bat %toolsdomainSrcBase%  %toolsdomainDestBase%
+echo %irDestBase%\getbuild.bat %irSrcBase%  %irDestBase%
+call %irDestBase%\getbuild.bat %irSrcBase%  %irDestBase%
+
+goto exit
+
+:error
+echo.
+echo Typically this file is not executed stand alone, see ...\shadowbuild2\getbuild.bat
+echo.
+echo usage: getbuild ^<src-base^> ^<dest-base^>
+echo where:
+echo.   src-base is the base path the opendof modules i.e. \wso
+echo.   dest-base is the base path of the shawdow build i.e. \wsp\developer\shadowbuild2\opendof
+echo.
+
+:exit
+echo.
+

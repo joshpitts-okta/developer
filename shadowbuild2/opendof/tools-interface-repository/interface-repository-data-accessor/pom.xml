@@ -3,16 +3,12 @@
 	<parent>
 	    <groupId>org.opendof.tools-interface-repository</groupId>
 	    <artifactId>builder</artifactId>
-	    <version>1.0</version>
+	    <version>2.0</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
     <artifactId>interface-repository-data-accessor</artifactId>
 	<packaging>jar</packaging>
     <name>OpenDOF Interface Repository Data Accessor</name>
 	<dependencies>
-		<dependency>
-			<groupId>org.opendof.core</groupId>
-			<artifactId>dof-oal</artifactId>
-		</dependency>
 	</dependencies>
 </project>
