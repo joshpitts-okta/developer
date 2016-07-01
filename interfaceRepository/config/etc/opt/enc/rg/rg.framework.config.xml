@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<framework-config xmlns="http://emit-networking.org/schema/framework/config" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://emit-networking.org/schema/framework/config http://pewla.com/schema/rg/config/rg.framework.config.xsd" version="1.0">
+	<auth-framework>
+		<domains>
+    </domains>
+	</auth-framework>
+	<service-framework>
+		<services>
+			<service credential="0" threadpool-size="1" tunneling="false">
+				<archive>/opt/enc/rg/services/securityconfig/lib</archive>
+				<class class-name="securityconfig-service">
+                    <resource>file:///opt/enc/rg/services/securityconfig/spring/securityconfig.service.spring.xml</resource>
+					<params>
+						<param name="SecurityConfigTimeout">30</param>
+					</params>
+				</class>
+			</service>
+			<service credential="2" threadpool-size="1" tunneling="false">
+				<archive>/opt/enc/rg/services/naming/lib</archive>
+				<class class-name="naming-service">
+                    <resource>file:///opt/enc/rg/services/naming/spring/naming.service.spring.xml</resource>
+					<params>
+						<param name="spring.service.bean-name">naming-service</param>
+					</params>
+				</class>
+			</service>
+			<service credential="2" threadpool-size="1" tunneling="false">
+				<archive>/opt/enc/rg/services/logging/lib</archive>
+				<class class-name="org.emitdo.app.service.logging.LoggingService"/>
+			</service>
+		</services>
+	</service-framework>
+	<framework>
+		<provider-id>[3:rg1@pewla.com]</provider-id>
+		<name>rg1</name>
+		<connections>
+			<!-- stream connection to TTC in home domain using manager credentials -->
+			<connection id="0" connect="false" >
+				<name>Stream Connection</name>
+				<dof-connection type="stream" security-desire="secure" credential="2" >
+					<address>1.2.3.4:3567</address>
+				</dof-connection>
+			</connection>
+			<!-- stateless datagram to factory domain -->
+			<connection id="1" authentication="true" auth-only="true">
+				<name>Stateless Datagram Connection</name>
+				<dof-connection type="datagram-stateless" >
+					<address>1.2.3.4:3567</address>
+					<domains>
+						<domain ref="0"/>
+					</domains>
+				</dof-connection>
+			</connection>
+			<!-- point connection in the platform domain using home domain/manager bridge -->
+			<connection id="2" related-connection="3" connect="false">
+				<dof-connection type="point" security-desire="secure" credential="1" bridge="0" >
+					<address>[3:servicesHub@platform.pewla.com]</address>
+				</dof-connection>
+			</connection>
+			<!-- datagram connection in the platform domain with home/manager bridge -->
+			<connection connect="true" id="3">
+				<name>Datagram Connection</name>
+				<dof-connection type="datagram" security-desire="secure" credential="1" bridge="0">
+					<address>1.2.3.4:3567</address>
+				</dof-connection>
+			</connection>
+		</connections>
+		<servers>
+			<server id="0">
+				<dof-server type="stream" security-desire="secure" >
+					<address>0.0.0.0:3567</address>
+				</dof-server>
+			</server>
+			<server id="1">
+				<dof-server type="datagram" security-desire="secure" >
+					<address>0.0.0.0:3567</address>
+				</dof-server>
+			</server>
+		</servers>
+		<server-credentials>
+			<credential ref="0"/>
+			<credential ref="3"/>
+		</server-credentials>
+		<domains>
+			<domain max-silence="3600" credential="0" id="0">factory.pewla.com</domain>
+			<!-- factory -->
+			<domain max-silence="3600" credential="1" id="1">platform.pewla.com</domain>
+			<!-- platform -->
+		</domains>
+		<bridges>
+			<bridge credential="2" id="0">
+				<name>Gateway Services</name>
+			</bridge>
+		</bridges>
+		<credentials>
+			<credential type="preshared-key" id="0">
+				<name>Factory Credential</name>
+				<identity>[3:gateway_1@factory.pewla.com]</identity>
+				<secret>0000001101000000000000000000000000000000000000000000000000000000</secret>
+				<domain-id>[6:factory.pewla.com]</domain-id>
+			</credential>
+			<credential type="preshared-key" id="1">
+				<name>Platform Credential</name>
+				<identity>[3:point@platform.com]</identity>
+				<secret>0000000000000000000000000000000000000000000000000000000000000000</secret>
+				<domain-id>[6:platform.pewla.com]</domain-id>
+			</credential>
+			<credential type="password" id="2">
+				<name>Manager Credential</name>
+				<identity>[3:manager@gateway.com]</identity>
+				<secret>manager</secret>
+				<domain-id>[6:gateway.com]</domain-id>
+			</credential>
+			<credential type="password" id="3">
+				<name>Router Credential</name>
+				<identity>[3:router@gateway.com]</identity>
+				<secret>router</secret>
+				<domain-id>[6:gateway.com]</domain-id>
+			</credential>
+		</credentials>
+	</framework>
+</framework-config>

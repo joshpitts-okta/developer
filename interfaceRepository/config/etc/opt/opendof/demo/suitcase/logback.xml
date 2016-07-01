@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+		<!-- filter class="ch.qos.logback.core.filter.EvaluatorFilter">
+			<evaluator> 
+				<expression>return 
+					message.toLowerCase().contains("[sgmp") || 
+					message.toLowerCase().contains("[point") || 
+					message.toLowerCase().contains("[ccm") || 
+					message.toLowerCase().contains("[eoi") ||
+					level > INFO ||
+					message.toLowerCase().contains("removed:") ||
+					message.toLowerCase().contains("completed: is") ||
+					message.toLowerCase().contains("state change:"); 
+				</expression>
+			</evaluator>
+			<OnMismatch>DENY</OnMismatch>
+			<OnMatch>NEUTRAL</OnMatch>
+		</filter -->
+
+		<!-- encoders are assigned the type ch.qos.logback.classic.encoder.PatternLayoutEncoder 
+			by default -->
+		<encoder>
+			<pattern>[%-5level] %date [%thread] %logger{35} - %msg%n%rEx
+			</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="file"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${log-file-base-name}.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- daily rollover -->
+			<fileNamePattern>${log-file-base-name}.%d{yyyy-MM-dd}.log
+			</fileNamePattern>
+			<!-- keep 7 days' worth of history -->
+			<maxHistory>7</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<!-- pattern>%-4relative [%thread] %-5level %logger{35} - %msg%n</pattern -->
+			<pattern>[%-5level] %date [%thread] %logger{35} - %msg%n%rEx
+			</pattern>
+		</encoder>
+	</appender>
+
+	<root level="debug">
+		<appender-ref ref="stdout" />
+		<appender-ref ref="file" />
+	</root>
+</configuration>
+

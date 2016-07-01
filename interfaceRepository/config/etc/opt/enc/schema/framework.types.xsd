@@ -1,0 +1,627 @@
+<!-- edited with XMLSpy v2011 rel. 2 sp1 (http://www.altova.com) by cadams (panasonic) -->
+<xs:schema xmlns:xml="http://www.w3.org/XML/1998/namespace" xmlns:fw="http://emit-networking.org/schema/framework/config" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://emit-networking.org/schema/framework/config" elementFormDefault="qualified" attributeFormDefault="unqualified">
+	<xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="http://www.w3.org/2009/01/xml.xsd"/>
+	<xs:annotation>
+		<xs:documentation xml:lang="en">
+This is the full set of EMIT Framework configuration types schema. It is intended to be used with xs:include or xs:redefine in customized frameworks that desire to restrict or enhance these types.
+ 	</xs:documentation>
+	</xs:annotation>
+	<!-- ***************** Authentication Framework declarations ************** -->
+	<xs:complexType name="auth-framework">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Defines the a base type for configuration parameters for the EMIT AuthenticationFramework.  This type should be extended in redefining xsd's to declare the valid schema for a given implementation.</xs:documentation>
+		</xs:annotation>
+	</xs:complexType>
+	<xs:complexType name="auth-domain-list">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Defines a list of 0 to many auth-domin-type's.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="domain" type="fw:auth-domain-type" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="auth-domain-type">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Defines the full set of possible domain configuration parameters.</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="domain-id" type="fw:domain-id-type" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="storage" type="fw:class-type" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="storage-manager" type="fw:class-type" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="piped-storage" type="fw:class-type" minOccurs="0" maxOccurs="1"/>
+		</xs:all>
+	</xs:complexType>
+	<xs:simpleType name="max-life">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Maximum session life in minutes, limited to range of 8 minutes to 1 week.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:float">
+			<xs:minInclusive value="8.0"/>
+			<xs:maxInclusive value="10080.0"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- ***************** Service Framework declarations ************** -->
+	<xs:complexType name="service-framework">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Defines the a base type for configuration parameters for the EMIT ServiceFramework.  This type should be extended in redefining xsd's to declare the valid schema for a given implementation.</xs:documentation>
+		</xs:annotation>
+	</xs:complexType>
+	<xs:complexType name="service-list">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Defines a list of 0 to many service-type's.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="service" type="fw:service-type" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="service-type">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Defines the a base type for EMIT service parameters.  This type should be extended in redefining xsd's to declare the valid schema for a given implementation.</xs:documentation>
+		</xs:annotation>
+	</xs:complexType>
+	<xs:complexType name="domain-resolver-list">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Defines a list of 0 to many domain resolvers.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="resolver" type="fw:domain-resolver-type" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="domain-resolver-type">
+		<xs:annotation>
+			<xs:documentation xml:lang="eng">Defines the full set of possible domain-resolver parameters.</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="domain-id" type="fw:domain-id-type" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="class" type="fw:class-type" minOccurs="0" maxOccurs="1"/>
+		</xs:all>
+	</xs:complexType>
+	<!-- ***************** Framework declarations ************** -->
+	<xs:complexType name="framework">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Defines the a base type for configuration parameters for the EMIT Framework.  This type should be extended in redefining xsd's to declare the valid schema for a given implementation.</xs:documentation>
+		</xs:annotation>
+	</xs:complexType>
+	<xs:simpleType name="max-ops">
+		<xs:annotation>
+			<xs:documentation xml:lang="eng">Maximum outstanding operations this node's DOF allows, limited to range of 1000 to 1000000.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:integer">
+			<xs:minInclusive value="1000"/>
+			<xs:maxInclusive value="1000000"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="threads">
+		<xs:annotation>
+			<xs:documentation xml:lang="eng">Maximum threads this node's DOF allows, limited to range of 10 to 500.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:integer">
+			<xs:minInclusive value="1"/>
+			<xs:maxInclusive value="500"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="max-conns">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Maximum connections this node's DOF allows, limited to range of 1 to 1000.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:integer">
+			<xs:minInclusive value="1"/>
+			<xs:maxInclusive value="1000"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="rank">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">The SGMP rank of this node, limited range of 0 to 255, where higher is stronger.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:integer">
+			<xs:minInclusive value="0"/>
+			<xs:maxInclusive value="255"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="logging-level-type">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Defines the full set of possible logging level parameters.</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="level" type="fw:log-level-flavor-type" default="info"/>
+	</xs:complexType>
+	<xs:simpleType name="log-level-flavor-type">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="error"/>
+			<xs:enumeration value="warn"/>
+			<xs:enumeration value="info"/>
+			<xs:enumeration value="debug"/>
+			<xs:enumeration value="trace"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="logging-type">
+		<xs:annotation>
+			<xs:documentation xml:lang="eng">Extends logging-level-type, adds enabled and console parameters.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="fw:logging-level-type">
+				<xs:attribute name="enabled" type="xs:boolean" use="optional" default="true"/>
+				<xs:attribute name="console" type="xs:boolean" use="optional" default="false"/>
+				<xs:attribute name="name" type="xs:string" use="optional"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="logging-handler-list">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Defines a list of 0 to many logging handler classes.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="handler" type="fw:class-type" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="transport-list">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Defines a list of 0 to many transport-type's.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="transport" type="fw:transport-type" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="transport-type">
+		<xs:annotation>
+			<xs:documentation xml:lang="eng">Defines the full set of possible transport configuration parameters.</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="transport" type="fw:class-type" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="factory" type="fw:class-type" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="name" type="fw:i18n" minOccurs="0" maxOccurs="1"/>
+		</xs:all>
+		<xs:attribute name="id" type="xs:int" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="connection-list">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Defines a list of 0 to many connection-type's.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="connection" type="fw:connection-type" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="connection-type">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Defines the a base type for Framework connection parameters.  This type should be extended in redefining xsd's to declare the valid schema for a given implementation.</xs:documentation>
+		</xs:annotation>
+	</xs:complexType>
+	<xs:complexType name="dof-connection-type">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Defines the a base type for DOFConnection.Config parameters.  This type should be extended in redefining xsd's to declare the valid schema for a given implementation.</xs:documentation>
+		</xs:annotation>
+	</xs:complexType>
+	<xs:simpleType name="conn-type">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Defines all possible EMIT connection types.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="stream"/>
+			<xs:enumeration value="datagram"/>
+			<xs:enumeration value="datagram-stateless"/>
+			<xs:enumeration value="hub"/>
+			<xs:enumeration value="point"/>
+			<xs:enumeration value="group"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="security-desire-type">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Defines all possible EMIT security desire types.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="any"/>
+			<xs:enumeration value="not-secure"/>
+			<xs:enumeration value="secure-any"/>
+			<xs:enumeration value="secure-auth-only"/>
+			<xs:enumeration value="secure"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="server-list">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Define a list of 0 to many server-type's.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="server" type="fw:server-type" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="server-type">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Defines the a base type for EMIT server parameters.  This type should be extended in redefining xsd's to declare the valid schema for a given implementation.</xs:documentation>
+		</xs:annotation>
+	</xs:complexType>
+	<xs:complexType name="dof-server-type">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Defines the base type for DOFServer.Config parameters.  This type should be extended in redefining xsd's to declare the valid schema for a given implementation.</xs:documentation>
+		</xs:annotation>
+	</xs:complexType>
+	<xs:simpleType name="serv-type">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Defines all possible EMIT server types.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="stream"/>
+			<xs:enumeration value="datagram"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="server-credential-list">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Defines a list of 0 to many credential-type's.  This is the global server credentials list.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="credential" type="fw:server-credential-type" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="server-credential-type">
+		<xs:sequence>
+			<xs:element name="domain-id" type="fw:domain-id-type" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+		<xs:attribute name="ref" type="xs:int"/>
+	</xs:complexType>
+	<xs:complexType name="auditor-type">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Defines the full set of possible auditor configuration parameters.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="class" type="fw:class-type" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+		<xs:attribute name="period" type="fw:seconds" use="optional" default="1800"/>
+	</xs:complexType>
+	<!-- ***************** common lists ************** -->
+	<xs:complexType name="domain-reference-list">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Defines a list of 0 to many reference-type's.  These must be references to domain-type's.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="domain" type="fw:reference-type" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="domain-list">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Defines a list of 0 to many domain-type's.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="domain" type="fw:domain-type" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="domain-type" mixed="true">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Defines the full set of possible domain configuration parameters.</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="name" type="fw:i18n" minOccurs="0" maxOccurs="1"/>
+		</xs:all>
+		<xs:attribute name="id" type="xs:int" use="required"/>
+		<xs:attribute name="credential" type="xs:int" use="required"/>
+		<xs:attribute name="max-silence" type="fw:seconds" use="optional" default="3600.0"/>
+	</xs:complexType>
+	<xs:complexType name="credential-list">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Defines a list of 0 to many credential-type's.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="credential" type="fw:credential-type" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="credential-type">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Defines the full set of possible credential configuration parameters.</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="name" type="fw:i18n" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="domain-id" type="fw:domain-id-type" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="identity" type="fw:authentication-id-type" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="secret" type="fw:i18n" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="marshalled" type="xs:string" minOccurs="0" maxOccurs="1"/>
+		</xs:all>
+		<xs:attribute name="type" type="fw:credential-secret-type" use="optional"/>
+		<xs:attribute name="id" type="xs:int" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="domain-oid-list">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Defines a list of 0 to many domain-id-type's.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="domain-id" type="fw:domain-id-type" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:simpleType name="credential-secret-type">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Defines all possible EMIT authentication secret types.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="password"/>
+			<xs:enumeration value="preshared-key"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="permission-set-list">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Defines a list of 0 to many permission-set-type's.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="permission-set" type="fw:permission-set-type" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="permission-set-type">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Defines all possible EMIT permission types and provides a base type for each type to extend.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="name" type="fw:i18n" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="binding" type="fw:binding-permission-type" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="requestor" type="fw:permission-type" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="provider" type="fw:permission-type" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="define" type="fw:define-permission-type" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="i-am" type="fw:iam-permission-type" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="act-as" type="fw:iam-permission-type" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="act-as-any" type="fw:permission-type" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="custom" type="fw:custom-permission-type" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+		<xs:attribute name="id" type="xs:int" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="permission-set-reference">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Defines a referenced element to a given permission-set in the permissions list element.</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="ref" type="xs:int" use="optional"/>
+	</xs:complexType>
+	<xs:complexType name="extendable-permission-set-reference-type">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Addes the extend-allowed attributed to a permission-set-type.</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="extend-allowed" type="xs:boolean" use="optional" default="false"/>
+		<xs:attribute name="ref" type="xs:int" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="permission-type">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Defines a base type for each EMIT permission type to extend.</xs:documentation>
+		</xs:annotation>
+	</xs:complexType>
+	<xs:complexType name="binding-permission-type">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Defines the full set of possible binding permission configuration parameters.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="fw:permission-type">
+				<xs:sequence>
+					<xs:element name="binding-oids" type="fw:binding-oid-list" minOccurs="0" maxOccurs="1"/>
+					<xs:element name="binding-iids" type="fw:binding-iid-list" minOccurs="0" maxOccurs="1"/>
+				</xs:sequence>
+				<xs:attribute name="session" type="xs:boolean" use="optional" default="false"/>
+				<xs:attribute name="execute" type="xs:boolean" use="optional" default="false"/>
+				<xs:attribute name="provide" type="xs:boolean" use="optional" default="false"/>
+				<xs:attribute name="read" type="xs:boolean" use="optional" default="false"/>
+				<xs:attribute name="write" type="xs:boolean" use="optional" default="false"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="binding-oid-list">
+		<xs:sequence>
+			<xs:element name="oid" type="fw:object-id-type" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="binding-iid-list">
+		<xs:sequence>
+			<xs:element name="iid" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="define-permission-type">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Defines the full set of possible define permission configuration parameters.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="fw:permission-type">
+				<xs:sequence>
+					<xs:element name="iid" type="xs:string" minOccurs="1" maxOccurs="1"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="iam-permission-type">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Defines the full set of possible iam permission configuration parameters.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="fw:permission-type">
+				<xs:sequence>
+					<xs:element name="source-id" type="fw:source-id-type" minOccurs="1" maxOccurs="1"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="custom-permission-type">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Defines the full set of possible custom permission configuration parameters.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="fw:permission-type">
+				<xs:sequence>
+					<xs:element name="data" type="xs:string" minOccurs="1" maxOccurs="1"/>
+				</xs:sequence>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="bridge-list">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Defines a list of 0 to many bridge-type's.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="bridge" type="fw:bridge-type" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="bridge-type">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Defines the full set of possible security bridge configuration parameters.</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="name" type="fw:i18n" minOccurs="0" maxOccurs="1"/>
+		</xs:all>
+		<xs:attribute name="permission-set" type="xs:int" use="optional"/>
+		<xs:attribute name="credential" type="xs:int" use="optional"/>
+		<xs:attribute name="id" type="xs:int" use="required"/>
+	</xs:complexType>
+	<!--	
+	<xs:complexType name="extendable-permission-set-type">
+		<xs:annotation>
+			<xs:documentation xml:lang="eng">Extends permission-set, adds allow-extend boolean attribute.</xs:documentation>
+		</xs:annotation>
+		<xs:complexContent>
+			<xs:extension base="fw:permission-set-type">
+				<xs:attribute name="extend-allowed" type="xs:boolean" use="optional" default="true"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:complexType name="extendable-permission-set-typefixme">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Addes the extend-allowed attributed to a permission-set-type.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="permission-set" type="fw:permission-set-type" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+		<xs:attribute name="extend-allowed" type="xs:boolean" use="optional" default="true"/>
+		<xs:attribute name="ref" type="xs:int" use="optional"/>
+	</xs:complexType>
+-->
+	<xs:complexType name="permission-factories-list">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Defines a list of 0 to many permission-factory-type's.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="factory" type="fw:class-type" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="permission-factory-type">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Defines the full set of possible permission factory configuration parameters.</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="class-name" type="xs:string" use="required"/>
+		<xs:attribute name="start-range" type="xs:int" use="optional"/>
+		<xs:attribute name="end-range" type="xs:int" use="optional"/>
+	</xs:complexType>
+	<!-- ***************** common types ************** -->
+	<xs:complexType name="class-type">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Defines the full set of possible generic java class configuration parameters.</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="resource" type="xs:string" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="params" type="fw:param-list" minOccurs="0" maxOccurs="1"/>
+		</xs:all>
+		<xs:attribute name="class-name" type="xs:string" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="param-list">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Defines a list of 0 to many parm-type's.</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="param" type="fw:param-type" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="param-type" mixed="true">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Defines a generic name/value pair used by various configuration parameters.</xs:documentation>
+		</xs:annotation>
+		<xs:simpleContent>
+			<xs:extension base="fw:i18n">
+				<xs:attribute name="name" type="xs:string" use="required"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:simpleType name="i18n">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">A string type that reflects that the value should allow for internationalization.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<!-- key must be 64 characters -->
+	<xs:simpleType name="key">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">A string value which represents 32 hexidecimal byte values.  The length of this string must be 64 numeric characters.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:length value="64"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="object-id-type">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Defines a DOFObjectID's configuration type.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:simpleType name="source-id-type">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Defines a DOFObjectID.Source's configuration type.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="fw:object-id-type">
+			<xs:maxLength value="40"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="authentication-id-type">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Defines a DOFObjectID.Authentication's configuration type.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:simpleType name="domain-id-type">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Defines a DOFObjectID.Domain's configuration type.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string"/>
+	</xs:simpleType>
+	<xs:simpleType name="std-delay">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Defines a standard delay, specified in seconds with a range of 1.0 seconds to 60 minutes.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:float">
+			<xs:minInclusive value="0.0"/>
+			<xs:maxInclusive value="3600.0"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="reference-type">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Defines an integer type which reflects that the value must match up with an id attribute of some element.</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="ref" type="xs:int"/>
+	</xs:complexType>
+	<xs:simpleType name="std-timeout">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Defines a standard timeout, specified in seconds, with a range of 0.1 seconds to 5 minutes.</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:float">
+			<xs:minInclusive value="0.1"/>
+			<xs:maxInclusive value="300.0"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="seconds">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Defines an int type which is range limited from 0 to 2147483.65 (max positive java int).</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:float">
+			<xs:minInclusive value="0.0"/>
+			<xs:maxInclusive value="2147483.65"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="framework-config">
+		<xs:annotation>
+			<xs:documentation xml:lang="en">Defines the full set of possible configuration parameters for Auth, Service and Framework frameworks.</xs:documentation>
+		</xs:annotation>
+		<xs:all>
+			<xs:element name="auth-framework" type="fw:auth-framework" minOccurs="0"/>
+			<xs:element name="service-framework" type="fw:service-framework" minOccurs="0"/>
+			<xs:element name="framework" type="fw:framework" minOccurs="1"/>
+		</xs:all>
+		<xs:attribute name="version" type="xs:string" default="1.0"/>
+	</xs:complexType>
+  <xs:complexType name="protocol-negotiator-type">
+    <xs:annotation>
+      <xs:documentation xml:lang="en">Defines the full set of possible protocol negotiators.</xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="type" type="fw:protocol-negotiator-flavor-type" default="default"/>
+  </xs:complexType>
+  <xs:simpleType name="protocol-negotiator-flavor-type">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="default"/>
+      <xs:enumeration value="as"/>
+      <xs:enumeration value="as-only"/>
+      <xs:enumeration value="point-base"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>
