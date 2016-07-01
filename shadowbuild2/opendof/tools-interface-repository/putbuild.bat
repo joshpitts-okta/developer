@@ -20,12 +20,12 @@ goto exit
 
 :error
 echo.
-echo Typically this file is not executed stand alone, see ...\shadowbuild2\getbuild.bat
+echo Typically this file is not executed stand alone, see ...\shadowbuild2\putbuild.bat
 echo.
-echo usage: getbuild ^<src-base^> ^<dest-base^>
+echo usage: putbuild ^<src-base^> ^<dest-base^>
 echo where:
-echo.   src-base is the base path the opendof modules i.e. \wso\opendof\tools-interface-repository
-echo.   dest-base is the base path of the shadow build i.e. \wsp\developer\shadowbuild2\opendof\tools-interface-repository
+echo.   src-base is the base path of the shadow build i.e. \wsp\developer\shadowbuild2\opendof\tools-interface-repository
+echo.   dest-base is the base path the opendof modules i.e. \wso\opendof\tools-interface-repository
 echo.
 
 :exit

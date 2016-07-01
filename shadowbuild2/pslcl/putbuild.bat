@@ -2,6 +2,9 @@
 if [%1]==[] goto error
 if [%2]==[] goto error
 
+set coreSrcBase=%1\platform\core-java
+set coreDestBase=%2\platform\core-java
+
 echo on
 copy %1\antbuild.bat %2
 copy %1\pom.xml %2
@@ -26,8 +29,8 @@ echo Typically this file is not executed stand alone, see ...\shadowbuild2\getbu
 echo.
 echo usage: getbuild ^<src-base^> ^<dest-base^>
 echo where:
-echo.   src-base is the base path the sasg modules i.e. \wsp
-echo.   dest-base is the base path of the shawdow build i.e. \wsp\developer\shadowbuild2
+echo.   src-base is the base path of the shadow build i.e. \wsp\developer\shadowbuild2
+echo.   dest-base is the base path the sasg modules i.e. \wsp
 echo.
 
 :exit
