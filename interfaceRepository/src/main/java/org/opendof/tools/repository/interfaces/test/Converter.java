@@ -27,6 +27,7 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathFactory;
 
+import org.opendof.tools.repository.interfaces.cli.util.StrH;
 import org.opendof.tools.repository.interfaces.core.CoreController;
 import org.opendof.tools.repository.interfaces.test.legacySax.LegacySaxParser;
 import org.slf4j.Logger;
@@ -37,7 +38,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
-import com.pslcl.chad.app.StrH;
 
 @SuppressWarnings("javadoc")
 public class Converter

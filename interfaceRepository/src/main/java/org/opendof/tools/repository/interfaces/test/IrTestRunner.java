@@ -1,11 +1,10 @@
 package org.opendof.tools.repository.interfaces.test;
 
 import org.apache.commons.cli.CommandLine;
+import org.opendof.tools.repository.interfaces.cli.util.CliBase;
+import org.opendof.tools.repository.interfaces.cli.util.CliCommand;
 import org.opendof.tools.repository.interfaces.core.CoreController;
 import org.opendof.tools.repository.interfaces.da.DataAccessor;
-
-import com.pslcl.chad.app.cli.CliBase;
-import com.pslcl.chad.app.cli.CliCommand;
 
 @SuppressWarnings("javadoc")
 public class IrTestRunner extends CliBase

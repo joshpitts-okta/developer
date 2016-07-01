@@ -47,11 +47,13 @@
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-core</artifactId>
 		</dependency>
+		<!-- 
 		<dependency>
 			<groupId>com.pslcl.chad.developer</groupId>
 			<artifactId>helpers</artifactId>
 			<version>1.0</version>
 		</dependency>
+		-->
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>

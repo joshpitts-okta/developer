@@ -3,9 +3,8 @@ package org.opendof.tools.repository.interfaces.test;
 import java.util.Properties;
 
 import org.apache.commons.cli.Option;
-
-import com.pslcl.chad.app.cli.CliBase;
-import com.pslcl.chad.app.cli.CliCommand;
+import org.opendof.tools.repository.interfaces.cli.util.CliBase;
+import org.opendof.tools.repository.interfaces.cli.util.CliCommand;
 
 @SuppressWarnings("javadoc")
 public class IrTestCliCommand extends CliCommand
