@@ -2,20 +2,20 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<parent>
-		<groupId>com.pslcl.builder</groupId>
-		<artifactId>pslcl</artifactId>
+		<groupId>com.ccc.builder</groupId>
+		<artifactId>root</artifactId>
 		<version>1</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.pslcl.chad.developer</groupId>
+	<groupId>com.ccc.developer</groupId>
 	<artifactId>builder</artifactId>
 	<version>1.0</version>
 	<packaging>pom</packaging>
-	<name>PSLCL Chad Developer Tools</name>
+	<name>CCC developer repository builder</name>
 	<modules>
-		<module>helpers</module>
+		<module>interfaceRepository</module>
 		<!-- module>simple-node-framework</module -->
-		<module>sourcesink</module>
-		<module>tests</module>
+		<!-- module>sourcesink</module -->
+		<!-- module>tests</module -->
 	</modules>
 </project>

@@ -1,30 +1,5 @@
 package com.sasg.tools.repository.interfaces.cli;
 
-import org.opendof.tools.repository.interfaces.cli.InterfaceRepositoryManage;
-import org.opendof.tools.repository.interfaces.cli.ManageController;
-import org.opendof.tools.repository.interfaces.cli.cmds.group.AddGroupCommand;
-import org.opendof.tools.repository.interfaces.cli.cmds.group.DeleteGroupCommand;
-import org.opendof.tools.repository.interfaces.cli.cmds.group.GroupCommand;
-import org.opendof.tools.repository.interfaces.cli.cmds.group.ListGroupCommand;
-import org.opendof.tools.repository.interfaces.cli.cmds.group.UpdateGroupCommand;
-import org.opendof.tools.repository.interfaces.cli.cmds.iface.AddIfaceCommand;
-import org.opendof.tools.repository.interfaces.cli.cmds.iface.DeleteIfaceCommand;
-import org.opendof.tools.repository.interfaces.cli.cmds.iface.IfaceCommand;
-import org.opendof.tools.repository.interfaces.cli.cmds.iface.ListIfaceCommand;
-import org.opendof.tools.repository.interfaces.cli.cmds.iface.UpdateIfaceCommand;
-import org.opendof.tools.repository.interfaces.cli.cmds.submitter.AddSubmitterCommand;
-import org.opendof.tools.repository.interfaces.cli.cmds.submitter.DeleteSubmitterCommand;
-import org.opendof.tools.repository.interfaces.cli.cmds.submitter.SubmitterCommand;
-import org.opendof.tools.repository.interfaces.cli.cmds.submitter.UpdateSubmitterCommand;
-import org.opendof.tools.repository.interfaces.cli.cmds.subrepo.AddSubRepoCommand;
-import org.opendof.tools.repository.interfaces.cli.cmds.subrepo.DeleteSubRepoCommand;
-import org.opendof.tools.repository.interfaces.cli.cmds.subrepo.ListSubRepoCommand;
-import org.opendof.tools.repository.interfaces.cli.cmds.subrepo.SubRepoCommand;
-import org.opendof.tools.repository.interfaces.cli.cmds.subrepo.UpdateSubRepoCommand;
-import org.opendof.tools.repository.interfaces.core.AuthenticatedUser;
-import org.opendof.tools.repository.interfaces.core.CoreController;
-import org.opendof.tools.repository.interfaces.da.DataAccessor;
-
 import com.sasg.tools.repository.interfaces.cli.cmds.migrate.AllocMigrateCommand;
 import com.sasg.tools.repository.interfaces.cli.cmds.migrate.MigrateCommand;
 import com.sasg.tools.repository.interfaces.cli.cmds.migrate.ScriptMigrateCommand;
