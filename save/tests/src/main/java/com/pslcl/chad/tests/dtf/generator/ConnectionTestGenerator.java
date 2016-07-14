@@ -65,7 +65,7 @@ public class ConnectionTestGenerator
 
 						Machine asMachine = Util.buildMachine(G, "as", attributes, as);
 						Cable asCable = asMachine.connect(network);
-//						asMachine.run(as[0], "-doflog", "none");
+						asMachine.run(as[0], "-doflog", "none");
 
 						generate(G, network, attributes, server, requestor,
 							asCable, useUDP, useMcast, useStateless, useSecure, useAsync, useShare);
@@ -85,8 +85,8 @@ public class ConnectionTestGenerator
 	{
 		Machine serverMachine = Util.buildMachine(G, "server", attributes, server);
 		Cable serverCable = serverMachine.connect(network);
-//		serverMachine.run(server[0], "-doflog", "none",
-//			(asCable != null) ? "-secure -asaddress " + asCable.getIPReference() + "-asconnection" : "");
+		serverMachine.run(server[0], "-doflog", "none",
+			(asCable != null) ? "-secure -asaddress " + asCable.getIPReference() + "-asconnection" : "");
 
 		Machine requestorMachine = Util.buildMachine(G, "requestor", attributes, requestor);
 		requestorMachine.connect(network);
@@ -99,13 +99,13 @@ public class ConnectionTestGenerator
 		else
 			ip = serverCable.getIPReference();
 
-//		requestorMachine.run(requestor[0],
-//			"-connectionNum", "100", "-logPeriod", "60", "-doflog", "none", "-maxminutes", "2",
-//			"-address", ip,
-//			(asCable != null || useSecure) ? "-secure" : "",
-//			(useUDP || useMcast || useStateless) ? "-udp" : "",
-//			useStateless ? "-stateless" : "",
-//			useAsync ? "-asyncconnection" : "",
-//			useShare ? "-share" : "");
+		requestorMachine.run(requestor[0],
+			"-connectionNum", "100", "-logPeriod", "60", "-doflog", "none", "-maxminutes", "2",
+			"-address", ip,
+			(asCable != null || useSecure) ? "-secure" : "",
+			(useUDP || useMcast || useStateless) ? "-udp" : "",
+			useStateless ? "-stateless" : "",
+			useAsync ? "-asyncconnection" : "",
+			useShare ? "-share" : "");
 	}
 }

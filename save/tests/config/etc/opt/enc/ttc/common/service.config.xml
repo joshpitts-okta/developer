@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<three-tier-config
+    xmlns="http://emit-networking.org/schema/ttc/config"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://emit-networking.org/schema/ttc/config http://emit-networking.org/schema/ttc/config/ttc.config.xsd" version="1.0">
+    <service-config>
+        <platforms>
+            <platform>
+                <name>Residential Platform</name>
+                <domain-id>[6:res.pesdca.com]</domain-id>
+
+                <resource>file:///opt/enc/res/pgsql/spring/res.service.spring.xml</resource>
+
+                <params>
+                    <param name="res.user">res_user</param>
+                    <param name="res.password">res_user</param>
+                    <param name="res.host">engorcl</param>
+                    <param name="res.port">5433</param>
+                    <param name="res.database-name">res</param>
+
+                    <param name="as.storage.cluster.domain">[6:cluster.pesdca.com]</param>
+                    <param name="as.storage.cluster.user">cluster_manager</param>
+                    <param name="as.storage.cluster.password">cluster_manager</param>
+                    <param name="as.storage.cluster.host">engorcl</param>
+                    <param name="as.storage.cluster.port">5433</param>
+                    <param name="as.storage.cluster.database-name">asdb</param>
+
+                    <param name="as.storage.platform.domain">[6:res.pesdca.com]</param>
+                    <param name="as.storage.platform.user">res_manager</param>
+                    <param name="as.storage.platform.password">res_manager</param>
+                    <param name="as.storage.platform.host">engorcl</param>
+                    <param name="as.storage.platform.port">5433</param>
+                    <param name="as.storage.platform.database-name">asdb</param>
+                </params>
+
+                <services>
+                    <service management="false" id="5">
+                        <name>Status Service</name>
+                        <archive>/opt/enc/res/services/status/lib</archive>
+                        <class name="service">
+                            <resource>file:///opt/enc/res/services/status/spring/status.service.spring.xml</resource>
+                            <params>
+                                <param name="MaxActivates">1000</param>
+                                <param name="MaxSessions">10</param>
+                            </params>
+                        </class>
+                    </service>
+
+                    <service management="false" id="3">
+                        <name>Software Update Service</name>
+                        <archive>/opt/enc/res/services/update/lib</archive>
+                        <class name="service">
+                            <resource>file:///opt/enc/res/services/update/spring/update.service.spring.xml</resource>
+                            <params>
+                                <param name="MaxActivates">10</param>
+                                <param name="UpdateCacheSize">10000</param>
+                                <param name="QueryUpdateDelay">600</param>
+                                <param name="DeviceNotifyDelay">15</param>                                   
+                            </params>
+                        </class>
+                    </service>
+
+                    <service management="false" id="4">
+                        <name>Software Version Service</name>
+                        <archive>/opt/enc/res/services/version/lib</archive>
+                        <class name="service">
+                            <resource>file:///opt/enc/res/services/version/spring/version.service.spring.xml</resource>
+                            <params>
+                                <param name="MaxActivates">1000</param>
+                                <param name="MaxSessions">10</param>
+                            </params>
+                        </class>
+                    </service>
+
+                    <service management="false" id="0">
+                        <name>Security Configuration Service</name>
+                        <archive>/opt/enc/ttc/services/securityconfig/lib</archive>
+                        <class name="service">
+                            <resource>file:///opt/enc/res/pgsql/spring/securityconfig.service.spring.xml</resource>
+                            <params>
+                                <param name="MaxActivates">1000</param>
+                                <param name="SecurityConfigTimeout">30</param>
+                            </params>
+                        </class>
+                        <domain-id>[6:factory.pesdca.com]</domain-id>
+                    </service>
+                </services>
+            </platform>
+
+            <platform>
+                <name>Battery Platform</name>
+                <domain-id>[6:battery.pewla.com]</domain-id>
+
+                <resource>file:///opt/enc/battery/pgsql/spring/battery.service.spring.xml</resource>
+
+                <params>
+                    <param name="battery.user">battery_platform_manager</param>
+                    <param name="battery.password">battery_platform_manager</param>
+                    <param name="battery.host">engorcl</param>
+                    <param name="battery.port">5433</param>
+                    <param name="battery.database-name">battery</param>
+
+                    <param name="battery.slow.user">battery_platform_manager</param>
+                    <param name="battery.slow.password">battery_platform_manager</param>
+                    <param name="battery.slow.host">engorcl</param>
+                    <param name="battery.slow.port">5433</param>
+                    <param name="battery.slow.database-name">battery</param>
+                </params>
+
+                <services>
+                    <service management="false" id="10">
+                        <name>Old BMU Status Service</name>
+                        <archive>/opt/enc/battery/services/lib</archive>
+                        <class name="statusService">
+                            <resource>file:///opt/enc/battery/services/battery/spring/battery.services.spring.xml</resource>
+                            <params>
+                                <param name="MaxActivates">1000</param>
+                                <param name="MaxSessions">10</param>
+                            </params>
+                        </class>
+                    </service>
+
+                    <service management="false" id="6">
+                        <name>Aggregate Service</name>
+                        <archive>/opt/enc/battery/services/lib</archive>
+                        <class name="aggregateService">
+                            <resource>file:///opt/enc/battery/services/battery/spring/battery.services.spring.xml</resource>
+                            <params>
+                                <param name="poll-rate-in-minutes">1</param> <!-- 10 -->
+                                <param name="purge-rate-in-minutes">2</param> <!-- 11 -->
+                                <param name="max-mbmu-chunk-minutes">39</param> <!-- 39 -->
+                                <param name="max-bmu-chunk-minutes">753</param> <!-- 1820 -->
+                                <param name="max-bsu-chunk-minutes">1820</param>  <!-- 753 -->
+                                <param name="max-pack-chunk-minutes">358</param> <!-- 358 -->
+                                <param name="send-timeout-seconds">8000</param> <!-- 7800 -->
+                                <param name="sink-max-hours-saved">96</param> <!-- 96 -->
+                                <param name="performance">5000</param> <!-- 0 if off other wise poll loop delay-->
+                            </params>
+                        </class>
+                    </service>
+
+                    <service management="false" id="7">
+                        <name>Data Request Service</name>
+                        <archive>/opt/enc/battery/services/lib</archive>
+                        <class name="dataRequestService">
+                            <resource>file:///opt/enc/battery/services/battery/spring/battery.services.spring.xml</resource>
+                            <params>
+                                <param name="MaxActivates">1000</param>
+                                <param name="MaxSessions">10</param>
+                                <param name="purge-age-in-days">14</param>
+                                <param name="check-purge-rate-in-hours">12</param>
+                            </params>
+                        </class>
+                    </service>
+
+                    <service management="false" id="8">
+                        <name>Event Service</name>
+                        <archive>/opt/enc/battery/services/lib</archive>
+                        <class name="eventService">
+                            <resource>file:///opt/enc/battery/services/battery/spring/battery.services.spring.xml</resource>
+                            <params>
+                                <param name="MaxActivates">1000</param>
+                                <param name="MaxSessions">10</param>
+                            </params>
+                        </class>
+                    </service>
+
+                    <service management="false" id="9">
+                        <name>Topology Service</name>
+                        <archive>/opt/enc/battery/services/lib</archive>
+                        <class name="topologyService">
+                            <resource>file:///opt/enc/battery/services/battery/spring/battery.services.spring.xml</resource>
+                            <params>
+                                <param name="MaxActivates">1000</param>
+                                <param name="MaxSessions">10</param>
+                            </params>
+                        </class>
+                    </service>
+                </services>
+            </platform>
+        </platforms>
+
+        <services>
+
+            <service management="false" id="11">
+                <name>FRFC Broker Service</name>
+                <archive>/opt/enc/ancillary/services/frfcBroker/lib</archive>
+                <class name="com.pewla.app.ancpwr.FRFCBrokerService"/>
+                <domain-id>[6:ancillary.pewla.com]</domain-id>
+            </service>
+
+            <service management="false" id="1">
+                <name>Logging Service</name>
+                <archive>/opt/enc/ttc/services/logging/lib</archive>
+                <class name="org.emitdo.app.service.logging.LoggingService"/>
+                <domain-id>[6:res.pesdca.com]</domain-id>
+            </service>
+
+            <service management="false" id="2">                                                                  
+                <name>Backup Service</name>
+                <archive>/opt/enc/ttc/services/backup/lib</archive>
+                <class name="service">
+                    <resource>file:///opt/enc/ttc/services/backup/pgsql/spring/backup.service.spring.xml</resource>
+                    <params>
+                        <param name="MaxActivates">1000</param>
+                        <param name="MaxDataSize">65</param>
+                        <param name="MaxLifetime">1440</param>
+                        <param name="AgedDataPollRate">60</param>
+                        <param name="backup.host">engorcl</param>
+                        <param name="backup.port">5433</param>
+                        <param name="backup.database-name">res</param>
+                        <param name="backup.user">backup_user</param>
+                        <param name="backup.password">backup_user</param>
+                    </params>
+                </class>
+                <domain-id>[6:res.pesdca.com]</domain-id>
+            </service>
+        </services>
+    </service-config>
+</three-tier-config>

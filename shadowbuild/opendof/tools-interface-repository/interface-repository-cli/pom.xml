@@ -1,0 +1,95 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<groupId>org.opendof.tools-interface-repository</groupId>
+		<artifactId>builder</artifactId>
+		<version>2.0</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>interface-repository-cli</artifactId>
+	<packaging>jar</packaging>
+	<name>OpenDOF Interface Repository Manager</name>
+	<dependencies>
+		<dependency>
+			<groupId>org.opendof.tools-interface-repository</groupId>
+			<artifactId>interface-repository-core</artifactId>
+			<version>2.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.opendof.tools-interface-repository</groupId>
+			<artifactId>interface-repository-opendof</artifactId>
+			<version>2.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.opendof.tools-interface-repository</groupId>
+			<artifactId>interface-repository-allseen</artifactId>
+			<version>2.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.opendof.tools-interface-repository</groupId>
+			<artifactId>interface-repository-mysql</artifactId>
+			<version>2.0</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-cli</groupId>
+			<artifactId>commons-cli</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-core</artifactId>
+		</dependency>
+	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>2.6</version>
+				<configuration>
+					<archive>
+						<index>true</index>
+						<manifest>
+							<addClasspath>false</addClasspath>
+							<addDefaultImplementationEntries>false</addDefaultImplementationEntries>
+							<addDefaultSpecificationEntries>false</addDefaultSpecificationEntries>
+							<addExtensions>false</addExtensions>
+						</manifest>
+						<manifestEntries>
+							<mode>development</mode>
+							<url>${project.url}</url>
+							<Implementation-Version>2.0</Implementation-Version>
+						</manifestEntries>
+						<manifestSections>
+							<manifestSection>
+								<name>common</name>
+								<manifestEntries>
+									<Specification-Title>tools-interface-repository-cli</Specification-Title>
+									<Specification-Version>2.0</Specification-Version>
+									<Specification-Vendor>OpenDOF Project, Inc.</Specification-Vendor>
+									<Implementation-Title>tools-interface-repository-cli</Implementation-Title>
+									<Implementation-Version>2.0.0.0</Implementation-Version>
+									<Implementation-Vendor>OpenDOF Project, Inc.</Implementation-Vendor>
+								</manifestEntries>
+							</manifestSection>
+							<manifestSection>
+								<name>org/opendof/tools/repository/interfaces/cli</name>
+								<manifestEntries>
+									<Specification-Title>tools-interface-repository-cli-util</Specification-Title>
+									<Specification-Version>2.0</Specification-Version>
+									<Specification-Vendor>OpenDOF Project, Inc.</Specification-Vendor>
+									<Implementation-Title>tools-interface-repository-cli-util</Implementation-Title>
+									<Implementation-Version>2.0.0.0</Implementation-Version>
+									<Implementation-Vendor>OpenDOF Project, Inc.</Implementation-Vendor>
+								</manifestEntries>
+							</manifestSection>
+						</manifestSections>
+					</archive>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

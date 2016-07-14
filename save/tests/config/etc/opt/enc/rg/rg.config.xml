@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<config
+      xmlns="http://pewla.com/schema/rg/config/provisioning"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://pewla.com/schema/rg/config/provisioning http://pewla.com/schema/rg/config/rg.config.xsd" 
+      version="1.0">
+  <rg configure="true">
+    <!-- address is required -->
+    <address>localhost:13567</address>
+    <!-- the following are optional, defaults shown -->
+    <factory-credential>Factory Credential</factory-credential>
+    <platform-credential>Platform Credential</platform-credential>
+    <manager-credential>Manager Credential</manager-credential>
+    <router-credential>Router Credential</router-credential>
+    <gateway-domain-id>[3:gateway.com]</gateway-domain-id>
+    <scs-retry-delay>120</scs-retry-delay>
+    <scs-max-retries>3</scs-max-retries>
+
+    <connections>
+      <connection>Stream Connection</connection>
+      <connection>Stateless Datagram Connection</connection>
+      <connection>Datagram Connection</connection>
+    </connections>
+
+	<version-id></version-id>
+  </rg>
+</config>

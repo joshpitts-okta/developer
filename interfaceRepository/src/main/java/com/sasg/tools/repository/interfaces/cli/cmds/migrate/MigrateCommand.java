@@ -1,5 +1,8 @@
 package com.sasg.tools.repository.interfaces.cli.cmds.migrate;
 
+import org.opendof.tools.repository.interfaces.cli.util.CliBase;
+import org.opendof.tools.repository.interfaces.cli.util.CliCommand;
+
 @SuppressWarnings("javadoc")
 public class MigrateCommand extends CliCommand
 {

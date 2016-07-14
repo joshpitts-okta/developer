@@ -24,14 +24,6 @@ public class AwsCliCommand extends CliCommand
     public static final String PersonDefaultLongCl = "default";
     public static final String CleanupShortCl = "e";
     public static final String CleanupLongCl = "earlyout";
-    public static final String DeployShortCl = "g";
-    public static final String DeployLongCl = "deploy";
-    public static final String MachineShortCl = "m";
-    public static final String MachineLongCl = "machine";
-    public static final String RunShortCl = "r";
-    public static final String RunLongCl = "config-run-start";
-    public static final String ReuseShortCl = "u";
-    public static final String ReuseLongCl = "reuse";
 
     public final Properties properties;
 
@@ -67,39 +59,15 @@ public class AwsCliCommand extends CliCommand
                 .build());
         
         options.addOption(
-            Option.builder(CleanupShortCl)
-                .desc("Cleanup race condition test.")
-                .longOpt(CleanupLongCl)
-                .build());
+                        Option.builder(CleanupShortCl)
+                            .desc("Cleanup race condition test.")
+                            .longOpt(CleanupLongCl)
+                            .build());
         options.addOption(
-            Option.builder(PersonDefaultShortCl)
-                .desc("Do PersonProvider reserve/bind instead of Machine/Network, use site defaults.")
-                .longOpt(PersonDefaultLongCl)
-                .build());
-        
-        options.addOption(
-            Option.builder(DeployShortCl)
-                .desc("Deploy to ec2 instances")
-                .longOpt(DeployLongCl)
-                .build());
-        
-        options.addOption(
-            Option.builder(MachineShortCl)
-                .desc("Reserve and Bind ec2 instances")
-                .longOpt(MachineLongCl)
-                .build());
-        
-        options.addOption(
-            Option.builder(RunShortCl)
-                .desc("Configure, Run and Start direct to Future testing")
-                .longOpt(RunLongCl)
-                .build());
-        
-        options.addOption(
-            Option.builder(ReuseShortCl)
-                .desc("Reuse testing")
-                .longOpt(ReuseLongCl)
-                .build());
+                        Option.builder(PersonDefaultShortCl)
+                            .desc("Do PersonProvider reserve/bind instead of Machine/Network, use site defaults.")
+                            .longOpt(PersonDefaultLongCl)
+                            .build());
         //@formatter:on
     }
 

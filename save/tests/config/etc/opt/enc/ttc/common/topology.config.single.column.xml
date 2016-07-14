@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<three-tier-config
+    xmlns="http://emit-networking.org/schema/ttc/config"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://emit-networking.org/schema/ttc/config http://emit-networking.org/schema/ttc/config/ttc.config.xsd" version="1.0">
+    <topology-config>
+        <oid-base>16383</oid-base>
+<!-- Authentication Tier section -->
+        <auth-tier>
+            <max-operations>500000</max-operations>
+            <threadpool>24</threadpool>
+            <logging level="debug"/>                       
+            <nodes>
+                <node as-id="0" id="0">
+                    <name>Auth Node 1</name>
+                    <address>127.0.0.1:18567</address>
+                </node>
+            </nodes>
+        </auth-tier>
+<!-- Service Tier section -->
+        <service-tier>
+            <max-operations>500000</max-operations>
+            <threadpool>256</threadpool>
+            <logging level="debug"/>
+            <nodes>
+                <node id="1">
+                    <name>Service Node 1</name>
+                    <address>127.0.0.1:18568</address>
+                </node>
+            </nodes>
+            <services>
+                <service include="0"/>
+                <service include="1"/>
+                <service include="2"/>
+                <service include="3"/>
+                <service include="4"/>
+                <service include="5"/>
+                <service include="6"/>
+                <service include="7"/>
+                <service include="8"/>
+                <service include="9"/>
+                <service include="10"/>
+                <service include="11"/>
+            </services>
+        </service-tier>
+<!-- Connection Tier section -->
+        <connection-tier>
+            <max-operations>500000</max-operations>
+            <threadpool>24</threadpool>
+            <logging level="debug"/>
+            <nodes>
+                <node id="2">
+                    <name>Conn Node 1</name>
+                    <address>127.0.0.1:13567</address>
+                    </node>
+            </nodes>
+            <servers>
+                <datagram id="0">
+                    <name>Conn Node Datagram Server</name>
+                    <max-connections>1000</max-connections>
+                </datagram>
+                <stream id="1">
+                    <name>Conn Node Stream Server</name>
+                    <max-connections>100</max-connections>
+                </stream>
+                <hub id="2" related-server="0">
+                    <name>Conn Node Services Hub</name>
+                    <address>[3:servicesHub@res.pesdca.com]</address>
+                    <domain-id>[6:res.pesdca.com]</domain-id>
+                </hub>
+            </servers>
+        </connection-tier>
+    </topology-config>
+</three-tier-config>

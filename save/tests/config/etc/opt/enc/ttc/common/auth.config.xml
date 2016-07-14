@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<three-tier-config
+    xmlns="http://emit-networking.org/schema/ttc/config"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://emit-networking.org/schema/ttc/config http://emit-networking.org/schema/ttc/config/ttc.config.xsd" version="1.0">
+    <authentication-config>
+        <grant-max-lifetime>1440</grant-max-lifetime>
+        <debug>false</debug>
+        <!--debug-key>0000000000000000000000000000000000000000000000000000000000000000</debug-key-->
+        <credential ref="router.cluster.pesdca.com"/>
+        <ct-server-credential ref="ctrouter.cluster.pesdca.com"/>
+
+        <platforms>
+            <platform>
+                <name>Residential Platform</name>
+                <domain-id>[6:res.pesdca.com]</domain-id>
+                <resource>file:///opt/enc/res/pgsql/spring/res.auth.spring.xml</resource>
+                <params>
+                    <param name="res.user">res_user</param>
+                    <param name="res.password">res_user</param>
+                    <param name="res.host">engorcl</param>
+                    <param name="res.port">5433</param>
+                    <param name="res.database-name">res</param>
+                </params>
+
+                <auth-domain>
+                    <piped-storage name="pipedStorage">
+                        <resource>file:///opt/enc/res/pgsql/spring/res.piped-storage.spring.xml</resource>
+                    </piped-storage>
+
+                    <storage name="org.emitdo.as.postgres.PostgresStorage">
+                        <params>
+                            <param name="user">res_user</param>
+                            <param name="password">res_user</param>
+                            <param name="host">engorcl</param>
+                            <param name="port">5433</param>
+                            <param name="database-name">asdb</param>
+                        </params>
+                    </storage> 
+                </auth-domain>
+            </platform>
+
+            <platform>
+                <name>Battery Platform</name>
+                <domain-id>[6:battery.pewla.com]</domain-id>
+                <resource>file:///opt/enc/battery/pgsql/spring/battery.auth.spring.xml</resource>
+                <params>
+                    <param name="battery.user">battery_platform_manager</param>
+                    <param name="battery.password">battery_platform_manager</param>
+                    <param name="battery.host">engorcl</param>
+                    <param name="battery.port">5433</param>
+                    <param name="battery.database-name">battery</param>
+
+                    <param name="battery.slow.user">battery_platform_manager</param>
+                    <param name="battery.slow.password">battery_platform_manager</param>
+                    <param name="battery.slow.host">engorcl</param>
+                    <param name="battery.slow.port">5433</param>
+                    <param name="battery.slow.database-name">battery</param>
+                </params>
+
+                <auth-domain>
+                    <!--piped-storage name="pipedStorage">
+                        <resource>file:///opt/enc/battery/pgsql/spring/battery.piped-storage.spring.xml</resource>
+                    </piped-storage-->
+
+                    <storage name="org.emitdo.as.postgres.PostgresStorage">
+                        <params>
+                            <param name="user">battery_user</param>
+                            <param name="password">battery_user</param>
+                            <param name="host">engorcl</param>
+                            <param name="port">5433</param>
+                            <param name="database-name">asdb</param>
+                        </params>
+                    </storage> 
+                </auth-domain>
+            </platform>
+
+            <!--platform>
+                <name>Ancillary Platform</name>
+                <domain-id>[6:ancillary.pewla.com]</domain-id>
+                <resource>file:///opt/enc/res/pgsql/spring/ancillary.auth.spring.xml</resource>
+                <params>
+                    <param name="res.user">ancillary_user</param>
+                    <param name="res.password">ancillary_user</param>
+                    <param name="res.host">engorcl</param>
+                    <param name="res.port">5433</param>
+                    <param name="res.database-name">ancillary1</param>
+                </params>
+
+                <auth-domain>
+                    <piped-storage name="pipedStorage">
+                        <resource>file:///opt/enc/res/pgsql/spring/ancillary.piped-storage.spring.xml</resource>
+                    </piped-storage>
+
+                    <storage name="org.emitdo.as.postgres.PostgresStorage">
+                        <params>
+                            <param name="user">ancillary_user</param>
+                            <param name="password">ancillary_user</param>
+                            <param name="host">engorcl</param>
+                            <param name="port">5433</param>
+                            <param name="database-name">as1</param>
+                        </params>
+                    </storage> 
+                </auth-domain>
+            </platform-->
+        </platforms>
+
+        <auth-domains>
+            <auth-domain>
+                <domain-id>[6:cluster.pesdca.com]</domain-id>
+                <piped-storage name="org.emitdo.app.as.storage.RouterPipedStorage"/>
+                <domain-resolver name="org.emitdo.as.postgres.PostgresDomainResolver"/>
+                <storage name="org.emitdo.as.postgres.PostgresStorage">
+                    <params>
+                        <param name="user">cluster_user</param>
+                        <param name="password">cluster_user</param>
+                        <param name="host">engorcl</param>
+                        <param name="port">5433</param>
+                        <param name="database-name">asdb</param>
+                    </params>
+                </storage>
+            </auth-domain>
+                  
+            <auth-domain>
+                <domain-id>[6:factory.pesdca.com]</domain-id>
+                <storage name="org.emitdo.as.postgres.PostgresStorage">
+                    <params>
+                        <param name="user">factory_user</param>
+                        <param name="password">factory_user</param>
+                        <param name="host">engorcl</param>
+                        <param name="port">5433</param>
+                        <param name="database-name">asdb</param>
+                    </params>
+                </storage>
+            </auth-domain>
+
+            <!--auth-domain>
+                <domain-id>[6:battery.pewla.com]</domain-id>
+                <storage name="org.emitdo.as.postgres.PostgresStorage">
+                    <params>
+                        <param name="user">battery_user</param>
+                        <param name="password">battery_user</param>
+                        <param name="host">engorcl</param>
+                        <param name="port">5433</param>
+                        <param name="database-name">as1</param>
+                    </params>
+                </storage>
+            </auth-domain-->
+
+            <auth-domain>
+                <domain-id>[6:ancillary.pewla.com]</domain-id>
+                <storage name="org.emitdo.as.postgres.PostgresStorage">
+                    <params>
+                        <param name="user">ancillary_user</param>
+                        <param name="password">ancillary_user</param>
+                        <param name="host">engorcl</param>
+                        <param name="port">5433</param>
+                        <param name="database-name">asdb</param>
+                    </params>
+                </storage>
+            </auth-domain>
+
+        </auth-domains>
+    </authentication-config>
+</three-tier-config>

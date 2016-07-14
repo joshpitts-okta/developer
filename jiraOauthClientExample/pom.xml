@@ -1,0 +1,51 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<groupId>com.pslcl.parent</groupId>
+		<artifactId>dependency-management-parent</artifactId>
+		<version>1</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.atlassian.oauth.client</groupId>
+	<artifactId>jiraOauthClientExample</artifactId>
+	<version>1.0.0</version>
+	<packaging>jar</packaging>
+	<dependencies>
+		<dependency>
+			<groupId>org.opendof.tools-interface-repository</groupId>
+			<artifactId>interface-repository-servlet</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.collections</groupId>
+			<artifactId>google-collections</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>net.oauth</groupId>
+			<artifactId>oauth-core</artifactId>
+			<version>20090531</version>
+		</dependency>
+
+		<dependency>
+			<groupId>net.oauth.core</groupId>
+			<artifactId>oauth-provider</artifactId>
+			<version>20100527</version>
+		</dependency>
+
+		<dependency>
+			<groupId>net.oauth.core</groupId>
+			<artifactId>oauth</artifactId>
+			<version>20100527</version>
+		</dependency>
+
+		<dependency>
+			<groupId>net.oauth.core</groupId>
+			<artifactId>oauth-consumer</artifactId>
+			<version>20100527</version>
+		</dependency>
+
+		<!-- <dependency> <groupId>net.oauth.core</groupId> <artifactId>oauth-httpclient4</artifactId> 
+			<version>20090913</version> </dependency> -->
+	</dependencies>
+</project>

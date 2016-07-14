@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+    <appender name="async" class="org.apache.log4j.AsyncAppender">
+        <param name="blocking" value="true"/>
+        <param name="bufferSize" value="128"/>
+        <param name="locationInfo" value="false"/>
+        <param name="threshold" value="trace"/>
+        <appender-ref ref="file"/>
+        <appender-ref ref="stdout"/>
+    </appender>
+
+    <appender name="stdout" class="org.apache.log4j.ConsoleAppender">
+        <param name="Target" value="System.out" />  
+        <param name="Threshold" value="trace"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%5p %d{ISO8601} %c - %m%n" />
+        </layout>       
+    </appender>
+
+    <appender name="file" class="org.emitdo.app.logging.RollingFileAppenderDateTrim">
+        <param name="file" value="/var/opt/enc/rg/log/rg.log"/>
+        <param name="immediateFlush" value="true"/>
+        <param name="threshold" value="trace"/>
+        <param name="append" value="true" />
+        <param name="encoding" value="UTF-8" />
+        <param name="maxDays" value="7" />
+        <rollingPolicy class="org.apache.log4j.rolling.TimeBasedRollingPolicy">
+            <param name="FileNamePattern" value="/var/opt/enc/ttc/log/ttc.%d.log" />
+        </rollingPolicy>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%5p %d{ISO8601} %c - %m%n" />
+        </layout>
+    </appender>
+
+    <root>
+        <priority value="debug"/>
+        <appender-ref ref="async"/>
+    </root>
+</log4j:configuration>
