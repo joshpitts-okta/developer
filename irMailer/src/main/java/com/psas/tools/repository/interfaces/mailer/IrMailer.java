@@ -1,11 +1,17 @@
 package com.psas.tools.repository.interfaces.mailer;
 
+import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
+import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.slf4j.Logger;
@@ -15,6 +21,7 @@ import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.SVNLogEntry;
 import org.tmatesoft.svn.core.SVNLogEntryPath;
 import org.tmatesoft.svn.core.SVNNodeKind;
+import org.tmatesoft.svn.core.SVNProperties;
 import org.tmatesoft.svn.core.SVNURL;
 import org.tmatesoft.svn.core.auth.ISVNAuthenticationManager;
 import org.tmatesoft.svn.core.internal.io.dav.DAVRepositoryFactory;
@@ -27,83 +34,267 @@ import org.tmatesoft.svn.core.wc.SVNClientManager;
 import org.tmatesoft.svn.core.wc.SVNRevision;
 import org.tmatesoft.svn.core.wc.SVNWCUtil;
 
+import com.ccc.tools.TabToLevel;
+
 @SuppressWarnings("javadoc")
 public class IrMailer extends Thread
 {
-    private static SVNClientManager ourClientManager;
-    private static ISVNEventHandler myCommitEventHandler;
-    private static ISVNEventHandler myUpdateEventHandler;
-    private static ISVNEventHandler myWCEventHandler;
+    public static final String LogFilePathKey = "ccc.tools.log-file-path";
+    public static final String LogFileBaseKey = "ccc.tools.log-file-base";
 
     private static final String IrUrl = "https://interfaces.emit-networking.org/files";
+    private static final String RootDir = "/share/ir/";
+    private static final String MailDir = RootDir + "mail/";
+    private static final String SvnDir = RootDir + "svn/";
+    private static final String ConvertedDir = RootDir + "production/converted/";
+    private static final String ConvertedPublish = ConvertedDir + "publish/";
+    private static final String ConvertedWorking = ConvertedDir + "working/";
+    private static final String DeployedPublish = RootDir + "production/publish/";
+    private static final String DeployedWorking = RootDir + "production/working/";
+    private static final Logger log;
 
-    private final Logger log;
+    private final HashMap<String, List<SVNLogEntry>> pathMap;
+    private final HashMap<String, List<SVNLogEntry>> submitterMap;
+    private final HashMap<String, List<String>> ownerToPathMap;
+    private final HashMap<String, SVNDirEntry> tipDirMap;
 
-    public IrMailer(String[] args)
+    public IrMailer(@SuppressWarnings("unused") String[] args)
     {
-        log = LoggerFactory.getLogger(getClass());
+        pathMap = new HashMap<>();
+        submitterMap = new HashMap<>();
+        ownerToPathMap = new HashMap<>();
+        List<String> list = new ArrayList<>();
+        ownerToPathMap.put("aaron.mauchley@us.panasonic.com", list);
+        list = new ArrayList<>();
+        ownerToPathMap.put("jason.reber@us.panasonic.com", list);
+        list = new ArrayList<>();
+        ownerToPathMap.put("joseph.clark@us.panasonic.com", list);
+        list = new ArrayList<>();
+        ownerToPathMap.put("murakami.shuji@jp.panasonic.com", list);
+        tipDirMap = new HashMap<>();
     }
 
-    @Override
-    public void run()
+    private void createMailerDirectories() throws Exception
     {
-        try
+        int totalCount = 0;
+        for (Entry<String, List<String>> ownerElement : ownerToPathMap.entrySet())
         {
-            FSRepositoryFactory.setup();
+            String owner = ownerElement.getKey();
+            String basePath = MailDir + owner + "/";
+            int count = 0;
+            for (String path : ownerElement.getValue())
+            {
+                String svn = SvnDir + path;
+                File dotEmit = new File(path);
+                File parent = dotEmit.getParentFile();
+                String iid = getIidFromDotEmit(new File(svn));
+                File convertedFile = findConvertedFile(iid);
+                String iidName = null;
+                if (convertedFile != null)
+                {
+                    String fileName = convertedFile.getName();
+                    String mailPath = basePath + "/" + findIidName(convertedFile, iid);
+                    moveFile(convertedFile, new File(mailPath), fileName);
+                } else
+                {
+                    String mailPath = basePath + "/" + findIidNameNonConverted(new File(svn), iid);
+                    moveFiles(new File(svn).getParentFile(), new File(mailPath));
+                }
+                SVNDirEntry dirEntry = tipDirMap.get(path);
+                if (dirEntry != null)
+                {
+                    ++count;
+                    ++totalCount;
+                    //                    tipDirMap.remove(path);
+                }
+                //                else
+                //                    log.info("look here: " + path);
+            }
+            log.info(owner + " tipDirMap.size: " + tipDirMap.size() + " hits count: " + count);
+        }
+        log.info("Total count: " + totalCount);
+    }
 
-            SVNURL repositoryURL = null;
+    private static String getIidFromDotEmit(File dotEmit) throws Exception
+    {
+        byte[] raw = new byte[1024 * 16];
+        FileInputStream fis = new FileInputStream(dotEmit);
+        BufferedInputStream bis = new BufferedInputStream(fis);
+        bis.read(raw, 0, raw.length);
+        bis.close();
+        String str = new String(raw);
+        int idx = str.indexOf(" iid=\"[");
+        idx += 6;
+        str = str.substring(idx);
+        idx = str.indexOf(']');
+        str = str.substring(0, idx + 1);
+        return str;
+    }
+
+    private File findConvertedFile(String iid) throws Exception
+    {
+        File parent = new File(ConvertedPublish);
+        for (int j = 0; j < 2; j++)
+        {
+            File[] children = new File(ConvertedPublish).listFiles();
+            if (j == 1)
+                children = new File(ConvertedWorking).listFiles();
+
+            for (int i = 0; i < children.length; i++)
+            {
+                File child = children[i];
+                if (children[i].isFile())
+                {
+                    String ciid = getIidFromDotEmit(child);
+                    if (iid.equals(ciid))
+                        return child;
+                }
+            }
+        }
+        return null;
+    }
+
+    private void moveFile(File from, File to, String fileName) throws Exception
+    {
+        if (!to.exists())
+        {
+            boolean ok = to.mkdirs();
+            if (!ok)
+                throw new Exception("failed to mkdirs: " + to.getAbsolutePath());
+        }
+        String fullPath = to.getAbsolutePath() + "/" + fileName;
+        FileOutputStream fos = new FileOutputStream(fullPath);
+        Files.copy(from.toPath(), fos);
+        fos.close();
+    }
+    
+    private void moveFiles(File from, File to) throws Exception
+    {
+        if (!to.exists())
+        {
+            boolean ok = to.mkdirs();
+            if (!ok)
+                throw new Exception("failed to mkdirs: " + to.getAbsolutePath());
+        }
+        File[] children = from.listFiles();
+        for(int i=0; i < children.length; i++)
+        {
+            File child = children[i];
+            if(child.isDirectory())
+                throw new Exception("did not expect a directory here: " + child.getAbsolutePath());
+            File toPath = new File(to.getAbsolutePath() + "/" + child.getName());
+            FileOutputStream fos = new FileOutputStream(toPath);
+            File fromPath = new File(from.getAbsolutePath() + "/" + child.getName());
+            Files.copy(fromPath.toPath(), fos);
+            fos.close();
+            boolean ok = fromPath.delete();
+            if (!ok)
+            {
+//                throw new Exception("failed to delete the from file: " + fullPath.getAbsolutePath());
+                log.info("failed to delete the from file: " + fromPath.getAbsolutePath());
+            }
+        }
+        boolean ok = from.delete();
+        if (!ok)
+            throw new Exception("failed to delete the from file: " + from.getAbsolutePath());
+    }
+
+    private String findIidNameNonConverted(File svn, String iid) throws Exception
+    {
+        File[] children = svn.getParentFile().listFiles();
+        String str = null;
+        boolean found = false;
+        for (int i = 0; i < children.length; i++)
+        {
+            File child = children[i];
+            if (child.isDirectory())
+                throw new Exception("did not expect a directory: " + child.getAbsolutePath());
+            BufferedInputStream bis = null;
             try
             {
-                //                repositoryURL = SVNURL.parseURIEncoded("file://localhost/testRep");
-                repositoryURL = SVNURL.parseURIEncoded(IrUrl);
-            } catch (SVNException e)
+                byte[] raw = new byte[1024 * 16];
+                FileInputStream fis = new FileInputStream(child);
+                bis = new BufferedInputStream(fis);
+                bis.read(raw, 0, raw.length);
+                bis.close();
+                str = new String(raw);
+                String tag = "<name xml:lang=\"en\">";
+                int idx = str.indexOf(tag);
+                if (idx == -1)
+                    continue;
+                found = true;
+                idx += tag.length();
+                str = str.substring(idx);
+                idx = str.indexOf('<');
+                str = str.substring(0, idx);
+                str += "-" + iid;
+                str = str.replace(':', ';');
+                return str;
+            } catch (@SuppressWarnings("unused") Exception e)
             {
-                log.error("failed to obtain repositoryURL: " + IrUrl, e);
+                return null;
             }
-
-            //            String myWorkingCopyPath = "/MyWorkingCopy";
-            //
-            //            String importDir = "/importDir";
-            //            String importFile = importDir + "/importFile.txt";
-            //            String importFileText = "This unversioned file is imported into a repository";
-            //
-            //            String newDir = "/newDir";
-            //            String newFile = newDir + "/newFile.txt";
-            //            String fileText = "This is a new file added to the working copy";
-
-            /*
-             * That's where a new directory will be created
-             */
-            //            SVNURL url = repositoryURL.appendPath("MyRepos", false);
-            /*
-             * That's where '/MyRepos' will be copied to (branched)
-             */
-            //            SVNURL copyURL = repositoryURL.appendPath("MyReposCopy", false);
-
-            /*
-             * That's where a local directory will be imported into.
-             * Note that it's not necessary that the '/importDir' directory must already
-             * exist - it will created if necessary. 
-             */
-            //            SVNURL importToURL = url.appendPath(importDir, false);
-
-            myCommitEventHandler = new CommitEventHandler();
-            myUpdateEventHandler = new UpdateEventHandler();
-            myWCEventHandler = new WCEventHandler();
-
-            ISVNOptions options = SVNWCUtil.createDefaultOptions(true);
-            ISVNAuthenticationManager authManager = SVNWCUtil.createDefaultAuthenticationManager();
-            ourClientManager = SVNClientManager.newInstance(options, authManager);
-            ourClientManager.getCommitClient().setEventHandler(myCommitEventHandler);
-            ourClientManager.getUpdateClient().setEventHandler(myUpdateEventHandler);
-            ourClientManager.getWCClient().setEventHandler(myWCEventHandler);
-
-            listTree();
-            listHistory();
-        } catch (Throwable t)
-        {
-            log.error("failed to initialize", t);
         }
+        if(!found)
+        {
+            String fname = svn.getName();
+            int idx = fname.indexOf('.');
+            fname = fname.substring(0, idx);
+            return fname;
+        }
+        return null;
+    }
+
+    private String findIidName(File file, String iid) throws Exception
+    {
+        BufferedInputStream bis = null;
+        try
+        {
+            byte[] raw = new byte[1024 * 16];
+            FileInputStream fis = new FileInputStream(file);
+            bis = new BufferedInputStream(fis);
+            bis.close();
+            bis.read(raw, 0, raw.length);
+            String str = new String(raw);
+            String tag = "<md:code-name>";
+            int idx = str.indexOf(tag);
+            if (idx == -1)
+            {
+                tag = "<md:display-name xml:lang=\"en\">";
+                idx = str.indexOf(tag);
+                if (idx == -1)
+                {
+                    String fname = file.getName();
+                    idx = fname.indexOf('.');
+                    fname = fname.substring(0, idx);
+                    return fname;
+                }
+            }
+            idx += tag.length();
+            str = str.substring(idx);
+            idx = str.indexOf('<');
+            str = str.substring(0, idx);
+            str += "-" + iid;
+            str = str.replace(':', ';');
+            return str;
+        } catch (@SuppressWarnings("unused") Exception e)
+        {
+            return null;
+        } 
+    }
+
+    private String findOwner(String name) throws Exception
+    {
+        for (Entry<String, List<String>> entry : ownerMap.entrySet())
+        {
+            List<String> list = entry.getValue();
+            for (String submitter : list)
+            {
+                if (name.equals(submitter))
+                    return entry.getKey();
+            }
+        }
+        throw new Exception(name + " not found in ownerMap");
     }
 
     private void listHistory()
@@ -117,6 +308,9 @@ public class IrMailer extends Thread
         long endRevision = -1; //HEAD (the latest) revision
 
         SVNRepository repository = null;
+        TabToLevel format = new TabToLevel();
+        format.ttl("\nHistory:");
+        format.inc();
         try
         {
             repository = SVNRepositoryFactory.create(SVNURL.parseURIEncoded(IrUrl));
@@ -129,28 +323,198 @@ public class IrMailer extends Thread
             for (Iterator entries = logEntries.iterator(); entries.hasNext();)
             {
                 SVNLogEntry logEntry = (SVNLogEntry) entries.next();
-                System.out.println("---------------------------------------------");
-                System.out.println("revision: " + logEntry.getRevision());
-                System.out.println("author: " + logEntry.getAuthor());
-                System.out.println("date: " + logEntry.getDate());
-                System.out.println("log message: " + logEntry.getMessage());
+                logEntry.toString();
+                if (logEntry.getAuthor() == null)
+                    continue;
+                String owner = findOwner(logEntry.getAuthor());
+                if (owner.contains("jason"))
+                    log.info("look here: " + owner);
+                List<SVNLogEntry> list = submitterMap.get(logEntry.getAuthor());
+                if (list == null)
+                    list = new ArrayList<>();
+                list.add(logEntry);
+                submitterMap.put(logEntry.getAuthor(), list);
 
                 if (logEntry.getChangedPaths().size() > 0)
                 {
-                    System.out.println();
-                    System.out.println("changed paths:");
                     Set changedPathsSet = logEntry.getChangedPaths().keySet();
-
                     for (Iterator changedPaths = changedPathsSet.iterator(); changedPaths.hasNext();)
                     {
-                        SVNLogEntryPath entryPath = (SVNLogEntryPath) logEntry.getChangedPaths().get(changedPaths.next());
-                        System.out.println(" " + entryPath.getType() + " " + entryPath.getPath() + ((entryPath.getCopyPath() != null) ? " (from " + entryPath.getCopyPath() + " revision " + entryPath.getCopyRevision() + ")" : ""));
+                        SVNLogEntryPath entryPath = logEntry.getChangedPaths().get(changedPaths.next());
+                        String path = entryPath.getPath();
+                        if (entryPath.getPath().endsWith(".emit"))
+                        {
+                            ModType type = ModType.getType("" + entryPath.getType());
+                            switch (type)
+                            {
+                                case Added:
+                                    //                                    log.info("added");
+                                    break;
+                                case Deleted:
+                                    //                                    log.info("deleted");
+                                    break;
+                                case Modified:
+                                    //                                    log.info("modified");
+                                    break;
+                                case Replaced:
+                                    //                                    log.info("replaced");
+                                    break;
+                                default:
+                                    break;
+                            }
+                            List<SVNLogEntry> plist = pathMap.get(path);
+                            if (plist == null)
+                            {
+                                plist = new ArrayList<>();
+                                pathMap.put(path, plist);
+                            }
+                            plist.add(logEntry);
+                            //                            SVNDirEntry dentry = tipDirMap.remove(path);
+                            //                            if(dentry != null)
+                            //                            {
+                            //                                List<String> olist = ownerToPathMap.get(owner);
+                            //                                olist.add(path);
+                            //                            }
+                            //                            else
+                            //                                log.info("look here");
+                        }
+                    }
+                } else
+                    log.info("look here"); // only the zeroth element which has a null author hits here.
+            }
+
+            format.ttl("pathEntries (", pathMap.size(), ")");
+            format.inc();
+            for (Entry<String, List<SVNLogEntry>> entry : pathMap.entrySet())
+            {
+                format.ttl(entry.getKey()); // path is key
+                format.inc();
+                for (SVNLogEntry pentry : entry.getValue())
+                {
+                    format.ttl("revision: ", pentry.getRevision());
+                    format.ttl("author: ", pentry.getAuthor());
+                    format.ttl("date: ", pentry.getDate());
+                    format.ttl("properties:");
+                    format.inc();
+                    SVNProperties properties = pentry.getRevisionProperties();
+                    boolean found = false;
+                    for (Iterator propNames = properties.nameSet().iterator(); propNames.hasNext();)
+                    {
+                        found = true;
+                        String propName = (String) propNames.next();
+                        Object propVal = properties.getSVNPropertyValue(propName);
+                        format.ttl(propName, " = ", propVal);
+                    }
+                    if (!found)
+                        format.ttl("none");
+                    format.dec();
+
+                    if (pentry.getChangedPaths().size() > 0)
+                    {
+                        format.ttl("changed paths:");
+                        format.inc();
+                        Set changedPathsSet = pentry.getChangedPaths().keySet();
+                        for (Iterator changedPaths = changedPathsSet.iterator(); changedPaths.hasNext();)
+                        {
+                            SVNLogEntryPath entryPath = pentry.getChangedPaths().get(changedPaths.next());
+                            ModType type = ModType.getType("" + entryPath.getType());
+                            format.ttl("modtype: ", type);
+                            String path = entryPath.getPath();
+                            format.ttl("path: ", path);
+                            format.inc();
+                            if (entryPath.getCopyPath() != null)
+                            {
+                                format.ttl("type: ", entryPath.getType());
+                                format.ttl("from: ", entryPath.getCopyPath());
+                                format.ttl("revision: ", entryPath.getCopyRevision());
+                            }
+                            format.dec();
+                        }
+                        format.dec();
                     }
                 }
+                format.dec();
             }
+            format.dec();
+            format.ttl("submitterEntries (", submitterMap.size(), ")");
+            format.inc();
+            for (Entry<String, List<SVNLogEntry>> entry : submitterMap.entrySet())
+                format.ttl(entry.getKey());
+
+            for (Entry<String, List<SVNLogEntry>> entry : submitterMap.entrySet())
+            {
+                format.ttl(entry.getKey());
+                format.inc();
+                for (SVNLogEntry lentry : entry.getValue())
+                {
+                    format.ttl("revision: ", lentry.getRevision());
+                    format.ttl("author: ", lentry.getAuthor());
+                    format.ttl("date: ", lentry.getDate());
+                    format.ttl("properties:");
+                    format.inc();
+                    SVNProperties properties = lentry.getRevisionProperties();
+                    boolean found = false;
+                    for (Iterator propNames = properties.nameSet().iterator(); propNames.hasNext();)
+                    {
+                        found = true;
+                        String propName = (String) propNames.next();
+                        Object propVal = properties.getSVNPropertyValue(propName);
+                        format.ttl(propName, " = ", propVal);
+                    }
+                    if (!found)
+                        format.ttl("none");
+                    format.dec();
+                    if (lentry.getChangedPaths().size() > 0)
+                    {
+                        format.ttl("changed paths:");
+                        format.inc();
+                        Set changedPathsSet = lentry.getChangedPaths().keySet();
+                        for (Iterator changedPaths = changedPathsSet.iterator(); changedPaths.hasNext();)
+                        {
+                            SVNLogEntryPath entryPath = lentry.getChangedPaths().get(changedPaths.next());
+                            ModType type = ModType.getType("" + entryPath.getType());
+                            format.ttl("modtype: ", type);
+                            String path = entryPath.getPath();
+                            format.ttl("path: ", path);
+                            format.inc();
+                            if (entryPath.getCopyPath() != null)
+                            {
+                                format.ttl("type: ", entryPath.getType());
+                                format.ttl("from: ", entryPath.getCopyPath());
+                                format.ttl("revision: ", entryPath.getCopyRevision());
+                            }
+                            format.dec();
+                        }
+                        format.dec();
+                    }
+                }
+                format.dec();
+            }
+            format.dec();
+            format.ttl("ownerToPathMap");
+            format.inc();
+            for (Entry<String, List<String>> entry : ownerToPathMap.entrySet())
+            {
+                List<String> paths = entry.getValue();
+                format.ttl(entry.getKey(), " (", paths.size(), ")");
+                format.inc();
+                for (String path : paths)
+                    format.ttl(path);
+                format.dec();
+            }
+            format.dec();
+            format.dec();
+
+            format.ttl("tipDirMap (", tipDirMap.size(), ")");
+            format.inc();
+            for (Entry<String, SVNDirEntry> entry : tipDirMap.entrySet())
+                format.ttl(entry.getKey());
+            format.dec();
+            log.info(format.toString());
         } catch (Throwable t)
         {
-            log.error("failed", t);
+            format.ttl("failed");
+            log.error(format.toString(), t);
         }
         //            ...
     }
@@ -169,38 +533,51 @@ public class IrMailer extends Thread
             repository = SVNRepositoryFactory.create(SVNURL.parseURIDecoded(IrUrl));
             ISVNAuthenticationManager authManager = SVNWCUtil.createDefaultAuthenticationManager(name, password);
             repository.setAuthenticationManager(authManager);
-            System.out.println("Repository Root: " + repository.getRepositoryRoot(true));
-            System.out.println("Repository UUID: " + repository.getRepositoryUUID(true));
+            log.info("Repository Root: " + repository.getRepositoryRoot(true));
+            log.info("Repository UUID: " + repository.getRepositoryUUID(true));
             SVNNodeKind nodeKind = repository.checkPath("", -1);
             if (nodeKind == SVNNodeKind.NONE)
             {
-                System.err.println("There is no entry at '" + url + "'.");
+                log.error("There is no entry at '" + url + "'.");
                 System.exit(1);
             } else if (nodeKind == SVNNodeKind.FILE)
             {
-                System.err.println("The entry at '" + url + "' is a file while a directory was expected.");
+                log.error("The entry at '" + url + "' is a file while a directory was expected.");
                 System.exit(1);
             }
-            listEntries(repository, "");
+            TabToLevel format = new TabToLevel();
+            format.ttl("\nEntries:");
+            format.inc();
+            listEntries(repository, "", format);
+            format.ttl("\n\ntotal .emit files: ", tipDirMap.size());
+            log.info(format.toString());
             long latestRevision = repository.getLatestRevision();
-            System.out.println("Repository latest revision: " + latestRevision);
+            log.info("Repository latest revision: " + latestRevision);
         } catch (Throwable t)
         {
             log.error("failed", t);
         }
     }
 
-    public void listEntries(SVNRepository repository, String path) throws SVNException
+    public void listEntries(SVNRepository repository, String path, TabToLevel format) throws Exception
     {
         Collection entries = repository.getDir(path, -1, null, (Collection) null);
         Iterator iterator = entries.iterator();
         while (iterator.hasNext())
         {
             SVNDirEntry entry = (SVNDirEntry) iterator.next();
-            System.out.println("/" + (path.equals("") ? "" : path + "/") + entry.getName() + " ( author: '" + entry.getAuthor() + "'; revision: " + entry.getRevision() + "; date: " + entry.getDate() + ")");
+            if (entry.getName().endsWith(".emit"))
+            {
+                String p = "/" + (path.equals("") ? "" : path + "/") + entry.getName();
+                format.ttl(p, " ( author: '", entry.getAuthor(), "'; revision: ", entry.getRevision(), "; date: ", entry.getDate(), ")");
+                tipDirMap.put(p, entry);
+                String owner = findOwner(entry.getAuthor());
+                List<String> olist = ownerToPathMap.get(owner);
+                olist.add(p);
+            }
             if (entry.getKind() == SVNNodeKind.DIR)
             {
-                listEntries(repository, (path.equals("")) ? entry.getName() : path + "/" + entry.getName());
+                listEntries(repository, (path.equals("")) ? entry.getName() : path + "/" + entry.getName(), format);
             }
         }
     }
@@ -233,62 +610,179 @@ public class IrMailer extends Thread
         //@formatter:on
     }
 
-    private static final void createLocalDir(File aNewDir, File[] localFiles, String[] fileContents)
+    private enum ModType
     {
-        if (!aNewDir.mkdirs())
+        Added("A"), Deleted("D"), Modified("M"), Replaced("R");
+
+        private ModType(String type)
         {
-            error("failed to create a new directory '" + aNewDir.getAbsolutePath() + "'.", null);
+            this.type = type;
         }
 
-        for (int i = 0; i < localFiles.length; i++)
+        public static ModType getType(String type)
         {
-            File aNewFile = localFiles[i];
-            try
-            {
-                if (!aNewFile.createNewFile())
-                {
-                    error("failed to create a new file '" + aNewFile.getAbsolutePath() + "'.", null);
-                }
-            } catch (IOException ioe)
-            {
-                aNewFile.delete();
-                error("error while creating a new file '" + aNewFile.getAbsolutePath() + "'", ioe);
-            }
+            if (Added.type.equals(type))
+                return Added;
+            if (Deleted.type.equals(type))
+                return Deleted;
+            if (Modified.type.equals(type))
+                return Modified;
+            if (Replaced.type.equals(type))
+                return Replaced;
+            throw new RuntimeException("invalid type: " + type);
+        }
 
-            String contents = null;
-            if (i > fileContents.length - 1)
-            {
-                continue;
-            }
-            contents = fileContents[i];
+        private String type;
+    }
 
-            /*
-             * writing a text into the file
-             */
-            FileOutputStream fos = null;
-            try
+    private static final Map<String, List<String>> ownerMap;
+    private static List<String> deployedIids;
+    static
+    {
+        String logPath = "/var/opt/opendof/irMailer/log/IrMailer.log";
+        System.setProperty(LogFilePathKey, logPath);
+        String base = logPath;
+        int idx = logPath.lastIndexOf('.');
+        if (idx != -1)
+            base = logPath.substring(0, idx);
+        System.setProperty(LogFileBaseKey, logPath);
+        log = LoggerFactory.getLogger(IrMailer.class);
+        log.info(LogFilePathKey + " = " + logPath);
+
+        ownerMap = new HashMap<>();
+        List<String> names = new ArrayList<>();
+        names.add("aaron.mauchley@us.panasonic.com");
+        ownerMap.put("aaron.mauchley@us.panasonic.com", names);
+
+        names = new ArrayList<>();
+        names.add("jason.reber@us.panasonic.com");
+        names.add("mark.nelson@us.panasonic.com");
+        names.add("mnelson");
+        ownerMap.put("jason.reber@us.panasonic.com", names);
+
+        names = new ArrayList<>();
+        names.add("zachary.rasmussen@us.panasonic.com");
+        ownerMap.put("john.winder@us.panasonic.com", names);
+
+        names = new ArrayList<>();
+        names.add("joseph.clark@us.panasonic.com");
+        names.add("jclark");
+        names.add("bill.adams@us.panasonic.com");
+        names.add("bryant.eastham@us.panasonic.com");
+        names.add("beastham");
+        names.add("chad.adams@us.panasonic.com");
+        names.add("cadams");
+        names.add("clint.jones@us.panasonic.com");
+        names.add("david.ethington@us.panasonic.com");
+        names.add("devon.sumner@us.panasonic.com");
+        names.add("dsumner");
+        names.add("dsunley");
+        names.add("james.simister@us.panasonic.com");
+        names.add("jsimister");
+        names.add("jstricker");
+        names.add("Jonathan.Stringer@us.panasonic.com");
+        names.add("jonathan.stringer@us.panasonic.com");
+        names.add("jstringer");
+        names.add("sbaker");
+        names.add("tmilligan");
+        ownerMap.put("joseph.clark@us.panasonic.com", names);
+
+        names = new ArrayList<>();
+        names.add("aizu.kazuhiro@jp.panasonic.com");
+        names.add("fujiwara.eiki@jp.panasonic.com");
+        names.add("jishizaka");
+        names.add("hara.hiroki0@jp.panasonic.com"); //0??
+        names.add("hashiguchi.akira@jp.panasonic.com");
+        names.add("hkamihara");
+        names.add("hotsubo");
+        names.add("ishihara.tomoko@jp.panasonic.com");
+        names.add("kai.toshifumi@jp.panasonic.com");
+        names.add("knakakita");
+        names.add("mkawasaki");
+        names.add("murakami.shuji@jp.panasonic.com");
+        names.add("smurakami");
+        names.add("oda.tomo@jp.panasonic.com");
+        names.add("rashid.mahbub@jp.panasonic.com");
+        names.add("sakamoto.hiroyuki@jp.panasonic.com");
+        names.add("sekine.osamu@jp.panasonic.com osekine");
+        names.add("sunagawa.mika@jp.panasonic.com");
+        names.add("takeuchi.yoshiyasu@jp.panasonic.com");
+        names.add("tanaka.toshifusa@jp.panasonic.com");
+        names.add("thatanaka");
+        names.add("takano.satoshi@jp.panasonic.com");
+        names.add("tsujimura.soushi@jp.panasonic.com");
+        names.add("umaso@panasonic-denko.co.jp");
+        names.add("watanabe.yasuhiko@jp.panasonic.com");
+        names.add("yoshimura.yuya001@jp.panasonic.com");
+        names.add("osekine");
+        names.add("sekine.osamu@jp.panasonic.com");
+        ownerMap.put("murakami.shuji@jp.panasonic.com", names);
+
+        deployedIids = new ArrayList<>();
+        for (int j = 0; j < 2; j++)
+        {
+            File[] children = new File(DeployedPublish).listFiles();
+            if (j == 1)
+                children = new File(DeployedWorking).listFiles();
+
+            for (int i = 0; i < children.length; i++)
             {
-                fos = new FileOutputStream(aNewFile);
-                fos.write(contents.getBytes());
-            } catch (FileNotFoundException fnfe)
-            {
-                error("the file '" + aNewFile.getAbsolutePath() + "' is not found", fnfe);
-            } catch (IOException ioe)
-            {
-                error("error while writing into the file '" + aNewFile.getAbsolutePath() + "'", ioe);
-            } finally
-            {
-                if (fos != null)
+                File child = children[i];
+                if (children[i].isFile())
                 {
+                    String ciid;
                     try
                     {
-                        fos.close();
-                    } catch (IOException ioe)
+                        deployedIids.add(getIidFromDotEmit(child));
+                    } catch (Exception e)
                     {
-                        //
+                        throw new RuntimeException("did not find iid in file: " + child.getAbsolutePath());
                     }
+
                 }
             }
+        }
+    }
+
+    private static SVNClientManager ourClientManager;
+    private static ISVNEventHandler myCommitEventHandler;
+    private static ISVNEventHandler myUpdateEventHandler;
+    private static ISVNEventHandler myWCEventHandler;
+
+    @Override
+    public void run()
+    {
+        try
+        {
+            FSRepositoryFactory.setup();
+
+            SVNURL repositoryURL = null;
+            try
+            {
+                //                repositoryURL = SVNURL.parseURIEncoded("file://localhost/testRep");
+                repositoryURL = SVNURL.parseURIEncoded(IrUrl);
+            } catch (SVNException e)
+            {
+                log.error("failed to obtain repositoryURL: " + IrUrl, e);
+            }
+
+            myCommitEventHandler = new CommitEventHandler();
+            myUpdateEventHandler = new UpdateEventHandler();
+            myWCEventHandler = new WCEventHandler();
+
+            ISVNOptions options = SVNWCUtil.createDefaultOptions(true);
+            ISVNAuthenticationManager authManager = SVNWCUtil.createDefaultAuthenticationManager();
+            ourClientManager = SVNClientManager.newInstance(options, authManager);
+            ourClientManager.getCommitClient().setEventHandler(myCommitEventHandler);
+            ourClientManager.getUpdateClient().setEventHandler(myUpdateEventHandler);
+            ourClientManager.getWCClient().setEventHandler(myWCEventHandler);
+
+            listTree();
+            //            listHistory();
+            createMailerDirectories();
+        } catch (Throwable t)
+        {
+            log.error("failed to initialize", t);
         }
     }
 
