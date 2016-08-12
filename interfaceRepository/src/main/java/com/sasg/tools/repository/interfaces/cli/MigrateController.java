@@ -20,6 +20,7 @@ import org.opendof.tools.repository.interfaces.core.CoreController;
 import org.opendof.tools.repository.interfaces.da.DataAccessor;
 import org.opendof.tools.repository.interfaces.da.InterfaceData;
 import org.opendof.tools.repository.interfaces.da.SubRepositoryNode.TabToLevel;
+import org.opendof.tools.repository.interfaces.da.SubmitterData;
 import org.slf4j.LoggerFactory;
 
 import com.sasg.tools.repository.interfaces.cli.cmds.migrate.AllocMigrateCommand;
@@ -45,8 +46,11 @@ public class MigrateController extends ManageController
             String line = null;
             while ((line = bufferedReader.readLine()) != null)
             {
-                DOFInterfaceID iid = DOFInterfaceID.create(line);
-                InterfaceData iface = new InterfaceData(null, iid.toStandardString(), null, "1", DataAccessor.OpendofAdmin, DataAccessor.AnonymousGroup, CoreController.OpenDofRepo, null, null, false);
+                String[] params = line.split(" ");
+                DOFInterfaceID iid = DOFInterfaceID.create(params[0]);
+  
+                SubmitterData owner = new SubmitterData(params[2], params[1], "Interfaces Owner");
+                InterfaceData iface = new InterfaceData(null, iid.toStandardString(), null, "1", owner, DataAccessor.UserGroup, CoreController.OpenDofRepo, null, null, false);
                 long id = iid.getIdentifier();
                 int byteSize = 4;
                 if(id < 256)

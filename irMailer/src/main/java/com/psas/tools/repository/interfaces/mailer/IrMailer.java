@@ -45,7 +45,7 @@ public class IrMailer extends Thread
     private static final String IrUrl = "https://interfaces.emit-networking.org/files";
     private static final String RootDir = "/share/ir/";
     private static final String MailDir = RootDir + "mail/";
-    private static final String SvnDir = RootDir + "svn/";
+    public static final String SvnDir = RootDir + "svn/";
     private static final String ConvertedDir = RootDir + "production/converted/";
     private static final String ConvertedPublish = ConvertedDir + "publish/";
     private static final String ConvertedWorking = ConvertedDir + "working/";
@@ -57,7 +57,8 @@ public class IrMailer extends Thread
     private final HashMap<String, List<SVNLogEntry>> submitterMap;
     private final HashMap<String, List<String>> ownerToPathMap;
     private final HashMap<String, SVNDirEntry> tipDirMap;
-
+    private final PreAlloc preAlloc;
+    
     public IrMailer(@SuppressWarnings("unused") String[] args)
     {
         pathMap = new HashMap<>();
@@ -72,8 +73,9 @@ public class IrMailer extends Thread
         list = new ArrayList<>();
         ownerToPathMap.put("murakami.shuji@jp.panasonic.com", list);
         tipDirMap = new HashMap<>();
+        preAlloc = new PreAlloc(pathMap, submitterMap, ownerToPathMap, tipDirMap);
     }
-
+    
     private void createMailerDirectories() throws Exception
     {
         int totalCount = 0;
@@ -115,7 +117,7 @@ public class IrMailer extends Thread
         log.info("Total count: " + totalCount);
     }
 
-    private static String getIidFromDotEmit(File dotEmit) throws Exception
+    public static String getIidFromDotEmit(File dotEmit) throws Exception
     {
         byte[] raw = new byte[1024 * 16];
         FileInputStream fis = new FileInputStream(dotEmit);
@@ -123,8 +125,8 @@ public class IrMailer extends Thread
         bis.read(raw, 0, raw.length);
         bis.close();
         String str = new String(raw);
-        int idx = str.indexOf(" iid=\"[");
-        idx += 6;
+        int idx = str.indexOf("iid=\"[");
+        idx += 5;
         str = str.substring(idx);
         idx = str.indexOf(']');
         str = str.substring(0, idx + 1);
@@ -779,7 +781,9 @@ public class IrMailer extends Thread
 
             listTree();
             //            listHistory();
-            createMailerDirectories();
+//            createMailerDirectories();
+            preAlloc.createPreAllocList();
+
         } catch (Throwable t)
         {
             log.error("failed to initialize", t);
