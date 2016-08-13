@@ -17,7 +17,7 @@ import org.tmatesoft.svn.core.SVNLogEntry;
 @SuppressWarnings("javadoc")
 public class PreAlloc extends Thread
 {
-    private final static String AllocateFile = "/share/interfaceRepository/scripts/preAllocatList.txt";
+    private final static String AllocateFile = "/share/interfaceRepository/scripts/preAllocateList.txt";
     
     private final HashMap<String, List<SVNLogEntry>> pathMap;
     private final HashMap<String, List<SVNLogEntry>> submitterMap;
@@ -43,7 +43,7 @@ public class PreAlloc extends Thread
 
     public void createPreAllocList() throws Exception
     {
-        
+        Map<String, String> dupCheckMap = new HashMap();
         OutputStream os = new FileOutputStream(AllocateFile, false);
         for (Entry<String, SVNDirEntry> entry : tipDirMap.entrySet())
         {
@@ -53,16 +53,38 @@ public class PreAlloc extends Thread
             File parent = dotEmit.getParentFile();
             String siid = IrMailer.getIidFromDotEmit(new File(svn));
             DOFInterfaceID iid = DOFInterfaceID.create(siid);
+            siid = iid.toStandardString();
             int registry = iid.getRegistry();
             if(registry != 1)
                 continue;
+//            if(siid.contains("0114"))
+//                log.info("look here");
+            
+//            if (dupCheckMap.get(siid) != null)
+//                continue;
+////                log.error("duplicate iid: " + siid);
+//            dupCheckMap.put(siid, siid);
+            
             if(alreadyAllocated(siid))
                 continue;
+
             String owner = getOwnerFromPath(path);
-            siid += " " + owner + " " + emailToNameMap.get(owner) + "\n";
+            if(inDuplicateList(siid))
+                continue;
+            siid += "," + owner + "," + emailToNameMap.get(owner) + "\n";
             os.write(siid.getBytes());
         }
         os.close();
+    }
+    
+    private boolean inDuplicateList(String iid)
+    {
+        for(int i=0; i < duplicateList.length ; i++)
+        {
+            if(duplicateList[i].equals(iid))
+                return true;
+        }
+        return false;
     }
     
     public String getOwnerFromPath(String path) throws Exception
@@ -93,6 +115,18 @@ public class PreAlloc extends Thread
         }
         return found;
     }
+    
+    private static final String[] duplicateList = new String[]
+    {
+        "[1:{0114}]",
+        "[1:{0106}]",
+        "[1:{010B}]",
+        "[1:{010C}]",
+        "[1:{0112}]",
+        "[1:{01000012}]",
+        "[1:{010D}]",
+        "[1:{0100001A}]",
+    };
     
     private static final String[] allocatedList = new String[]
     {

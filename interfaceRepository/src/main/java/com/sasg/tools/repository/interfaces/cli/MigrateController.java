@@ -46,11 +46,10 @@ public class MigrateController extends ManageController
             String line = null;
             while ((line = bufferedReader.readLine()) != null)
             {
-                String[] params = line.split(" ");
-                DOFInterfaceID iid = DOFInterfaceID.create(params[0]);
-  
-                SubmitterData owner = new SubmitterData(params[2], params[1], "Interfaces Owner");
-                InterfaceData iface = new InterfaceData(null, iid.toStandardString(), null, "1", owner, DataAccessor.UserGroup, CoreController.OpenDofRepo, null, null, false);
+                String[] params = line.split(",");
+                SubmitterData owner = new SubmitterData(params[2], params[1], "V1.0 Interfaces Owner");
+                DOFInterfaceID iid = DOFInterfaceID.create(line);
+                InterfaceData iface = new InterfaceData(null, iid.toStandardString(), null, "1", owner, DataAccessor.PrivateGroup, CoreController.OpenDofRepo, null, null, false);
                 long id = iid.getIdentifier();
                 int byteSize = 4;
                 if(id < 256)
