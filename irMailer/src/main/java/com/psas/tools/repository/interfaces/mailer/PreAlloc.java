@@ -55,22 +55,27 @@ public class PreAlloc extends Thread
             DOFInterfaceID iid = DOFInterfaceID.create(siid);
             siid = iid.toStandardString();
             int registry = iid.getRegistry();
+//            if(registry == 63)
+//            {
+//                String owner = getOwnerFromPath(path);
+//                siid += "," + owner + "," + emailToNameMap.get(owner) + "\n";
+//                log.info(siid += "," + owner + "," + emailToNameMap.get(owner));
+//                continue;
+//            }
             if(registry != 1)
                 continue;
 //            if(siid.contains("0114"))
 //                log.info("look here");
-            
-//            if (dupCheckMap.get(siid) != null)
-//                continue;
-////                log.error("duplicate iid: " + siid);
-//            dupCheckMap.put(siid, siid);
-            
             if(alreadyAllocated(siid))
                 continue;
 
             String owner = getOwnerFromPath(path);
             if(inDuplicateList(siid))
-                continue;
+            {
+                if (dupCheckMap.get(siid) != null)
+                    continue;
+                dupCheckMap.put(siid, siid);
+            }
             siid += "," + owner + "," + emailToNameMap.get(owner) + "\n";
             os.write(siid.getBytes());
         }

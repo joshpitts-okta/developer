@@ -1,0 +1,239 @@
+commented out --- verbage indicates they are free
+???? do not have a 1 or 63 registry associated with these and should be pre-allocated
+in productino == already on interface.opendof.org
+pre-alloc have a registry 1 and setup to pre-allocate
+on duplicate list, one of the eight duplicates.  use the owner in this list
+
+
+
+
+# THIS FILE IS NOW RETIRED AND THE EXISTING REPOSITORY
+# WILL BE END-OF-LIFE ON APRIL 31, 2016
+# The OpenDOF TSC now maintains this file on the OpenDOF member site.
+
+# Note that "lo-DLC_system_interfaces_TRY1" are reserved, but
+# not actively supported and will go away when confirmed
+# that no product will release.
+[1:{00}]																		never used
+        "[1:{01}]",																in production
+01/02   	working/residential-platform/version/deviceversion					pre-alloc
+01/03		working/hems-apf/BatteryInfomation									pre-alloc
+01/04		working/hems-apf/LightControl										pre-alloc
+01/05		working/hems-apf/PersonIrSensor										pre-alloc
+01/06		working/hems-apf/SleepDevice										pre-alloc
+01/07		working/residential-platform/version/hardwareversion			   	pre-alloc
+        "[1:{08}]",																in production 
+        "[1:{09}]", 															in production
+        "[1:{0A}]", 															in production
+        "[1:{0B}]", 															in production
+[1:{0C}] -> [1:{FF}]															never used
+01/0100 	working/residential-platform/version/deviceactivate					pre-alloc
+#01/0101		working/lo-DLC_system_interfaces_TRY1/DeviceInfoIID				commented out
+01/0102		working/CondominiumSystem/Internal									????
+01/0103 	working/residential-platform/backup-restore/backup-base			   	pre-alloc
+01/0104 	working/residential-platform/backup-restore/restore-base		   	pre-alloc
+01/0105 	working/residential-platform/backup-restore/writestream			   	pre-alloc
+01/0106 	working/residential-platform/software-update/readstream				on duplicate list
+01/0107 	working/residential-platform/status/deviceactivate				   	pre-alloc
+01/0108 	working/residential-platform/logging/ascii						   	pre-alloc
+01/0109 	working/residential-platform/logging/sjis							pre-alloc
+01/010A 	working/residential-platform/logging/utf8							pre-alloc
+01/010B 	working/residential-platform/credential-configuration-device/base	on duplicate list
+01/010C 	working/residential-platform/credential-configuration-device/service	on duplicate list
+01/010D 	working/residential-platform/credential-configuration-device/specific	on duplicate list
+01/010E 	working/residential-platform/credential-configuration-gateway/base		pre-alloc
+01/010F 	working/residential-platform/credential-configuration-gateway/service	pre-alloc
+01/0110		working/residential-platform/credential-configuration-gateway/specific	pre-alloc
+#01/0111		working/lo-DLC_system_interfaces_TRY1/SystemPublicIID			commented out
+01/0112 	working/residential-platform/software-update/devicenotify			on duplicate list
+01/0113		working/hems-apf/DimmerControl										pre-alloc
+#01/0114		working/hems-apf/EcoControl 									on duplicate list
+01/0115		working/hems-apf/HeaterControl										pre-alloc
+01/0116		working/hems-apf/PowerSupplyControl								   	pre-alloc
+01/0117		working/hems-apf/SleepDeviceConfig								   	pre-alloc
+[1:{0118}] -> [1:{0125}]														never used
+#01/0126		working/lo-DLC_system_interfaces_TRY1/EventRecvIID				commented out
+[1:{0127}] -> [1"{01e4}]														never used
+#01/01e5		working/lo-DLC_system_interfaces_TRY1/LevelAdjustlIID			commented out
+#01/01e6		working/lo-DLC_system_interfaces_TRY1/ConstCheckIID				commented out
+#01/01e7		working/lo-DLC_system_interfaces_TRY1/powerfail_revalIID		commented out
+#01/01e8		working/lo-DLC_system_interfaces_TRY1/PatternSwCorrIID			commented out
+#01/01e9		working/lo-DLC_system_interfaces_TRY1/BatchCtlSwCorrIID			commented out
+#01/01ea		working/lo-DLC_system_interfaces_TRY1/BatchCtlEffIID			commented out
+#01/01eb		working/lo-DLC_system_interfaces_TRY1/BatchCtlIID				commented out
+#01/01ec		working/lo-DLC_system_interfaces_TRY1/SwCorrIID					commented out
+#01/01ed		working/lo-DLC_system_interfaces_TRY1/ModeSetIID				commented out
+#01/01ee		working/lo-DLC_system_interfaces_TRY1/IdPatternlIID				commented out
+#01/01ef		working/lo-DLC_system_interfaces_TRY1/PatternlIID				commented out
+#01/01f0		working/lo-DLC_system_interfaces_TRY1/IdGroupIid				commented out
+#01/01f1		working/lo-DLC_system_interfaces_TRY1/IndGroupIid				commented out
+#01/01f2		working/lo-DLC_system_interfaces_TRY1/StatusCtlIID				commented out
+#01/01f3		working/lo-DLC_system_interfaces_TRY1/PropBatchDemandlIID		commented out
+[1:{01f4}] -> [1"{01fe}]														never used
+#01/01ff		working/lo-DLC_system_interfaces_TRY1/OnOffCtllIID				commented out
+	[1:{0200}],murakami.shuji@jp.panasonic.com,Murakami Shuji					pre-alloc
+	[1:{0201}],murakami.shuji@jp.panasonic.com,Murakami Shuji					pre-alloc
+	[1:{0202}],murakami.shuji@jp.panasonic.com,Murakami Shuji					pre-alloc
+	[1:{0203}],joseph.clark@us.panasonic.com,Joseph Clark						pre-alloc
+	[1:{0204}],murakami.shuji@jp.panasonic.com,Murakami Shuji					pre-alloc
+	[1:{0205}],murakami.shuji@jp.panasonic.com,Murakami Shuji					pre-alloc
+	[1:{0206}],murakami.shuji@jp.panasonic.com,Murakami Shuji					pre-alloc
+	[1:{0207}],joseph.clark@us.panasonic.com,Joseph Clark						pre-alloc
+	[1:{0208}],joseph.clark@us.panasonic.com,Joseph Clark						pre-alloc
+	[1:{0209}],joseph.clark@us.panasonic.com,Joseph Clark						pre-alloc
+	[1:{020A}],murakami.shuji@jp.panasonic.com,Murakami Shuji					pre-alloc
+	[1:{020B}],murakami.shuji@jp.panasonic.com,Murakami Shuji					pre-alloc
+	[1:{020C}],murakami.shuji@jp.panasonic.com,Murakami Shuji					pre-alloc
+#01/020D [AVAILABLE] Bryant Eastham 10/18/2012									commented out
+[1:{020e}] -> [1:{0210}]														never used
+        "[1:{0211}]", 															in production
+        "[1:{0212}]", 															in production
+		[1:{0213}],murakami.shuji@jp.panasonic.com,Murakami Shuji				pre-alloc
+01/0214		working/device-info													pre-alloc
+01/0215		working/singapore/energy-storage									pre-alloc
+01/0216		working/sanyo/dcb/dcb-alternate										pre-alloc
+01/0217		working/singapore/bidirectional-interconnect						pre-alloc
+01/0218		working/singapore/unidirectional-interconnect						pre-alloc
+01/0219		working/singapore/composite-energy-storage							pre-alloc
+01/021A		working/singapore/device-temperatures								pre-alloc
+01/021B		working/sanyo/dcb/dcb-nominal										pre-alloc
+01/021C		working/sanyo/pyranometer											in production
+01/021D		working/sanyo/power-meter											pre-alloc
+01/021E		working/singapore/bidirectional-pcs									in production
+	[1:{021F}],joseph.clark@us.panasonic.com,Joseph Clark						pre-alloc
+	[1:{0220}],joseph.clark@us.panasonic.com,Joseph Clark						pre-alloc
+01/0221		working/singapore/EnergyStatus										in production
+	[1:{0222}],joseph.clark@us.panasonic.com,Joseph Clark						pre-alloc
+01/0223		working/data-platform/PropertyStatusMonitor							pre-alloc
+01/0224		working/data-platform/PropertyLevelMonitor							pre-alloc
+        "[1:{0225}]",															in production
+        "[1:{0226}]",															in production
+        "[1:{0227}]",															in production
+        "[1:{0228}]",															in production
+01/0229		working/singapore-bid/select										pre-alloc
+01/022A		working/singapore-bid/iterator										pre-alloc
+01/022B		working/singapore/emergency-situation								pre-alloc
+01/022C		working/AiSEG2013-FuelCell/BuiltinClock								pre-alloc
+01/022D		working/AiSEG2013-FuelCell/EnemaneFuelCellBoilerExtend			   	pre-alloc
+01/022E		working/AiSEG2013-FuelCell/EnemaneFuelCellExtend					pre-alloc
+01/022F		working/AiSEG2013-FuelCell/FuelCellGenerator						pre-alloc
+01/0230		working/AiSEG2013-FuelCell/JapaneseBathControl						pre-alloc has a reg 63 also
+01/0231		working/AiSEG2013-FuelCell/GasFuelCell								pre-alloc has two reg 63 also
+	[1:{0232}],joseph.clark@us.panasonic.com,Joseph Clark						pre-alloc has a reg 63 also
+	[1:{0233}],joseph.clark@us.panasonic.com,Joseph Clark						pre-alloc has a reg 63 also
+01/0234		working/smart-mansion/system-events									pre-alloc
+	[1:{0235}],murakami.shuji@jp.panasonic.com,Murakami Shuji					pre-alloc
+	[1:{0236}],joseph.clark@us.panasonic.com,Joseph Clark						pre-alloc
+	[1:{0237}],joseph.clark@us.panasonic.com,Joseph Clark						pre-alloc
+	[1:{0238}],joseph.clark@us.panasonic.com,Joseph Clark						pre-alloc
+01/0239		working/solar/EnergyMeter											in production
+01/023A		working/solar/Pressure												in production
+01/023B		working/solar/Wind													in production
+[1:{023c}] -> [1:{ffff}]														never used
+        "[1:{01000000}]",   													in production
+        "[1:{01000001}]",   													in production  has 4 reg 63 also
+        "[1:{01000002}]",   													in production has 2 reg 63 also
+01/01000003	working/residential-gateway/naming/write							pre-alloc has a reg 63 also
+01/01000004	working/residential-gateway/naming/read								pre-alloc has a reg 63 also
+01/01000005	working/residential-gateway/naming/naming							pre-alloc has 2 reg 63 also
+01/01000006	working/residential-gateway/naming/writeSjis						pre-alloc has 2 reg 63 also
+01/01000007	working/residential-gateway/naming/readSjis							pre-alloc has a reg 63 also
+01/01000008	working/residential-gateway/naming/namingSjis						pre-alloc
+01/01000009	working/singapore-bid/bid											pre-alloc
+        "[1:{0100000A}]", 														in production
+01/0100000B     working/residential-platform/version/devicemanage				pre-alloc
+01/0100000C     working/residential-platform/version/devicesession				pre-alloc
+01/0100000D     working/residential-platform/version/versionsession				pre-alloc
+01/0100000E     working/residential-platform/status/devicemanage				pre-alloc
+01/0100000F     working/residential-platform/status/devicesession				pre-alloc
+01/01000010     working/residential-platform/software-update/manage				pre-alloc has 3 reg 63 also
+01/01000011	working/hems-apf/ConsumptionCollection/GasConsumptionCollection		pre-alloc has 2 reg 63 also
+01/01000012	working/hems-apf/ConsumptionCollection/PowerConsumptionCollection	63 registry
+01/01000013	working/hems-apf/ConsumptionCollection/WaterConsumptionCollection	pre-alloc has a reg 63 also
+01/01000014	working/hems-apf/Messaging/CommonMessage/Notify						pre-alloc has a reg 63 also
+01/01000015	working/hems-apf/Messaging/CommonMessage/Read						pre-alloc has a reg 63 also
+01/01000016	working/hems-apf/Messaging/MaintenanceMessage/Notify				pre-alloc has a reg 63 also
+01/01000017	working/hems-apf/Messaging/MaintenanceMessage/Read					pre-alloc has a reg 63 also
+01/01000018	working/hems-apf/Messaging/Message/Notify							pre-alloc has 2 reg 63 also
+01/01000019	working/hems-apf/Messaging/Message/Read								pre-alloc
+01/0100001A	working/hems-apf/PowerConsumption									in production
+01/0100001B	working/hems-apf/PowerConsumptionConfig								pre-alloc
+01/0100001C	working/hems-apf/PowerConsumptionHistrical							pre-alloc
+01/0100001D	working/hems-apf/SceneControl										pre-alloc
+01/0100001E	working/hems-apf/UIPanel											pre-alloc
+01/0100001F	working/hems-apf/WeatherBasic										pre-alloc
+01/01000020	working/hems-apf/ZWaveDeviceInformation								pre-alloc has 3 reg 63 also
+01/01000021	working/hems-apf/ZWaveNetManagement									pre-alloc has 3 reg 63 also
+        "[1:{01000022}]", 														in production
+01/01000023	working/toaster														in production
+01/01000024	working/IEEE_2015/DewPointTemperature								in production
+01/01000025	working/IEEE_2015/DryBulbTemperature								in production
+01/01000026	working/IEEE_2015/WetBulbTemperature								in production
+        "[1:{01000027}]",														in production
+        "[1:{01000028}]", 														in production
+01/01000029	working/data-platform/DataRequestService							prealloc
+01/0100002A	working/model-metadata												pre-alloc
+01/0100002B	working/singapore/bmu-slave											pre-alloc
+01/0100002C	working/singapore/bmu-s-initial										pre-alloc
+01/0100002D	working/singapore/bmu-s-periodic									pre-alloc
+01/0100002E	working/IEEE_2015/PowerReading										in production
+01/0100002F	working/energy-platform/energy-site-snapshot						pre-alloc
+01/01000030	working/singapore/solar-site-snapshot								pre-alloc has 2 reg 63 also
+01/01000031	working/sanyo/load-site-snapshot									pre-alloc has 3 reg 63 also
+01/01000032	working/singapore/storage-site-snapshot								pre-alloc has 2 reg 63 also
+01/01000033	working/singapore/site-snapshot										pre-alloc
+	[1:{01000034}],joseph.clark@us.panasonic.com,Joseph Clark					pre-alloc has a reg 63 also
+01/01000035	working/singapore/energy-storage-wh									pre-alloc
+01/01000036	working/singapore/singapore-system									pre-alloc
+01/01000037	working/singapore/dcu-pv01											pre-alloc
+01/01000038	working/singapore/dcu-sb01											pre-alloc
+01/01000039	working/singapore/bj-dcb104e										pre-alloc
+01/0100003A	working/singapore/bpv-50k-40t-03sa									pre-alloc
+	[1:{0100003B}],murakami.shuji@jp.panasonic.com,Murakami Shuji 				pre-alloc
+01/0100003C	working/residential-platform/status/devicecounts					pre-alloc
+	[1:{0100003D}],joseph.clark@us.panasonic.com,Joseph Clark					pre-alloc
+	[1:{0100003E}],joseph.clark@us.panasonic.com,Joseph Clark					pre-alloc
+	[1:{0100003F}],joseph.clark@us.panasonic.com,Joseph Clark					pre-alloc
+	[1:{01000040}],joseph.clark@us.panasonic.com,Joseph Clark					pre-alloc has 2 reg 63 also
+	[1:{01000041}],joseph.clark@us.panasonic.com,Joseph Clark					pre-alloc has a reg 63 also
+	[1:{01000042}],murakami.shuji@jp.panasonic.com,Murakami Shuji 				pre-alloc
+	[1:{01000043}],joseph.clark@us.panasonic.com,Joseph Clark					pre-alloc
+	[1:{01000044}],joseph.clark@us.panasonic.com,Joseph Clark					pre-alloc
+	[1:{01000045}],joseph.clark@us.panasonic.com,Joseph Clark					pre-alloc
+	[1:{01000046}],joseph.clark@us.panasonic.com,Joseph Clark					pre-alloc
+	[1:{01000047}],joseph.clark@us.panasonic.com,Joseph Clark					pre-alloc
+01/01000048	working/suitcase/GPSLocation										in production
+01/01000049	working/suitcase/Impact									   			in production
+01/0100004A	working/suitcase/LocationHistory									in production
+01/0100004B	working/suitcase/Lockable											in production
+01/0100004C	working/suitcase/Weight												in production
+        "[1:{0100004D}]",														in production
+01/0100004E	working/singapore/pcs-snapshot										pre-alloc
+	[1:{0100004F}],joseph.clark@us.panasonic.com,Joseph Clark					pre-alloc
+	[1:{01000050}],joseph.clark@us.panasonic.com,Joseph Clark					pre-alloc has a reg 63 also
+01/01000051	working/solar/BridgeEvent											pre-alloc has a reg 63 also
+01/01000052	working/solar/EnergyStatusApparent									in production has a reg 63 also
+01/01000053	working/solar/LineVoltage											in production has a reg 63 also
+01/01000054	working/temporaryCredentials										in production has a reg 63 also
+01/01000055	working/fullExample													in production has a reg 63 also
+01/01000056	working/LightBrightness												in production has a reg 63 also
+        "[1:{01000057}]",														in production 
+        "[1:{01000058}]", 														in production
+[1:{01000059}] -> [1:{0100005f}]												never used
+	[1:{01000060}],murakami.shuji@jp.panasonic.com,Murakami Shuji 				pre-alloc
+	[1:{01000061}],murakami.shuji@jp.panasonic.com,Murakami Shuji 				pre-alloc
+	[1:{01000062}],murakami.shuji@jp.panasonic.com,Murakami Shuji 				pre-alloc
+	[1:{01000063}],murakami.shuji@jp.panasonic.com,Murakami Shuji 				pre-alloc
+	[1:{01000064}],murakami.shuji@jp.panasonic.com,Murakami Shuji 				pre-alloc
+	[1:{01000066}],murakami.shuji@jp.panasonic.com,Murakami Shuji 				pre-alloc
+	[1:{01000067}],murakami.shuji@jp.panasonic.com,Murakami Shuji 				pre-alloc
+	[1:{01000068}],murakami.shuji@jp.panasonic.com,Murakami Shuji 				pre-alloc
+
+
+
+# REPOSITORY 2 - Sanyo RM Interfaces
+02/100200C8	working/sanyo_rm/co2_sensor
+# Unknown
+app/3F/AC10	working/ancillary_power/InverterControl
+app/3F/AC12	working/ancillary_power/InverterStatus
+app/3F/AC13	working/ancillary_power/FrequencyRegulation

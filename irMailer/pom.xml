@@ -11,6 +11,11 @@
 	<name>Legacy SVN Interface Repository email generator</name>
 	<dependencies>
 		<dependency>
+			<groupId>org.opendof.tools-interface-repository</groupId>
+			<artifactId>interface-repository-opendof</artifactId>
+			<version>2.0</version>
+		</dependency>
+		<dependency>
 			<groupId>com.ccc</groupId>
 			<artifactId>ccc-tools</artifactId>
 			<version>1.0</version>
@@ -21,12 +26,21 @@
 			<artifactId>svnkit</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>xerces</groupId>
+			<artifactId>xercesImpl</artifactId>
+			<version>2.11.0</version>
 		</dependency>
 	</dependencies>
 </project>
