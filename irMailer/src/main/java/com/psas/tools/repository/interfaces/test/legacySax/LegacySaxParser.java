@@ -170,7 +170,7 @@ public class LegacySaxParser
     {
     }
 
-    private static String convertToFileURL(String filename)
+    public static String convertToFileURL(String filename)
     {
         String path = new File(filename).getAbsolutePath();
         if (File.separatorChar != '/')
@@ -316,7 +316,7 @@ public class LegacySaxParser
         log.info(sb.toString());
     }
     
-    public class LegacyErrorHandler implements ErrorHandler
+    public static class LegacyErrorHandler implements ErrorHandler
     {
         @Override
         public void warning(SAXParseException e) throws SAXException

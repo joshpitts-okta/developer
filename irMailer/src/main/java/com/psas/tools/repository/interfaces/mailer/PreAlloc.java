@@ -55,26 +55,19 @@ public class PreAlloc extends Thread
             DOFInterfaceID iid = DOFInterfaceID.create(siid);
             siid = iid.toStandardString();
             int registry = iid.getRegistry();
-//            if(registry == 63)
-//            {
-//                String owner = getOwnerFromPath(path);
-//                siid += "," + owner + "," + emailToNameMap.get(owner) + "\n";
-//                log.info(siid += "," + owner + "," + emailToNameMap.get(owner));
-//                continue;
-//            }
             if(registry != 1)
                 continue;
-//            if(siid.contains("0114"))
-//                log.info("look here");
             if(alreadyAllocated(siid))
                 continue;
 
-            String owner = getOwnerFromPath(path);
+            String owner = getOwnerFromPath(path, ownerToPathMap);
             if(inDuplicateList(siid))
             {
-                if (dupCheckMap.get(siid) != null)
+                if(!owner.equals("joseph.clark@us.panasonic.com"))
                     continue;
-                dupCheckMap.put(siid, siid);
+//                if (dupCheckMap.get(siid) != null)
+//                    continue;
+//                dupCheckMap.put(siid, siid);
             }
             siid += "," + owner + "," + emailToNameMap.get(owner) + "\n";
             os.write(siid.getBytes());
@@ -92,14 +85,16 @@ public class PreAlloc extends Thread
         return false;
     }
     
-    public String getOwnerFromPath(String path) throws Exception
+    public static String getOwnerFromPath(String path, HashMap<String, List<String>> ownerToPathMap) throws Exception
     {
+        path = new File(path).getPath();
         for(Entry<String, List<String>> entry : ownerToPathMap.entrySet())
         {
             String owner = entry.getKey();
             List<String> paths = entry.getValue();
             for(String p : paths)
             {
+                p = new File(p).getPath();
                 if(path.equals(p))
                     return owner;
             }

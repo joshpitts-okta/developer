@@ -14,6 +14,7 @@ public class TypeDefData extends LegacySaxHandler implements ChildComplete
     public static final String MyTag = "typedef";
     public static final String MyTagMax = "maxInclusive";
     public static final String MyTagMin = "minInclusive";
+    public static final String MyTagMinEx = "minExclusive";
     public static final String MyTagUnit = "unit";
     public static final String MyTagEnum = "enum";
 
@@ -114,7 +115,7 @@ public class TypeDefData extends LegacySaxHandler implements ChildComplete
                 type.startElement(uri, localName, qName, attributes);
                 return;
             }
-            else if (MyTagMin.equals(localName) || MyTagMax.equals(localName) || MyTagUnit.equals(localName))
+            else if (MyTagMinEx.equals(localName) || MyTagMin.equals(localName) || MyTagMax.equals(localName) || MyTagUnit.equals(localName))
             {
                 cdata = new StringBuilder();
                 stack.push(localName);
@@ -153,7 +154,7 @@ public class TypeDefData extends LegacySaxHandler implements ChildComplete
     @Override
     public void characters(char ch[], int start, int length) throws SAXException
     {
-        if (isMyTag(MyTagMin) || isMyTag(MyTagMax) || isMyTag(MyTagUnit))
+        if (isMyTag(MyTagMinEx) || isMyTag(MyTagMin) || isMyTag(MyTagMax) || isMyTag(MyTagUnit))
         {
             cdata.append(new String(ch, start, length));
             return;
@@ -175,11 +176,17 @@ public class TypeDefData extends LegacySaxHandler implements ChildComplete
     @Override
     public void endElement(String uri, String localName, String qName) throws SAXException
     {
-        if (localName.equals(MyTag) || localName.equals(MyTagMin) || localName.equals(MyTagMax) || localName.equals(MyTagUnit) || localName.equals(MyTagEnum))
+        if (localName.equals(MyTag) || localName.equals(MyTagMinEx) || localName.equals(MyTagMin) || localName.equals(MyTagMax) || localName.equals(MyTagUnit) || localName.equals(MyTagEnum))
         {
             stack.pop();
             if(localName.equals(MyTag))
                 childComplete.setChildComplete(childComplete, this);
+            else if (localName.equals(MyTagMinEx))
+            {
+                min = cdata.toString();
+                if(min.length() == 0)
+                    throw new SAXException(currentPath() + " minex is empty string");
+            }
             else if (localName.equals(MyTagMin))
             {
                 min = cdata.toString();

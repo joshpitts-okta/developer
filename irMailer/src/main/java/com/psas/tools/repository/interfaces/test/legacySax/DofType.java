@@ -208,12 +208,12 @@ public class DofType extends LegacySaxHandler
     
     protected void setRange(String min, String max) throws SAXException
     {
-        throw new SAXException(currentPath() + " does not support range");
+//        throw new SAXException(currentPath() + " does not support range");
     }
     
     protected void setUnit(String unit) throws SAXException
     {
-        throw new SAXException(currentPath() + " does not support unit");
+//        throw new SAXException(currentPath() + " does not support unit");
     }
     
     public void validate(ContextData context) throws SAXException
@@ -375,8 +375,8 @@ public class DofType extends LegacySaxHandler
             }
             else
                 this.max = Long.parseLong(max);
-            if(this.min != null && this.min > this.max)
-                throw new SAXException(getClass().getSimpleName() + " min > max");
+//            if(this.min != null && this.min > this.max)
+//                throw new SAXException(getClass().getSimpleName() + " min > max");
         }
         @Override
         protected void setUnit(String unit) throws SAXException

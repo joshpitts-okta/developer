@@ -55,17 +55,17 @@ public class NameDescriptionData extends LegacySaxHandler
         for(LanguageString lang : descriptions)
         {
             lang.validate();
-            if(uniqueMap.get(lang.attrValue) != null)
-                throw new SAXException("description with duplicate language: " + lang.attrValue);
+//            if(uniqueMap.get(lang.attrValue) != null)
+//                throw new SAXException("description with duplicate language: " + lang.attrValue);
             uniqueMap.put(lang.attrValue, lang.attrValue);
         }
         uniqueMap.clear();
         for(LanguageString lang : displayNames)
         {
             lang.validate();
-            if(uniqueMap.get(lang.attrValue) != null)
-                throw new SAXException("description with duplicate language: " + lang.attrValue);
-            uniqueMap.put(lang.attrValue, lang.attrValue);
+//            if(uniqueMap.get(lang.attrValue) != null)
+//                throw new SAXException("description with duplicate language: " + lang.attrValue);
+//            uniqueMap.put(lang.attrValue, lang.attrValue);
         }
         
     }
@@ -158,8 +158,8 @@ public class NameDescriptionData extends LegacySaxHandler
         
         public LanguageString(Attributes attributes) throws SAXException
         {
-            if(attributes.getLength() != 1)
-                throw new SAXException("expected 1 ns attribute got: " + attributes.getLength());
+//            if(attributes.getLength() != 1)
+//                throw new SAXException("expected 1 ns attribute got: " + attributes.getLength());
             attrUri = attributes.getURI(0);
             attrQname = attributes.getQName(0);
             attrValue = attributes.getValue(0);
@@ -167,21 +167,21 @@ public class NameDescriptionData extends LegacySaxHandler
         
         public void validate() throws SAXException
         {
-            if(cdata == null || cdata.length() < 1)
-            {
-                log.info("look here");
-                throw new SAXException("cdata is null or empty string");
-            }
-            if(attrUri == null || attrUri.length() < 1)
-                throw new SAXException("attrUri is null or empty string");
-            if(!attrUri.equals(XmlLangNs))
-                throw new SAXException("attrUri unexpected: " + attrUri);
-            if(attrQname == null || attrQname.length() < 1)
-                throw new SAXException("attrQname is null or empty string");
-            if(!attrQname.equals(XmlLangQname))
-                throw new SAXException("attrQname unexpected: " + attrQname);
-            if(attrValue == null || attrValue.length() < 1)
-                throw new SAXException("attrValue is null or empty string");
+//            if(cdata == null || cdata.length() < 1)
+//            {
+//                log.info("look here");
+//                throw new SAXException("cdata is null or empty string");
+//            }
+//            if(attrUri == null || attrUri.length() < 1)
+//                throw new SAXException("attrUri is null or empty string");
+//            if(!attrUri.equals(XmlLangNs))
+//                throw new SAXException("attrUri unexpected: " + attrUri);
+//            if(attrQname == null || attrQname.length() < 1)
+//                throw new SAXException("attrQname is null or empty string");
+//            if(!attrQname.equals(XmlLangQname))
+//                throw new SAXException("attrQname unexpected: " + attrQname);
+//            if(attrValue == null || attrValue.length() < 1)
+//                throw new SAXException("attrValue is null or empty string");
         }
         
         @Override

@@ -3,8 +3,6 @@ package com.psas.tools.repository.interfaces.mailer;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -36,6 +34,9 @@ import org.tmatesoft.svn.core.wc.SVNWCUtil;
 
 import com.ccc.tools.TabToLevel;
 
+import ch.qos.logback.classic.LoggerContext;
+import ch.qos.logback.core.util.StatusPrinter;
+
 @SuppressWarnings("javadoc")
 public class IrMailer extends Thread
 {
@@ -44,13 +45,18 @@ public class IrMailer extends Thread
 
     private static final String IrUrl = "https://interfaces.emit-networking.org/files";
     private static final String RootDir = "/share/ir/";
-    private static final String MailDir = RootDir + "mail/";
-    public static final String SvnDir = RootDir + "svn/";
+    public static final String MailDir = RootDir + "mail/";
+    public static final String SvnDir = RootDir + "svn";
     private static final String ConvertedDir = RootDir + "production/converted/";
-    private static final String ConvertedPublish = ConvertedDir + "publish/";
-    private static final String ConvertedWorking = ConvertedDir + "working/";
+    public static final String ConvertedPublish = ConvertedDir + "publish/";
+    public static final String ConvertedWorking = ConvertedDir + "working/";
     private static final String DeployedPublish = RootDir + "production/publish/";
     private static final String DeployedWorking = RootDir + "production/working/";
+    public static final String MergedDir = RootDir + "output/";
+    public static final String MergedPublish = MergedDir + "publish/";
+    public static final String MergedWorking = MergedDir + "working/";
+    
+    
     private static final Logger log;
 
     private final HashMap<String, List<SVNLogEntry>> pathMap;
@@ -58,6 +64,8 @@ public class IrMailer extends Thread
     private final HashMap<String, List<String>> ownerToPathMap;
     private final HashMap<String, SVNDirEntry> tipDirMap;
     private final PreAlloc preAlloc;
+    private final PostAlloc postAlloc;
+    private final SofterConverter softerConverter;
     
     public IrMailer(@SuppressWarnings("unused") String[] args)
     {
@@ -74,49 +82,10 @@ public class IrMailer extends Thread
         ownerToPathMap.put("murakami.shuji@jp.panasonic.com", list);
         tipDirMap = new HashMap<>();
         preAlloc = new PreAlloc(pathMap, submitterMap, ownerToPathMap, tipDirMap);
+        postAlloc = new PostAlloc(pathMap, submitterMap, ownerToPathMap, tipDirMap);
+        softerConverter = new SofterConverter(pathMap, submitterMap, ownerToPathMap, tipDirMap);
     }
     
-    private void createMailerDirectories() throws Exception
-    {
-        int totalCount = 0;
-        for (Entry<String, List<String>> ownerElement : ownerToPathMap.entrySet())
-        {
-            String owner = ownerElement.getKey();
-            String basePath = MailDir + owner + "/";
-            int count = 0;
-            for (String path : ownerElement.getValue())
-            {
-                String svn = SvnDir + path;
-                File dotEmit = new File(path);
-                File parent = dotEmit.getParentFile();
-                String iid = getIidFromDotEmit(new File(svn));
-                File convertedFile = findConvertedFile(iid);
-                String iidName = null;
-                if (convertedFile != null)
-                {
-                    String fileName = convertedFile.getName();
-                    String mailPath = basePath + "/" + findIidName(convertedFile, iid);
-                    moveFile(convertedFile, new File(mailPath), fileName);
-                } else
-                {
-                    String mailPath = basePath + "/" + findIidNameNonConverted(new File(svn), iid);
-                    moveFiles(new File(svn).getParentFile(), new File(mailPath));
-                }
-                SVNDirEntry dirEntry = tipDirMap.get(path);
-                if (dirEntry != null)
-                {
-                    ++count;
-                    ++totalCount;
-                    //                    tipDirMap.remove(path);
-                }
-                //                else
-                //                    log.info("look here: " + path);
-            }
-            log.info(owner + " tipDirMap.size: " + tipDirMap.size() + " hits count: " + count);
-        }
-        log.info("Total count: " + totalCount);
-    }
-
     public static String getIidFromDotEmit(File dotEmit) throws Exception
     {
         byte[] raw = new byte[1024 * 16];
@@ -124,6 +93,7 @@ public class IrMailer extends Thread
         BufferedInputStream bis = new BufferedInputStream(fis);
         bis.read(raw, 0, raw.length);
         bis.close();
+        fis.close();
         String str = new String(raw);
         int idx = str.indexOf("iid=\"[");
         idx += 5;
@@ -131,158 +101,6 @@ public class IrMailer extends Thread
         idx = str.indexOf(']');
         str = str.substring(0, idx + 1);
         return str;
-    }
-
-    private File findConvertedFile(String iid) throws Exception
-    {
-        File parent = new File(ConvertedPublish);
-        for (int j = 0; j < 2; j++)
-        {
-            File[] children = new File(ConvertedPublish).listFiles();
-            if (j == 1)
-                children = new File(ConvertedWorking).listFiles();
-
-            for (int i = 0; i < children.length; i++)
-            {
-                File child = children[i];
-                if (children[i].isFile())
-                {
-                    String ciid = getIidFromDotEmit(child);
-                    if (iid.equals(ciid))
-                        return child;
-                }
-            }
-        }
-        return null;
-    }
-
-    private void moveFile(File from, File to, String fileName) throws Exception
-    {
-        if (!to.exists())
-        {
-            boolean ok = to.mkdirs();
-            if (!ok)
-                throw new Exception("failed to mkdirs: " + to.getAbsolutePath());
-        }
-        String fullPath = to.getAbsolutePath() + "/" + fileName;
-        FileOutputStream fos = new FileOutputStream(fullPath);
-        Files.copy(from.toPath(), fos);
-        fos.close();
-    }
-    
-    private void moveFiles(File from, File to) throws Exception
-    {
-        if (!to.exists())
-        {
-            boolean ok = to.mkdirs();
-            if (!ok)
-                throw new Exception("failed to mkdirs: " + to.getAbsolutePath());
-        }
-        File[] children = from.listFiles();
-        for(int i=0; i < children.length; i++)
-        {
-            File child = children[i];
-            if(child.isDirectory())
-                throw new Exception("did not expect a directory here: " + child.getAbsolutePath());
-            File toPath = new File(to.getAbsolutePath() + "/" + child.getName());
-            FileOutputStream fos = new FileOutputStream(toPath);
-            File fromPath = new File(from.getAbsolutePath() + "/" + child.getName());
-            Files.copy(fromPath.toPath(), fos);
-            fos.close();
-            boolean ok = fromPath.delete();
-            if (!ok)
-            {
-//                throw new Exception("failed to delete the from file: " + fullPath.getAbsolutePath());
-                log.info("failed to delete the from file: " + fromPath.getAbsolutePath());
-            }
-        }
-        boolean ok = from.delete();
-        if (!ok)
-            throw new Exception("failed to delete the from file: " + from.getAbsolutePath());
-    }
-
-    private String findIidNameNonConverted(File svn, String iid) throws Exception
-    {
-        File[] children = svn.getParentFile().listFiles();
-        String str = null;
-        boolean found = false;
-        for (int i = 0; i < children.length; i++)
-        {
-            File child = children[i];
-            if (child.isDirectory())
-                throw new Exception("did not expect a directory: " + child.getAbsolutePath());
-            BufferedInputStream bis = null;
-            try
-            {
-                byte[] raw = new byte[1024 * 16];
-                FileInputStream fis = new FileInputStream(child);
-                bis = new BufferedInputStream(fis);
-                bis.read(raw, 0, raw.length);
-                bis.close();
-                str = new String(raw);
-                String tag = "<name xml:lang=\"en\">";
-                int idx = str.indexOf(tag);
-                if (idx == -1)
-                    continue;
-                found = true;
-                idx += tag.length();
-                str = str.substring(idx);
-                idx = str.indexOf('<');
-                str = str.substring(0, idx);
-                str += "-" + iid;
-                str = str.replace(':', ';');
-                return str;
-            } catch (@SuppressWarnings("unused") Exception e)
-            {
-                return null;
-            }
-        }
-        if(!found)
-        {
-            String fname = svn.getName();
-            int idx = fname.indexOf('.');
-            fname = fname.substring(0, idx);
-            return fname;
-        }
-        return null;
-    }
-
-    private String findIidName(File file, String iid) throws Exception
-    {
-        BufferedInputStream bis = null;
-        try
-        {
-            byte[] raw = new byte[1024 * 16];
-            FileInputStream fis = new FileInputStream(file);
-            bis = new BufferedInputStream(fis);
-            bis.close();
-            bis.read(raw, 0, raw.length);
-            String str = new String(raw);
-            String tag = "<md:code-name>";
-            int idx = str.indexOf(tag);
-            if (idx == -1)
-            {
-                tag = "<md:display-name xml:lang=\"en\">";
-                idx = str.indexOf(tag);
-                if (idx == -1)
-                {
-                    String fname = file.getName();
-                    idx = fname.indexOf('.');
-                    fname = fname.substring(0, idx);
-                    return fname;
-                }
-            }
-            idx += tag.length();
-            str = str.substring(idx);
-            idx = str.indexOf('<');
-            str = str.substring(0, idx);
-            str += "-" + iid;
-            str = str.replace(':', ';');
-            return str;
-        } catch (@SuppressWarnings("unused") Exception e)
-        {
-            return null;
-        } 
     }
 
     private String findOwner(String name) throws Exception
@@ -648,8 +466,12 @@ public class IrMailer extends Thread
         if (idx != -1)
             base = logPath.substring(0, idx);
         System.setProperty(LogFileBaseKey, logPath);
+        LoggerContext lc = (LoggerContext) LoggerFactory.getILoggerFactory();
+        StatusPrinter.print(lc);
         log = LoggerFactory.getLogger(IrMailer.class);
         log.info(LogFilePathKey + " = " + logPath);
+        
+        
 
         ownerMap = new HashMap<>();
         List<String> names = new ArrayList<>();
@@ -779,11 +601,25 @@ public class IrMailer extends Thread
             ourClientManager.getUpdateClient().setEventHandler(myUpdateEventHandler);
             ourClientManager.getWCClient().setEventHandler(myWCEventHandler);
 
-            listTree();
-            //            listHistory();
-//            createMailerDirectories();
-            preAlloc.createPreAllocList();
 
+// for first phase merge of .emit and .meta's uncomment the following two lines
+//            Converter converter = new Converter(null);
+//            converter.doMerge();
+
+// to produce the mailers structure uncomment the following two lines -- utilizes the previously converted files
+//           listTree();
+//           postAlloc.createMailerDirectories();
+            
+// work on the final conversions.            
+//           listTree();
+//           softerConverter.convert();
+           softerConverter.fnSize();
+// the following was used for discovery only - determined all the submitters and who they should fall under            
+//            listHistory();
+            
+// the following line is now obsolete            
+//            preAlloc.createPreAllocList();
+            log.info("completed ok");
         } catch (Throwable t)
         {
             log.error("failed to initialize", t);

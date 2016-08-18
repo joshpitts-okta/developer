@@ -329,10 +329,10 @@ public class InterfaceData extends LegacySaxHandler
         
         public void validate() throws SAXException
         {
-            if(url == null || url.length() == 0)
-                throw new SAXException("Sibling.url is null or empty");
-            if(name == null || name.length() == 0)
-                throw new SAXException("Sibling.name is null or empty");
+//            if(url == null || url.length() == 0)
+//                throw new SAXException("Sibling.url is null or empty");
+//            if(name == null || name.length() == 0)
+//                throw new SAXException("Sibling.name is null or empty");
         }
     }
 
